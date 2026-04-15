@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_operation">
+    <sys_ws_operation action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <consumes>application/json,application/xml,text/xml</consumes>
+        <consumes_customized>false</consumes_customized>
+        <default_operation_uri/>
+        <enforce_acl/>
+        <http_method>GET</http_method>
+        <name>Fetch Entity Type Reference Fields</name>
+        <operation_script><![CDATA[(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
+
+    var entityTypeSysId = request.queryParams.entity_type_sys_id;
+	var entityTypeName = request.queryParams.entity_type_name;
+	var entityTypeLabel = request.queryParams.entity_type_label;
+
+    if (!entityTypeSysId || !entityTypeName || !entityTypeLabel) {
+        response.setStatus(400);
+        return { error: "entity_type_sys_id, entity_type_name and entity_type_label query parameter is required" };
+    }
+
+	if (Array.isArray(entityTypeSysId)) {
+		entityTypeSysId = entityTypeSysId[0];
+	}
+
+	if (Array.isArray(entityTypeName)) {
+		entityTypeName = entityTypeName[0];
+	}
+
+	if (Array.isArray(entityTypeLabel)) {
+		entityTypeLabel = entityTypeLabel[0];
+	}
+
+    // Step 1: Get the table name from sys_db_object
+    var dbObject = new GlideRecord('sys_db_object');
+    dbObject.addQuery('sys_id', entityTypeSysId);
+	dbObject.addQuery('name', entityTypeName);
+	dbObject.addQuery('label', entityTypeLabel);
+    dbObject.query();
+    if (!dbObject.next()) {
+        response.setStatus(404);
+        return { error: "Entity not found" };
+    }
+    
+    // Step 2: Build the hierarchy chain (child -> parent -> grandparent -> ...)
+    var tableChain = [];
+    var currentTable = entityTypeName;
+    var maxDepth = 50; // Safety limit to prevent infinite loops
+
+    while (currentTable && maxDepth > 0) {
+        tableChain.push(currentTable);
+        maxDepth--;
+
+        // Look up the parent (super_class) of the current table
+        var parentObj = new GlideRecord('sys_db_object');
+        parentObj.addQuery('name', currentTable);
+        parentObj.query();
+        if (parentObj.next() && parentObj.getValue('super_class')) {
+            var parentRef = new GlideRecord('sys_db_object');
+            parentRef.addQuery('sys_id', parentObj.getValue('super_class'));
+            parentRef.query();
+            if (parentRef.next()) {
+                currentTable = parentRef.getValue('name');
+            } else {
+                break;
+            }
+        } else {
+            break;
+        }
+    }
+
+    // Step 3: Find incident fields that reference ANY table in the hierarchy
+    var dict = new GlideRecord('sys_dictionary');
+    dict.addQuery('name', 'IN', 'incident,task');
+    dict.addQuery('reference', 'IN', tableChain.join(','));
+    dict.query();
+
+    var fields = [];
+    while (dict.next()) {
+        fields.push(dict.getValue('element'));
+    }
+
+	response.setStatus(200);
+    return {
+        status: "Success",
+        fields: fields
+    };
+
+})(request, response);]]></operation_script>
+        <operation_uri>/api/x_xurrent_imr/xurrent_imr_connections/fetch_entity_type_reference_fields</operation_uri>
+        <produces>application/json,application/xml,text/xml</produces>
+        <produces_customized>false</produces_customized>
+        <relative_path>/fetch_entity_type_reference_fields</relative_path>
+        <request_example/>
+        <requires_acl_authorization>true</requires_acl_authorization>
+        <requires_authentication>true</requires_authentication>
+        <requires_snc_internal_role>true</requires_snc_internal_role>
+        <short_description/>
+        <sys_class_name>sys_ws_operation</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-04-13 09:45:24</sys_created_on>
+        <sys_id>60e297909390c350dd07fd10ed03d65f</sys_id>
+        <sys_mod_count>13</sys_mod_count>
+        <sys_name>Fetch Entity Type Reference Fields</sys_name>
+        <sys_package display_value="Xurrent IMR" source="x_xurrent_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
+        <sys_update_name>sys_ws_operation_60e297909390c350dd07fd10ed03d65f</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-04-13 12:03:09</sys_updated_on>
+        <web_service_definition display_value="Xurrent IMR Connections">4e0565f383b62210b474b755eeaad3df</web_service_definition>
+        <web_service_version/>
+    </sys_ws_operation>
+</record_update>

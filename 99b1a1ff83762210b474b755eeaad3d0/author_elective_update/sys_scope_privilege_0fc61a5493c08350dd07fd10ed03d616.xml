@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_scope_privilege">
+    <sys_scope_privilege action="DELETE">
+        <operation>read</operation>
+        <source_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</source_scope>
+        <status>allowed</status>
+        <sys_class_name>sys_scope_privilege</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-03-31 18:49:37</sys_created_on>
+        <sys_id>0fc61a5493c08350dd07fd10ed03d616</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>evaluation</sys_name>
+        <sys_package display_value="Xurrent IMR" source="x_xurrent_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
+        <sys_update_name>sys_scope_privilege_0fc61a5493c08350dd07fd10ed03d616</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-03-31 18:49:37</sys_updated_on>
+        <target_name>evaluation</target_name>
+        <target_scope display_value="Global">global</target_scope>
+        <target_type>sys_db_object</target_type>
+    </sys_scope_privilege>
+<sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</application>
+        <file_path/>
+        <instance_id>115355f13b93b290986d048aa4e45a6d</instance_id>
+        <instance_name>dev363662</instance_name>
+        <name>sys_scope_privilege_0fc61a5493c08350dd07fd10ed03d616</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_scope_privilege">
+    <sys_scope_privilege action="INSERT_OR_UPDATE">
+        <operation>read</operation>
+        <source_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</source_scope>
+        <status>allowed</status>
+        <sys_class_name>sys_scope_privilege</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-03-31 18:49:37</sys_created_on>
+        <sys_id>0fc61a5493c08350dd07fd10ed03d616</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>evaluation</sys_name>
+        <sys_package display_value="Xurrent IMR" source="x_xurrent_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
+        <sys_update_name>sys_scope_privilege_0fc61a5493c08350dd07fd10ed03d616</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-03-31 18:49:37</sys_updated_on>
+        <target_name>evaluation</target_name>
+        <target_scope display_value="Global">global</target_scope>
+        <target_type>sys_db_object</target_type>
+    </sys_scope_privilege>
+</record_update>]]></payload>
+        <payload_hash>1697843741</payload_hash>
+        <record_name>evaluation</record_name>
+        <reverted_from/>
+        <source/>
+        <source_table>sys_upgrade_history</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-04-14 09:41:41</sys_created_on>
+        <sys_id>cdaf98b8939c4750dd07fd10ed03d6c1</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>19d8b5e3a3a0000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-04-14 09:41:41</sys_updated_on>
+        <type>Cross scope privilege</type>
+        <update_guid>8daf98b8439c47507f80a79227edccc1</update_guid>
+        <update_guid_history>12f590b4935c475097a4c64994eb2f23:132671543,87c6d69412c08350edebb5767f5dd2c0:-63474833</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-04-14 10:41:31</sys_created_on>
+        <sys_db_object display_value="" name="sys_scope_privilege">sys_scope_privilege</sys_db_object>
+        <sys_id>57428b6d0a88477689c397d83f72c304</sys_id>
+        <sys_metadata>0fc61a5493c08350dd07fd10ed03d616</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>evaluation</sys_name>
+        <sys_package display_value="Xurrent IMR" source="x_xurrent_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
+        <sys_scope_delete display_value="">1c5bba5cc68d463898413a03e03750c1</sys_scope_delete>
+        <sys_update_name>sys_scope_privilege_0fc61a5493c08350dd07fd10ed03d616</sys_update_name>
+        <sys_update_version display_value="sys_scope_privilege_0fc61a5493c08350dd07fd10ed03d616">cdaf98b8939c4750dd07fd10ed03d6c1</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-04-14 10:41:31</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

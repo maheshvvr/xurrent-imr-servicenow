@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_operation">
+    <sys_ws_operation action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <consumes>application/json,application/xml,text/xml</consumes>
+        <consumes_customized>false</consumes_customized>
+        <default_operation_uri/>
+        <enforce_acl/>
+        <http_method>GET</http_method>
+        <name>Fetch Incident Mandatory Fields</name>
+        <operation_script><![CDATA[(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
+    var result = {
+        status: "success",
+        incident_mandatory_fields: []
+    };
+
+    try {
+        var labels = [];
+        if (request.queryParams.label) {
+            for (var k = 0; k < request.queryParams.label.length; k++) {
+                var trimmed = String(request.queryParams.label[k]).trim();
+                if (trimmed) labels.push(trimmed);
+            }
+        }
+
+        var lowerLabels = [];
+        for (var k = 0; k < labels.length; k++) {
+            lowerLabels.push(labels[k].toLowerCase());
+        }
+
+        var limit = 100;
+        var addedFields = {};
+        var allFields = [];
+
+        var tables = ['task', 'incident'];
+        for (var i = 0; i < tables.length; i++) {
+            var dictGR = new GlideRecord('sys_dictionary');
+            dictGR.addQuery('name', tables[i]);
+            dictGR.addQuery('internal_type', '!=', 'collection');
+            dictGR.orderBy('column_label');
+            dictGR.query();
+
+            while (dictGR.next()) {
+                var fieldName = dictGR.element.toString();
+                if (addedFields[fieldName]) continue;
+
+                var fieldLabel = dictGR.column_label.toString();
+
+                // Filter: field label must contain at least one of the labels
+                if (lowerLabels.length > 0) {
+                    var fieldLabelLower = fieldLabel.toLowerCase();
+                    var matched = false;
+                    for (var m = 0; m < lowerLabels.length; m++) {
+                        if (fieldLabelLower.indexOf(lowerLabels[m]) !== -1) {
+                            matched = true;
+                            break;
+                        }
+                    }
+                    if (!matched) continue;
+                }
+
+                allFields.push({
+                    label: fieldLabel,
+                    name: fieldName,
+                });
+                addedFields[fieldName] = true;
+            }
+        }
+
+        // Sort by relevance if labels provided
+        if (lowerLabels.length > 0) {
+            allFields.sort(function(a, b) {
+                var aLower = a.label.toLowerCase();
+                var bLower = b.label.toLowerCase();
+
+                // Tier 0: Exact match with any label
+                var aExact = 1, bExact = 1;
+                for (var x = 0; x < lowerLabels.length; x++) {
+                    if (aLower === lowerLabels[x]) { aExact = 0; break; }
+                }
+                for (var x = 0; x < lowerLabels.length; x++) {
+                    if (bLower === lowerLabels[x]) { bExact = 0; break; }
+                }
+                if (aExact !== bExact) return aExact - bExact;
+
+                // Tier 1: Starts with any label
+                var aStarts = 1, bStarts = 1;
+                for (var x = 0; x < lowerLabels.length; x++) {
+                    if (aLower.indexOf(lowerLabels[x]) === 0) { aStarts = 0; break; }
+                }
+                for (var x = 0; x < lowerLabels.length; x++) {
+                    if (bLower.indexOf(lowerLabels[x]) === 0) { bStarts = 0; break; }
+                }
+                if (aStarts !== bStarts) return aStarts - bStarts;
+
+                // Tier 2: Alphabetical
+                return aLower < bLower ? -1 : (aLower > bLower ? 1 : 0);
+            });
+        }
+
+        result.incident_mandatory_fields = allFields.slice(0, limit);
+
+        response.setStatus(200);
+        return result;
+
+    } catch (e) {
+        response.setStatus(400);
+        return {
+            status: "error",
+            message: e.message || "Unexpected error occurred while processing the request."
+        };
+    }
+
+})(request, response);]]></operation_script>
+        <operation_uri>/api/x_xurrent_imr/xurrent_imr_integrations/fetch_incident_mandatory_fields</operation_uri>
+        <produces>application/json,application/xml,text/xml</produces>
+        <produces_customized>false</produces_customized>
+        <relative_path>/fetch_incident_mandatory_fields</relative_path>
+        <request_example/>
+        <requires_acl_authorization>true</requires_acl_authorization>
+        <requires_authentication>true</requires_authentication>
+        <requires_snc_internal_role>true</requires_snc_internal_role>
+        <short_description/>
+        <sys_class_name>sys_ws_operation</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-03-31 14:38:04</sys_created_on>
+        <sys_id>02dc5d94930c4350dd07fd10ed03d6f8</sys_id>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_name>Fetch Incident Mandatory Fields</sys_name>
+        <sys_package display_value="Xurrent IMR" source="x_xurrent_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
+        <sys_update_name>sys_ws_operation_02dc5d94930c4350dd07fd10ed03d6f8</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-04-01 08:58:46</sys_updated_on>
+        <web_service_definition display_value="Xurrent IMR Integrations">1046e93783b62210b474b755eeaad310</web_service_definition>
+        <web_service_version/>
+    </sys_ws_operation>
+</record_update>

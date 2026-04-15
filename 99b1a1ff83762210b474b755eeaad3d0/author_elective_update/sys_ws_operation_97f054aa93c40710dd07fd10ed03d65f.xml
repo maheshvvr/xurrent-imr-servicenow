@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_operation">
+    <sys_ws_operation action="DELETE">
+        <active>true</active>
+        <consumes>application/json,application/xml,text/xml</consumes>
+        <consumes_customized>false</consumes_customized>
+        <default_operation_uri/>
+        <enforce_acl/>
+        <http_method>POST</http_method>
+        <name>Map IMR Service Field</name>
+        <operation_script><![CDATA[(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
+
+    try {
+        var body = request.body.data;
+
+        if (!body || !body.name || !body.label || !body.sys_id) {
+            response.setStatus(400);
+            return {
+                status: "error",
+                message: "Missing required fields: name, label, sys_id"
+            };
+        }
+
+        // Validating entity details
+        var entityGR = new GlideRecord('sys_db_object');
+        entityGR.addQuery("sys_id", body.sys_id);
+        entityGR.addQuery("name", body.name);
+        entityGR.addQuery("label", body.label);
+        entityGR.query();
+        if (!entityGR.next()) {
+            response.setStatus(404);
+            return {
+                status: "error",
+                message: "Entity not found with sys_id: " + body.sys_id + " name: " + body.name + " label: " + body.label
+            };
+        }
+
+        // Use global Script Include to update sys_dictionary
+        var helper = new global.IMRDictionaryHelper();
+        var updateResult = helper.updateDefaultValue('incident', 'u_imr_service_mapping', body.sys_id);
+        gs.info("sys_dictionary update result: " + updateResult);
+
+        if (!updateResult) {
+            response.setStatus(400);
+            return {
+                status: "error",
+                message: "Failed to update default value. Check ACL permissions."
+            };
+        }
+
+        response.setStatus(200);
+        return {
+            status: "success",
+            message: "Incident form updated"
+        };
+
+    } catch (err) {
+        gs.warn("Mapping IMR service field to Incident form failed: " + err.toString());
+        response.setStatus(400);
+        return {
+            status: "error",
+            message: err.toString()
+        };
+    }
+
+})(request, response);]]></operation_script>
+        <operation_uri>/api/x_xurrent_imr/xurrent_imr_connections/map_imr_service_field</operation_uri>
+        <produces>application/json,application/xml,text/xml</produces>
+        <produces_customized>false</produces_customized>
+        <relative_path>/map_imr_service_field</relative_path>
+        <request_example/>
+        <requires_acl_authorization>true</requires_acl_authorization>
+        <requires_authentication>true</requires_authentication>
+        <requires_snc_internal_role>true</requires_snc_internal_role>
+        <short_description/>
+        <sys_class_name>sys_ws_operation</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-04-07 09:00:47</sys_created_on>
+        <sys_id>97f054aa93c40710dd07fd10ed03d65f</sys_id>
+        <sys_mod_count>14</sys_mod_count>
+        <sys_name>Map IMR Service Field</sys_name>
+        <sys_package display_value="Xurrent IMR" source="x_xurrent_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
+        <sys_update_name>sys_ws_operation_97f054aa93c40710dd07fd10ed03d65f</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-04-07 12:17:27</sys_updated_on>
+        <web_service_definition display_value="Xurrent IMR Connections">4e0565f383b62210b474b755eeaad3df</web_service_definition>
+        <web_service_version/>
+    </sys_ws_operation>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</application>
+        <file_path/>
+        <instance_id>115355f13b93b290986d048aa4e45a6d</instance_id>
+        <instance_name>dev363662</instance_name>
+        <name>sys_ws_operation_97f054aa93c40710dd07fd10ed03d65f</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_ws_operation"&gt;&lt;sys_ws_operation action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;consumes&gt;application/json,application/xml,text/xml&lt;/consumes&gt;&lt;consumes_customized&gt;false&lt;/consumes_customized&gt;&lt;default_operation_uri/&gt;&lt;enforce_acl/&gt;&lt;http_method&gt;POST&lt;/http_method&gt;&lt;name&gt;Map IMR Service Field&lt;/name&gt;&lt;operation_script&gt;&lt;![CDATA[(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
+
+    try {
+        var body = request.body.data;
+
+        if (!body || !body.name || !body.label || !body.sys_id) {
+            response.setStatus(400);
+            return {
+                status: "error",
+                message: "Missing required fields: name, label, sys_id"
+            };
+        }
+
+        // Validating entity details
+        var entityGR = new GlideRecord('sys_db_object');
+        entityGR.addQuery("sys_id", body.sys_id);
+        entityGR.addQuery("name", body.name);
+        entityGR.addQuery("label", body.label);
+        entityGR.query();
+        if (!entityGR.next()) {
+            response.setStatus(404);
+            return {
+                status: "error",
+                message: "Entity not found with sys_id: " + body.sys_id + " name: " + body.name + " label: " + body.label
+            };
+        }
+
+        // Use global Script Include to update sys_dictionary
+        var helper = new global.IMRDictionaryHelper();
+        var updateResult = helper.updateDefaultValue('incident', 'u_imr_service_mapping', body.sys_id);
+        gs.info("sys_dictionary update result: " + updateResult);
+
+        if (!updateResult) {
+            response.setStatus(400);
+            return {
+                status: "error",
+                message: "Failed to update default value. Check ACL permissions."
+            };
+        }
+
+        response.setStatus(200);
+        return {
+            status: "success",
+            message: "Incident form updated"
+        };
+
+    } catch (err) {
+        gs.warn("Mapping IMR service field to Incident form failed: " + err.toString());
+        response.setStatus(400);
+        return {
+            status: "error",
+            message: err.toString()
+        };
+    }
+
+})(request, response);]]&gt;&lt;/operation_script&gt;&lt;operation_uri&gt;/api/x_xurrent_imr/xurrent_imr_connections/map_imr_service_field&lt;/operation_uri&gt;&lt;produces&gt;application/json,application/xml,text/xml&lt;/produces&gt;&lt;produces_customized&gt;false&lt;/produces_customized&gt;&lt;relative_path&gt;/map_imr_service_field&lt;/relative_path&gt;&lt;request_example/&gt;&lt;requires_acl_authorization&gt;true&lt;/requires_acl_authorization&gt;&lt;requires_authentication&gt;true&lt;/requires_authentication&gt;&lt;requires_snc_internal_role&gt;true&lt;/requires_snc_internal_role&gt;&lt;short_description/&gt;&lt;sys_class_name&gt;sys_ws_operation&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2026-04-07 09:00:47&lt;/sys_created_on&gt;&lt;sys_id&gt;97f054aa93c40710dd07fd10ed03d65f&lt;/sys_id&gt;&lt;sys_mod_count&gt;14&lt;/sys_mod_count&gt;&lt;sys_name&gt;Map IMR Service Field&lt;/sys_name&gt;&lt;sys_package display_value="Xurrent IMR" source="x_xurrent_imr"&gt;99b1a1ff83762210b474b755eeaad3d0&lt;/sys_package&gt;&lt;sys_policy&gt;protected&lt;/sys_policy&gt;&lt;sys_scope display_value="Xurrent IMR"&gt;99b1a1ff83762210b474b755eeaad3d0&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ws_operation_97f054aa93c40710dd07fd10ed03d65f&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2026-04-07 12:17:27&lt;/sys_updated_on&gt;&lt;web_service_definition display_value="Xurrent IMR Connections"&gt;4e0565f383b62210b474b755eeaad3df&lt;/web_service_definition&gt;&lt;web_service_version/&gt;&lt;/sys_ws_operation&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-188139706</payload_hash>
+        <record_name>Map IMR Service Field</record_name>
+        <reverted_from/>
+        <source>fd65330e93448310dd07fd10ed03d677</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-04-07 12:17:27</sys_created_on>
+        <sys_id>2a20c16a934c0710dd07fd10ed03d6ca</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>19d67e0528e0000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-04-07 12:17:27</sys_updated_on>
+        <type>Scripted REST Resource</type>
+        <update_guid>6620c16a454c07104d0b77d0e3e3dbc9</update_guid>
+        <update_guid_history>6620c16a454c07104d0b77d0e3e3dbc9:-188139706,0f10cd2a8e4c07100379625492366557:1947085224,929db026654c07107b70e2450c105443:1626823735,45ac34a2294c071012a8dbdbacec5984:-991928884,159c3c626e4c0710c324f276dac95cfb:1715982956,866cb4eef40c07105078ebba47e5758d:-1947089599,e2ba2c6eb7880710607751c554469807:-238487670,9c296caa3d8807103aee972fabcf80d9:-104235350,28c76ce604880710feb1adb75331a46c:1891665133,3af5642635880710adaf3a6ac5f79940:-556207330,faa5a8e2e68807100356d045033c4173:938569127,cca568e233880710a615b33aeecc9697:-666439992,0ae4a0a2d58807104ff045ddc75e2e71:-1601528021,824790e6290807104a7ed62a1cd84c82:-1906472679,922398ae66c4071062fa71265937808c:1619736520</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-04-13 17:58:39</sys_created_on>
+        <sys_db_object display_value="" name="sys_ws_operation">sys_ws_operation</sys_db_object>
+        <sys_id>5df8a9c9c4bd42278208cae2f78cb169</sys_id>
+        <sys_metadata>97f054aa93c40710dd07fd10ed03d65f</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Map IMR Service Field</sys_name>
+        <sys_package display_value="Xurrent IMR" source="x_xurrent_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_parent/>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
+        <sys_scope_delete display_value="">1c5bba5cc68d463898413a03e03750c1</sys_scope_delete>
+        <sys_update_name>sys_ws_operation_97f054aa93c40710dd07fd10ed03d65f</sys_update_name>
+        <sys_update_version display_value="sys_ws_operation_97f054aa93c40710dd07fd10ed03d65f">2a20c16a934c0710dd07fd10ed03d6ca</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-04-13 17:58:39</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

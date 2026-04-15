@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>true</action_delete>
+        <action_insert>true</action_insert>
+        <action_query>false</action_query>
+        <action_update>true</action_update>
+        <active>true</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>sys_journal_field</collection>
+        <condition/>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition/>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>ServiceNow Work Note Alert Business Rule</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[function customHash(payload, secret) {
+    let hash = 0;
+    const maxLen = Math.max(payload.length, secret.length);
+
+    for (let i = 0; i < maxLen; i++) {
+        const p = i < payload.length ? payload.charCodeAt(i) : 0;
+        const s = i < secret.length ? secret.charCodeAt(i) : 0;
+        hash = ((hash << 5) - hash) + (p ^ s); // Simple hash combiner
+        hash |= 0; // Convert to 32-bit integer
+    }
+    // Convert to unsigned and to hex string for consistency
+    return (hash >>> 0).toString(16);
+}
+
+(function executeRule(current, previous) {
+    try {
+		// Skip outbound integration to Xurrent IMR
+		if (current.operation() == 'insert' && current.getValue('value') && current.getValue('value').indexOf('[IMR]') == 0) {
+			gs.info("Not triggering the work note business rule because work note starts with [IMR]");
+			return;
+		}
+
+		// Initialize the payload object
+        var payload = {};
+
+        // Use getElements() to retrieve all fields
+        var elements = current.getElements();
+        for (var i = 0; i < elements.length; i++) {
+            var fieldName = elements[i].getName();
+            payload[fieldName] = current.getValue(fieldName);
+        }
+
+        // Add the action field to the payload
+        payload.action = current.operation();
+
+		// Add related incident sys_id
+        payload.incident_sys_id = current.getValue('element_id');
+		
+        // Convert the payload object to a JSON string
+        var payloadStr = JSON.stringify(payload);
+
+		var scopeGR = new GlideRecord('sys_scope');
+		scopeGR.addQuery('scope', gs.getCurrentScopeName()); // e.g., 'x_12345_xurrent_imr'
+		scopeGR.query();
+		if (!scopeGR.next()) {
+			gs.info("Not triggering the busuness rule because application scope not found");
+			return;
+		} else {
+			appSysId = scopeGR.getUniqueValue();
+		}
+
+		var signature = customHash(payloadStr, appSysId);
+		
+        var r = new sn_ws.RESTMessageV2('ServiceNow Event', 'ServiceNow Work Note Alert');
+		r.setStringParameterNoEscape('service_now_instance_identifier', gs.getProperty('instance_name'));
+        r.setRequestHeader("Content-Type", "application/json");
+		r.setRequestHeader("X-Xurrent-IMR-Signature", signature);
+        r.setRequestBody(payloadStr);
+        r.executeAsync(); // Asynchronous call
+
+        gs.info("ServiceNow Work Note Alert Business Rule Async REST call sent");
+
+    } catch (err) {
+        gs.error("ServiceNow Work Note Alert Business Rule Async REST call failed: " + err.message);
+    }
+})(current, previous);]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-07-24 12:35:24</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>5473297383b62210b474b755eeaad3b6</sys_id>
+        <sys_mod_count>9</sys_mod_count>
+        <sys_name>ServiceNow Work Note Alert Business Rule</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Xurrent IMR" source="x_xurrent_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
+        <sys_update_name>sys_script_5473297383b62210b474b755eeaad3b6</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-04-14 08:37:08</sys_updated_on>
+        <template/>
+        <when>after</when>
+    </sys_script>
+    <sys_translated_text action="delete_multiple" query="documentkey=5473297383b62210b474b755eeaad3b6"/>
+</record_update>

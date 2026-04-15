@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_operation">
+    <sys_ws_operation action="DELETE">
+        <active>true</active>
+        <consumes>application/json,application/xml,text/xml</consumes>
+        <consumes_customized>false</consumes_customized>
+        <default_operation_uri/>
+        <enforce_acl/>
+        <http_method>POST</http_method>
+        <name>Validate Entity Details</name>
+        <operation_script><![CDATA[(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
+    var result = {
+        status: "success"
+    };
+
+    try {
+        var body = request.body.data;
+
+        if (!body || !body.label || !body.name || !body.sys_id) {
+            response.setStatus(400);
+            return { status: "error", message: "Missing required fields" };
+        }
+
+        var tableSysId = body.sys_id;
+		var tableName = body.name;
+		var tableLabel = body.label;
+
+        // STEP 1: Get the Table Name from the sys_id provided
+        var tableDefGR = new GlideRecord('sys_db_object');
+		tableDefGR.addQuery("sys_id", tableSysId);
+		tableDefGR.addQuery("name", tableName);
+		tableDefGR.addQuery("label", tableLabel);
+		tableDefGR.query();
+        if (tableDefGR.next()) {
+			response.setStatus(200);
+			return result;
+        } else {
+            response.setStatus(404);
+            return { status: "error", message: "Table definition not found for the provided sys_id." };
+        }
+
+    } catch (e) {
+        response.setStatus(400);
+        return { status: "error", message: e.message };
+    }
+})(request, response);]]></operation_script>
+        <operation_uri>/api/x_xurrent_imr/xurrent_imr_connections/validate_entity_details</operation_uri>
+        <produces>application/json,application/xml,text/xml</produces>
+        <produces_customized>false</produces_customized>
+        <relative_path>/validate_entity_details</relative_path>
+        <request_example/>
+        <requires_acl_authorization>true</requires_acl_authorization>
+        <requires_authentication>true</requires_authentication>
+        <requires_snc_internal_role>true</requires_snc_internal_role>
+        <short_description/>
+        <sys_class_name>sys_ws_operation</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-03-26 08:39:41</sys_created_on>
+        <sys_id>d269daee933f3610dd07fd10ed03d6a3</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>Validate Entity Details</sys_name>
+        <sys_package display_value="Xurrent IMR" source="x_xurrent_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
+        <sys_update_name>sys_ws_operation_d269daee933f3610dd07fd10ed03d6a3</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-03-26 10:07:33</sys_updated_on>
+        <web_service_definition display_value="Xurrent IMR Connections">4e0565f383b62210b474b755eeaad3df</web_service_definition>
+        <web_service_version/>
+    </sys_ws_operation>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</application>
+        <file_path/>
+        <instance_id>115355f13b93b290986d048aa4e45a6d</instance_id>
+        <instance_name>dev363662</instance_name>
+        <name>sys_ws_operation_d269daee933f3610dd07fd10ed03d6a3</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_ws_operation"&gt;&lt;sys_ws_operation action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;consumes&gt;application/json,application/xml,text/xml&lt;/consumes&gt;&lt;consumes_customized&gt;false&lt;/consumes_customized&gt;&lt;default_operation_uri/&gt;&lt;enforce_acl/&gt;&lt;http_method&gt;POST&lt;/http_method&gt;&lt;name&gt;Validate Entity Details&lt;/name&gt;&lt;operation_script&gt;&lt;![CDATA[(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
+    var result = {
+        status: "success"
+    };
+
+    try {
+        var body = request.body.data;
+
+        if (!body || !body.label || !body.name || !body.sys_id) {
+            response.setStatus(400);
+            return { status: "error", message: "Missing required fields" };
+        }
+
+        var tableSysId = body.sys_id;
+		var tableName = body.name;
+		var tableLabel = body.label;
+
+        // STEP 1: Get the Table Name from the sys_id provided
+        var tableDefGR = new GlideRecord('sys_db_object');
+		tableDefGR.addQuery("sys_id", tableSysId);
+		tableDefGR.addQuery("name", tableName);
+		tableDefGR.addQuery("label", tableLabel);
+		tableDefGR.query();
+        if (tableDefGR.next()) {
+			response.setStatus(200);
+			return result;
+        } else {
+            response.setStatus(404);
+            return { status: "error", message: "Table definition not found for the provided sys_id." };
+        }
+
+    } catch (e) {
+        response.setStatus(400);
+        return { status: "error", message: e.message };
+    }
+})(request, response);]]&gt;&lt;/operation_script&gt;&lt;operation_uri&gt;/api/x_xurrent_imr/xurrent_imr_connections/validate_entity_details&lt;/operation_uri&gt;&lt;produces&gt;application/json,application/xml,text/xml&lt;/produces&gt;&lt;produces_customized&gt;false&lt;/produces_customized&gt;&lt;relative_path&gt;/validate_entity_details&lt;/relative_path&gt;&lt;request_example/&gt;&lt;requires_acl_authorization&gt;true&lt;/requires_acl_authorization&gt;&lt;requires_authentication&gt;true&lt;/requires_authentication&gt;&lt;requires_snc_internal_role&gt;true&lt;/requires_snc_internal_role&gt;&lt;short_description/&gt;&lt;sys_class_name&gt;sys_ws_operation&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2026-03-26 08:39:41&lt;/sys_created_on&gt;&lt;sys_id&gt;d269daee933f3610dd07fd10ed03d6a3&lt;/sys_id&gt;&lt;sys_mod_count&gt;1&lt;/sys_mod_count&gt;&lt;sys_name&gt;Validate Entity Details&lt;/sys_name&gt;&lt;sys_package display_value="Xurrent IMR" source="x_xurrent_imr"&gt;99b1a1ff83762210b474b755eeaad3d0&lt;/sys_package&gt;&lt;sys_policy&gt;protected&lt;/sys_policy&gt;&lt;sys_scope display_value="Xurrent IMR"&gt;99b1a1ff83762210b474b755eeaad3d0&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ws_operation_d269daee933f3610dd07fd10ed03d6a3&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2026-03-26 10:07:33&lt;/sys_updated_on&gt;&lt;web_service_definition display_value="Xurrent IMR Connections"&gt;4e0565f383b62210b474b755eeaad3df&lt;/web_service_definition&gt;&lt;web_service_version/&gt;&lt;/sys_ws_operation&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>241438394</payload_hash>
+        <record_name>Validate Entity Details</record_name>
+        <reverted_from/>
+        <source>d2492a129333f210dd07fd10ed03d688</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-03-26 10:07:33</sys_created_on>
+        <sys_id>be5fe6ea93ff3610dd07fd10ed03d6e1</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>19d299d13530000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-03-26 10:07:33</sys_updated_on>
+        <type>Scripted REST Resource</type>
+        <update_guid>ba5fe6eae0ff36100ae1d3acebef94e0</update_guid>
+        <update_guid_history>ba5fe6eae0ff36100ae1d3acebef94e0:241438394,f73b1ae2a97f36104c982aff95b555c8:-796627960</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-03-27 16:03:20</sys_created_on>
+        <sys_db_object display_value="" name="sys_ws_operation">sys_ws_operation</sys_db_object>
+        <sys_id>d7ed93e485e44a32baa3586cd7aae144</sys_id>
+        <sys_metadata>d269daee933f3610dd07fd10ed03d6a3</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Validate Entity Details</sys_name>
+        <sys_package display_value="Xurrent IMR" source="x_xurrent_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_parent/>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
+        <sys_scope_delete display_value="">1c5bba5cc68d463898413a03e03750c1</sys_scope_delete>
+        <sys_update_name>sys_ws_operation_d269daee933f3610dd07fd10ed03d6a3</sys_update_name>
+        <sys_update_version display_value="sys_ws_operation_d269daee933f3610dd07fd10ed03d6a3">be5fe6ea93ff3610dd07fd10ed03d6e1</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-03-27 16:03:20</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

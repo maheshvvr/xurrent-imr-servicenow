@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_scope_privilege">
+    <sys_scope_privilege action="DELETE">
+        <operation>execute</operation>
+        <source_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</source_scope>
+        <status>allowed</status>
+        <sys_class_name>sys_scope_privilege</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-04-07 12:17:58</sys_created_on>
+        <sys_id>8a40096a934c0710dd07fd10ed03d64b</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>IMRDictionaryHelper</sys_name>
+        <sys_package display_value="Xurrent IMR" source="x_xurrent_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
+        <sys_update_name>sys_scope_privilege_8a40096a934c0710dd07fd10ed03d64b</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-04-07 12:17:58</sys_updated_on>
+        <target_name>IMRDictionaryHelper</target_name>
+        <target_scope display_value="Global">global</target_scope>
+        <target_type>sys_script_include</target_type>
+    </sys_scope_privilege>
+<sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</application>
+        <file_path/>
+        <instance_id>115355f13b93b290986d048aa4e45a6d</instance_id>
+        <instance_name>dev363662</instance_name>
+        <name>sys_scope_privilege_8a40096a934c0710dd07fd10ed03d64b</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_scope_privilege">
+    <sys_scope_privilege action="INSERT_OR_UPDATE">
+        <operation>execute</operation>
+        <source_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</source_scope>
+        <status>allowed</status>
+        <sys_class_name>sys_scope_privilege</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-04-07 12:17:58</sys_created_on>
+        <sys_id>8a40096a934c0710dd07fd10ed03d64b</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>IMRDictionaryHelper</sys_name>
+        <sys_package display_value="Xurrent IMR" source="x_xurrent_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
+        <sys_update_name>sys_scope_privilege_8a40096a934c0710dd07fd10ed03d64b</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-04-07 12:17:58</sys_updated_on>
+        <target_name>IMRDictionaryHelper</target_name>
+        <target_scope display_value="Global">global</target_scope>
+        <target_type>sys_script_include</target_type>
+    </sys_scope_privilege>
+</record_update>]]></payload>
+        <payload_hash>2126247718</payload_hash>
+        <record_name>IMRDictionaryHelper</record_name>
+        <reverted_from/>
+        <source>a8af58b8939c4750dd07fd10ed03d6c6</source>
+        <source_table>sys_upgrade_history</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-04-14 09:41:41</sys_created_on>
+        <sys_id>45af98b8939c4750dd07fd10ed03d6f4</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>19d8b5e3b070000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-04-14 09:41:41</sys_updated_on>
+        <type>Cross scope privilege</type>
+        <update_guid>8daf98b8359c4750eb929e0f1d0670f3</update_guid>
+        <update_guid_history>8daf98b8359c4750eb929e0f1d0670f3:0,7306d0b4155c4750a3b080f6304c404f:1317034193,de40096a3f4c07107fabeb0626ffcc50:-649826974</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-04-14 10:43:27</sys_created_on>
+        <sys_db_object display_value="" name="sys_scope_privilege">sys_scope_privilege</sys_db_object>
+        <sys_id>22043ec254cc48d68e973d27984abf24</sys_id>
+        <sys_metadata>8a40096a934c0710dd07fd10ed03d64b</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>IMRDictionaryHelper</sys_name>
+        <sys_package display_value="Xurrent IMR" source="x_xurrent_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
+        <sys_scope_delete display_value="">1c5bba5cc68d463898413a03e03750c1</sys_scope_delete>
+        <sys_update_name>sys_scope_privilege_8a40096a934c0710dd07fd10ed03d64b</sys_update_name>
+        <sys_update_version display_value="sys_scope_privilege_8a40096a934c0710dd07fd10ed03d64b">45af98b8939c4750dd07fd10ed03d6f4</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-04-14 10:43:27</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

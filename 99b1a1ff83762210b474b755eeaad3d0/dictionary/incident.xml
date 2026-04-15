@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element attributes="email_client=true,hasWorkflow=true,live_feed=true,all_tables.query_hints=true" audit="true" db_object_id="b21fe242187632108bb255f46a373aff" extends="task" label="Incident" max_length="40" name="incident" text_index="true" type="collection">
+        <element choice="3" default="service_now" label="Originated From" max_length="40" name="x_xurrent_imr_originated_from" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Xurrent IMR" value="xurrent_imr"/>
+                <element inactive_on_update="false" label="Service Now" value="service_now"/>
+            </choice>
+        </element>
+        <element display="true" label="Xurrent IMR Incident" max_length="1024" name="x_xurrent_imr_xurrent_imr_incident" type="url"/>
+    </element>
+</database>

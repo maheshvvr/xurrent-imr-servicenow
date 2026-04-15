@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_operation">
+    <sys_ws_operation action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <consumes>application/json,application/xml,text/xml</consumes>
+        <consumes_customized>false</consumes_customized>
+        <default_operation_uri/>
+        <enforce_acl/>
+        <http_method>GET</http_method>
+        <name>Fetch Entity Records</name>
+        <operation_script><![CDATA[(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
+    var result = {
+        status: "success",
+        entity_records: []
+    };
+
+    try {
+        var tableSysId = request.queryParams.entity_type_sys_id
+            ? String(request.queryParams.entity_type_sys_id[0])
+            : null;
+
+        if (!tableSysId) {
+            response.setStatus(400);
+            return { status: "error", message: "Missing required fields: entity_type_sys_id" };
+        }
+
+        // Get the Table Name from the sys_id provided
+        var tableDefGR = new GlideRecord('sys_db_object');
+        if (!tableDefGR.get(tableSysId)) {
+            response.setStatus(404);
+            return { status: "error", message: "Table definition not found for the provided sys_id." };
+        }
+        var actualTableName = tableDefGR.name.toString();
+
+        // Get the display field for this table
+        var tempGR = new GlideRecord(actualTableName);
+        tempGR.initialize();
+        var displayFieldName = tempGR.getDisplayName();
+
+        // Parse labels — queryParams.label is already an array when sent multiple times
+        var labels = [];
+        if (request.queryParams.label) {
+            for (var i = 0; i < request.queryParams.label.length; i++) {
+                var trimmed = String(request.queryParams.label[i]).trim();
+                if (trimmed) labels.push(trimmed);
+            }
+        }
+
+        var limit = 100;
+        var excludeSysIds = [];
+
+        if (labels.length > 0) {
+            // Query 1: All exact matches for any of the labels
+            var exactGR = new GlideRecord(actualTableName);
+            exactGR.addQuery(displayFieldName, 'IN', labels.join(','));
+            exactGR.orderBy(displayFieldName);
+            exactGR.query();
+
+            while (exactGR.next()) {
+                excludeSysIds.push(exactGR.getUniqueValue());
+                result.entity_records.push({
+                    label: exactGR.getDisplayValue(),
+                    sys_id: exactGR.getUniqueValue(),
+                });
+            }
+
+            // Query 2: Fill remaining slots with CONTAINS matches
+            var remaining = limit - result.entity_records.length;
+            if (remaining > 0) {
+                var containsGR = new GlideRecord(actualTableName);
+                var orCondition = containsGR.addQuery(displayFieldName, 'CONTAINS', labels[0]);
+                for (var j = 1; j < labels.length; j++) {
+                    orCondition.addOrCondition(displayFieldName, 'CONTAINS', labels[j]);
+                }
+                if (excludeSysIds.length > 0) {
+                    containsGR.addQuery('sys_id', 'NOT IN', excludeSysIds.join(','));
+                }
+                containsGR.orderBy(displayFieldName);
+                containsGR.setLimit(remaining);
+                containsGR.query();
+
+                while (containsGR.next()) {
+                    result.entity_records.push({
+                        label: containsGR.getDisplayValue(),
+                        sys_id: containsGR.getUniqueValue(),
+                    });
+                }
+            }
+
+        } else {
+            var defaultGR = new GlideRecord(actualTableName);
+            defaultGR.orderBy(displayFieldName);
+            defaultGR.setLimit(limit);
+            defaultGR.query();
+
+            while (defaultGR.next()) {
+                result.entity_records.push({
+                    label: defaultGR.getDisplayValue(),
+                    sys_id: defaultGR.getUniqueValue(),
+                });
+            }
+        }
+
+        response.setStatus(200);
+        return result;
+
+    } catch (e) {
+        response.setStatus(400);
+        return { status: "error", message: e.toString() };
+    }
+})(request, response);]]></operation_script>
+        <operation_uri>/api/x_xurrent_imr/xurrent_imr_connections/fetch_entity_records</operation_uri>
+        <produces>application/json,application/xml,text/xml</produces>
+        <produces_customized>false</produces_customized>
+        <relative_path>/fetch_entity_records</relative_path>
+        <request_example/>
+        <requires_acl_authorization>true</requires_acl_authorization>
+        <requires_authentication>true</requires_authentication>
+        <requires_snc_internal_role>true</requires_snc_internal_role>
+        <short_description/>
+        <sys_class_name>sys_ws_operation</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-03-25 17:39:14</sys_created_on>
+        <sys_id>c240039e93b3f210dd07fd10ed03d667</sys_id>
+        <sys_mod_count>17</sys_mod_count>
+        <sys_name>Fetch Entity Records</sys_name>
+        <sys_package display_value="Xurrent IMR" source="x_xurrent_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
+        <sys_update_name>sys_ws_operation_c240039e93b3f210dd07fd10ed03d667</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-04-01 08:35:39</sys_updated_on>
+        <web_service_definition display_value="Xurrent IMR Connections">4e0565f383b62210b474b755eeaad3df</web_service_definition>
+        <web_service_version/>
+    </sys_ws_operation>
+</record_update>

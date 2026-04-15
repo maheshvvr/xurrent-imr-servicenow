@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_operation">
+    <sys_ws_operation action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <consumes>application/json,application/xml,text/xml</consumes>
+        <consumes_customized>false</consumes_customized>
+        <default_operation_uri/>
+        <enforce_acl>cf9d01d3e73003009d6247e603f6a990</enforce_acl>
+        <http_method>POST</http_method>
+        <name>Update Xurrent IMR Incident in SNOW Inci</name>
+        <operation_script><![CDATA[(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
+    var body = request.body.data;
+	var sysID = body.sys_id;
+    var xurrentIMRIncident = body.xurrent_imr_incident;
+
+    if (!body || !sysID || !xurrentIMRIncident) {
+        return errorResponse("Invalid Payload");
+    }
+
+    // === Incident Validation ===
+    var incidentGR = new GlideRecord('incident');
+    incidentGR.addQuery('sys_id', sysID);
+    incidentGR.query();
+    if (!incidentGR.next()) {
+        return errorResponse("Invalid incident sys id.");
+    }
+
+	// === Mapping to Custom Fields ===
+    try {
+        incidentGR.x_xurrent_imr_xurrent_imr_incident = xurrentIMRIncident;
+        incidentGR.update();
+		
+    } catch (e) {
+        return errorResponse("Mapping failed: " + e.message);
+    }
+
+    // ✅ All Passed
+    response.setStatus(200);
+    response.setBody({
+        success: true,
+        message: "Mapping successful."
+    });
+
+    function errorResponse(msg) {
+        response.setStatus(400);
+        response.setBody({ success: false, error: msg });
+        return;
+    }
+
+})(request, response);
+]]></operation_script>
+        <operation_uri>/api/x_xurrent_imr/xurrent_imr_alerts/update_xurrent_imr_incident_in_snow_incident</operation_uri>
+        <produces>application/json,application/xml,text/xml</produces>
+        <produces_customized>false</produces_customized>
+        <relative_path>/update_xurrent_imr_incident_in_snow_incident</relative_path>
+        <request_example/>
+        <requires_acl_authorization>true</requires_acl_authorization>
+        <requires_authentication>true</requires_authentication>
+        <requires_snc_internal_role>true</requires_snc_internal_role>
+        <short_description/>
+        <sys_class_name>sys_ws_operation</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-07-24 12:40:37</sys_created_on>
+        <sys_id>98c4ed7383b62210b474b755eeaad351</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>Update Xurrent IMR Incident in SNOW Inci</sys_name>
+        <sys_package display_value="Xurrent IMR" source="x_xurrent_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
+        <sys_update_name>sys_ws_operation_98c4ed7383b62210b474b755eeaad351</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-04-14 09:33:31</sys_updated_on>
+        <web_service_definition display_value="Xurrent IMR Alerts">ecf325b383b62210b474b755eeaad362</web_service_definition>
+        <web_service_version/>
+    </sys_ws_operation>
+</record_update>

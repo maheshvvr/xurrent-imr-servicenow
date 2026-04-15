@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_operation">
+    <sys_ws_operation action="DELETE">
+        <active>true</active>
+        <consumes>application/json,application/xml,text/xml</consumes>
+        <consumes_customized>false</consumes_customized>
+        <default_operation_uri/>
+        <enforce_acl>cf9d01d3e73003009d6247e603f6a990</enforce_acl>
+        <http_method>GET</http_method>
+        <name>Fetch Integration Config Options</name>
+        <operation_script><![CDATA[(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
+    var result = {
+        status: "success",
+        incident_statuses: [],
+		incident_urgencies: [],
+		incident_mandatory_fields: []
+    };
+
+    try {
+        // Fetch Incident States
+        var stateGR = new GlideRecord('sys_choice');
+        stateGR.addQuery('name', 'incident');
+        stateGR.addQuery('element', 'state');
+		stateGR.query();
+        while (stateGR.next()) {
+            result.incident_statuses.push({
+                label: stateGR.label.toString(),
+                value: stateGR.value.toString(),
+                sys_id: stateGR.sys_id.toString()
+            });
+        }
+
+		// Fetch Incident Urgency
+        var urgencyGR = new GlideRecord('sys_choice');
+        urgencyGR.addQuery('name', 'task');
+        urgencyGR.addQuery('element', 'urgency');
+		urgencyGR.query();
+        while (urgencyGR.next()) {
+            result.incident_urgencies.push({
+                label: urgencyGR.label.toString(),
+                value: urgencyGR.value.toString(),
+                sys_id: urgencyGR.sys_id.toString()
+            });
+        }
+
+		// Fetch All Incident Fields
+        var addedFields = {};
+
+		var tables = ['task', 'incident']; // 'task' first so child fields can override if needed
+		for (var i = 0; i < tables.length; i++) {
+			var dictGR = new GlideRecord('sys_dictionary');
+			dictGR.addQuery('name', tables[i]);
+			dictGR.addQuery('internal_type', '!=', 'collection'); // Skip form sections
+			dictGR.query();
+
+			while (dictGR.next()) {
+				var fieldName = dictGR.element.toString();
+				if (!addedFields[fieldName]) {
+					result.incident_mandatory_fields.push({
+						label: dictGR.getDisplayValue('column_label'),
+						name: fieldName,
+					});
+					addedFields[fieldName] = true;
+				}
+			}
+		}
+
+
+        response.setStatus(200);
+        return result;
+
+    } catch (e) {
+        response.setStatus(400); // Bad Request
+        return {
+            status: "error",
+            message: e.message || "Unexpected error occurred while processing the request."
+        };
+    }
+
+})(request, response);
+]]></operation_script>
+        <operation_uri>/api/x_xurrent_imr/xurrent_imr_integrations/fetch_integration_config_options</operation_uri>
+        <produces>application/json,application/xml,text/xml</produces>
+        <produces_customized>false</produces_customized>
+        <relative_path>/fetch_integration_config_options</relative_path>
+        <request_example/>
+        <requires_acl_authorization>true</requires_acl_authorization>
+        <requires_authentication>true</requires_authentication>
+        <requires_snc_internal_role>true</requires_snc_internal_role>
+        <short_description/>
+        <sys_class_name>sys_ws_operation</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-07-24 12:47:43</sys_created_on>
+        <sys_id>8866a57783b62210b474b755eeaad3f7</sys_id>
+        <sys_mod_count>6</sys_mod_count>
+        <sys_name>Fetch Integration Config Options</sys_name>
+        <sys_package display_value="Xurrent IMR" source="x_xurrent_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
+        <sys_update_name>sys_ws_operation_8866a57783b62210b474b755eeaad3f7</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-03-29 18:31:03</sys_updated_on>
+        <web_service_definition display_value="Xurrent IMR Integrations">1046e93783b62210b474b755eeaad310</web_service_definition>
+        <web_service_version/>
+    </sys_ws_operation>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</application>
+        <file_path/>
+        <instance_id>115355f13b93b290986d048aa4e45a6d</instance_id>
+        <instance_name>dev363662</instance_name>
+        <name>sys_ws_operation_8866a57783b62210b474b755eeaad3f7</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_ws_operation"&gt;&lt;sys_ws_operation action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;consumes&gt;application/json,application/xml,text/xml&lt;/consumes&gt;&lt;consumes_customized&gt;false&lt;/consumes_customized&gt;&lt;default_operation_uri/&gt;&lt;enforce_acl&gt;cf9d01d3e73003009d6247e603f6a990&lt;/enforce_acl&gt;&lt;http_method&gt;GET&lt;/http_method&gt;&lt;name&gt;Fetch Integration Config Options&lt;/name&gt;&lt;operation_script&gt;&lt;![CDATA[(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
+    var result = {
+        status: "success",
+        incident_statuses: [],
+		incident_urgencies: [],
+		incident_mandatory_fields: []
+    };
+
+    try {
+        // Fetch Incident States
+        var stateGR = new GlideRecord('sys_choice');
+        stateGR.addQuery('name', 'incident');
+        stateGR.addQuery('element', 'state');
+		stateGR.query();
+        while (stateGR.next()) {
+            result.incident_statuses.push({
+                label: stateGR.label.toString(),
+                value: stateGR.value.toString(),
+                sys_id: stateGR.sys_id.toString()
+            });
+        }
+
+		// Fetch Incident Urgency
+        var urgencyGR = new GlideRecord('sys_choice');
+        urgencyGR.addQuery('name', 'task');
+        urgencyGR.addQuery('element', 'urgency');
+		urgencyGR.query();
+        while (urgencyGR.next()) {
+            result.incident_urgencies.push({
+                label: urgencyGR.label.toString(),
+                value: urgencyGR.value.toString(),
+                sys_id: urgencyGR.sys_id.toString()
+            });
+        }
+
+		// Fetch All Incident Fields
+        var addedFields = {};
+
+		var tables = ['task', 'incident']; // 'task' first so child fields can override if needed
+		for (var i = 0; i &lt; tables.length; i++) {
+			var dictGR = new GlideRecord('sys_dictionary');
+			dictGR.addQuery('name', tables[i]);
+			dictGR.addQuery('internal_type', '!=', 'collection'); // Skip form sections
+			dictGR.query();
+
+			while (dictGR.next()) {
+				var fieldName = dictGR.element.toString();
+				if (!addedFields[fieldName]) {
+					result.incident_mandatory_fields.push({
+						label: dictGR.getDisplayValue('column_label'),
+						name: fieldName,
+					});
+					addedFields[fieldName] = true;
+				}
+			}
+		}
+
+
+        response.setStatus(200);
+        return result;
+
+    } catch (e) {
+        response.setStatus(400); // Bad Request
+        return {
+            status: "error",
+            message: e.message || "Unexpected error occurred while processing the request."
+        };
+    }
+
+})(request, response);
+]]&gt;&lt;/operation_script&gt;&lt;operation_uri&gt;/api/x_xurrent_imr/xurrent_imr_integrations/fetch_integration_config_options&lt;/operation_uri&gt;&lt;produces&gt;application/json,application/xml,text/xml&lt;/produces&gt;&lt;produces_customized&gt;false&lt;/produces_customized&gt;&lt;relative_path&gt;/fetch_integration_config_options&lt;/relative_path&gt;&lt;request_example/&gt;&lt;requires_acl_authorization&gt;true&lt;/requires_acl_authorization&gt;&lt;requires_authentication&gt;true&lt;/requires_authentication&gt;&lt;requires_snc_internal_role&gt;true&lt;/requires_snc_internal_role&gt;&lt;short_description/&gt;&lt;sys_class_name&gt;sys_ws_operation&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2025-07-24 12:47:43&lt;/sys_created_on&gt;&lt;sys_id&gt;8866a57783b62210b474b755eeaad3f7&lt;/sys_id&gt;&lt;sys_mod_count&gt;6&lt;/sys_mod_count&gt;&lt;sys_name&gt;Fetch Integration Config Options&lt;/sys_name&gt;&lt;sys_package display_value="Xurrent IMR" source="x_xurrent_imr"&gt;99b1a1ff83762210b474b755eeaad3d0&lt;/sys_package&gt;&lt;sys_policy&gt;protected&lt;/sys_policy&gt;&lt;sys_scope display_value="Xurrent IMR"&gt;99b1a1ff83762210b474b755eeaad3d0&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ws_operation_8866a57783b62210b474b755eeaad3f7&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2026-03-29 18:31:03&lt;/sys_updated_on&gt;&lt;web_service_definition display_value="Xurrent IMR Integrations"&gt;1046e93783b62210b474b755eeaad310&lt;/web_service_definition&gt;&lt;web_service_version/&gt;&lt;/sys_ws_operation&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>813147498</payload_hash>
+        <record_name>Fetch Integration Config Options</record_name>
+        <reverted_from/>
+        <source>d2492a129333f210dd07fd10ed03d688</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-03-29 18:31:03</sys_created_on>
+        <sys_id>375f7bef93f37e10dd07fd10ed03d6de</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>19d3add220c0000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-03-29 18:31:03</sys_updated_on>
+        <type>Scripted REST Resource</type>
+        <update_guid>735f7beff6f37e10a1f9d2b58accd4dd</update_guid>
+        <update_guid_history>735f7beff6f37e10a1f9d2b58accd4dd:813147498,2dedbf6fcff37e1033eac1217c4fd29a:-1262732546,28b26fe703337e10985dad2ff2103d7c:-1843978046,15c12fe7fa337e100bf2ef6899c8593f:-365816128,d9ec8583a1733a1080c0432345231f71:281254566,4fac018300733a103f006c75d28b4356:-463278181,98537616ed73f210adc930edf76954de:0,f549e612f333f210971cac69964c69a4:0,029762daaaffb210dc4bba8685d60626:1859175227,58946e16fcffb21065190ec81c385cdd:0,15b22e9a9fbfb21095a4626da33aba10:-1163083346,f506a48ea4333210e76d50728e2ecb3c:0,ac0b4fc68b677210775df599f8c04d85:-26062649,83836a0efe23721059aeb98e7ad2cda9:-267209913</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-04-01 09:42:59</sys_created_on>
+        <sys_db_object display_value="" name="sys_ws_operation">sys_ws_operation</sys_db_object>
+        <sys_id>14cc2548be26442684280d67ccb35599</sys_id>
+        <sys_metadata>8866a57783b62210b474b755eeaad3f7</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Fetch Integration Config Options</sys_name>
+        <sys_package display_value="Xurrent IMR" source="x_xurrent_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_parent/>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
+        <sys_scope_delete display_value="">1c5bba5cc68d463898413a03e03750c1</sys_scope_delete>
+        <sys_update_name>sys_ws_operation_8866a57783b62210b474b755eeaad3f7</sys_update_name>
+        <sys_update_version display_value="sys_ws_operation_8866a57783b62210b474b755eeaad3f7">375f7bef93f37e10dd07fd10ed03d6de</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-04-01 09:42:59</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

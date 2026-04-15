@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_rest_message">
+    <sys_rest_message action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <authentication_type>no_authentication</authentication_type>
+        <basic_auth_password/>
+        <basic_auth_profile/>
+        <basic_auth_user/>
+        <description>This is ServiceNow event outgoing integration for Xurrent IMR</description>
+        <name>ServiceNow Event</name>
+        <oauth2_profile/>
+        <protocol_name/>
+        <rest_endpoint>https://e99e-49-205-206-151.ngrok-free.app/api/appsync/service-now-v2/${service_now_instance_identifier}/</rest_endpoint>
+        <sys_class_name>sys_rest_message</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-07-24 12:30:07</sys_created_on>
+        <sys_id>fc52613383b62210b474b755eeaad327</sys_id>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_name>ServiceNow Event</sys_name>
+        <sys_package display_value="Xurrent IMR" source="x_xurrent_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
+        <sys_update_name>sys_rest_message_fc52613383b62210b474b755eeaad327</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-04-13 12:14:03</sys_updated_on>
+        <use_basic_auth>false</use_basic_auth>
+        <use_mutual_auth>false</use_mutual_auth>
+    </sys_rest_message>
+</record_update>
