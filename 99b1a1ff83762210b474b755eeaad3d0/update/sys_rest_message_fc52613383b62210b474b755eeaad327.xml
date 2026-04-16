@@ -9,7 +9,7 @@
         <name>ServiceNow Event</name>
         <oauth2_profile/>
         <protocol_name/>
-        <rest_endpoint>https://e99e-49-205-206-151.ngrok-free.app/api/appsync/service-now-v2/${service_now_instance_identifier}/</rest_endpoint>
+        <rest_endpoint>https://www.zenduty.com/api/appsync/service-now-v2/${service_now_instance_identifier}/</rest_endpoint>
         <sys_class_name>sys_rest_message</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2025-07-24 12:30:07</sys_created_on>

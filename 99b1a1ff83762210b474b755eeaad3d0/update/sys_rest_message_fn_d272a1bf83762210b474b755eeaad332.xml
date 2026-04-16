@@ -11,7 +11,7 @@
         <oauth2_profile/>
         <protocol_name/>
         <qualified_name>ServiceNow Event [ ServiceNow Incident Alert ]</qualified_name>
-        <rest_endpoint>https://e99e-49-205-206-151.ngrok-free.app/api/appsync/service-now-v2/${service_now_instance_identifier}/incident-event/</rest_endpoint>
+        <rest_endpoint>https://www.zenduty.com/api/appsync/service-now-v2/${service_now_instance_identifier}/incident-event/</rest_endpoint>
         <rest_message display_value="ServiceNow Event">fc52613383b62210b474b755eeaad327</rest_message>
         <sys_class_name>sys_rest_message_fn</sys_class_name>
         <sys_created_by>admin</sys_created_by>
