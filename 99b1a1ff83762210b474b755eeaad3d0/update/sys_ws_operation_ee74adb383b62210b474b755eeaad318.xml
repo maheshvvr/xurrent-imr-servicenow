@@ -107,7 +107,7 @@
     }
 })(request, response);
 ]]></operation_script>
-        <operation_uri>/api/x_xurre_imr/xurrent_alerts/update_incident_status</operation_uri>
+        <operation_uri>/api/x_xurre_imr/x_xurre_imr_alerts/update_incident_status</operation_uri>
         <produces>application/json,application/xml,text/xml</produces>
         <produces_customized>false</produces_customized>
         <relative_path>/update_incident_status</relative_path>
@@ -128,7 +128,7 @@
         <sys_update_name>sys_ws_operation_ee74adb383b62210b474b755eeaad318</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
         <sys_updated_on>2025-07-24 12:39:23</sys_updated_on>
-        <web_service_definition display_value="Xurrent Alerts">ecf325b383b62210b474b755eeaad362</web_service_definition>
+        <web_service_definition display_value="Xurrent IMR Alerts">ecf325b383b62210b474b755eeaad362</web_service_definition>
         <web_service_version/>
     </sys_ws_operation>
 </record_update>
