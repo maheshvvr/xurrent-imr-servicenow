@@ -69,7 +69,7 @@
         var payloadStr = JSON.stringify(payload);
 
 		var scopeGR = new GlideRecord('sys_scope');
-		scopeGR.addQuery('scope', gs.getCurrentScopeName()); // e.g., 'x_12345_xurrent_imr'
+		scopeGR.addQuery('scope', gs.getCurrentScopeName()); // e.g., 'x_12345_x_xurre_imr'
 		scopeGR.query();
 		if (!scopeGR.next()) {
 			gs.info("Not triggering the busuness rule because application scope not found");
@@ -102,7 +102,7 @@
         <sys_mod_count>9</sys_mod_count>
         <sys_name>ServiceNow Work Note Alert Business Rule</sys_name>
         <sys_overrides/>
-        <sys_package display_value="Xurrent IMR" source="xurrent_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_package display_value="Xurrent IMR" source="x_xurre_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
         <sys_policy/>
         <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
         <sys_update_name>sys_script_5473297383b62210b474b755eeaad3b6</sys_update_name>
