@@ -26,7 +26,7 @@
 
 	// === Mapping to Custom Fields ===
     try {
-        incidentGR.x_xurrent_imr_xurrent_imr_incident = xurrentIMRIncident;
+        incidentGR.xurrent_imr_xurrent_imr_incident = xurrentIMRIncident;
         incidentGR.update();
 		
     } catch (e) {
@@ -48,7 +48,7 @@
 
 })(request, response);
 ]]></operation_script>
-        <operation_uri>/api/x_xurrent_imr/xurrent_imr_alerts/update_xurrent_imr_incident_in_snow_incident</operation_uri>
+        <operation_uri>/api/xurrent_imr/xurrent_imr_alerts/update_xurrent_imr_incident_in_snow_incident</operation_uri>
         <produces>application/json,application/xml,text/xml</produces>
         <produces_customized>false</produces_customized>
         <relative_path>/update_xurrent_imr_incident_in_snow_incident</relative_path>
@@ -63,7 +63,7 @@
         <sys_id>98c4ed7383b62210b474b755eeaad351</sys_id>
         <sys_mod_count>2</sys_mod_count>
         <sys_name>Update Xurrent IMR Incident in SNOW Inci</sys_name>
-        <sys_package display_value="Xurrent IMR" source="x_xurrent_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_package display_value="Xurrent IMR" source="xurrent_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
         <sys_update_name>sys_ws_operation_98c4ed7383b62210b474b755eeaad351</sys_update_name>

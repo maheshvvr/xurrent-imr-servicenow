@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update>
-    <sys_dictionary action="INSERT_OR_UPDATE" element="x_xurrent_imr_xurrent_imr_incident" table="incident">
+    <sys_dictionary action="INSERT_OR_UPDATE" element="xurrent_imr_originated_from" table="incident">
         <active>true</active>
         <array>false</array>
         <attributes/>
@@ -10,31 +10,31 @@
 	return '';  // return the calculated value
 
 })(current);]]></calculation>
-        <choice/>
+        <choice>3</choice>
         <choice_field/>
         <choice_table/>
-        <column_label>Xurrent IMR Incident</column_label>
+        <column_label>Originated From</column_label>
         <comments/>
         <create_roles/>
-        <default_value/>
+        <default_value>service_now</default_value>
         <defaultsort/>
         <delete_roles/>
         <dependent/>
         <dependent_on_field/>
-        <display>true</display>
+        <display>false</display>
         <dynamic_creation>false</dynamic_creation>
         <dynamic_creation_script/>
         <dynamic_default_value/>
         <dynamic_ref_qual/>
-        <element>x_xurrent_imr_xurrent_imr_incident</element>
+        <element>xurrent_imr_originated_from</element>
         <element_reference>false</element_reference>
         <foreign_database/>
         <formula/>
         <function_definition/>
         <function_field>false</function_field>
-        <internal_type display_value="URL">url</internal_type>
+        <internal_type display_value="Choice">choice</internal_type>
         <mandatory>false</mandatory>
-        <max_length>1024</max_length>
+        <max_length>40</max_length>
         <name>incident</name>
         <next_element/>
         <primary>false</primary>
@@ -51,14 +51,14 @@
         <staged>false</staged>
         <sys_class_name>sys_dictionary</sys_class_name>
         <sys_created_by>admin</sys_created_by>
-        <sys_created_on>2026-04-14 09:35:13</sys_created_on>
-        <sys_name>Xurrent IMR Incident</sys_name>
-        <sys_package display_value="Xurrent IMR" source="x_xurrent_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_created_on>2026-04-14 09:16:09</sys_created_on>
+        <sys_name>Originated From</sys_name>
+        <sys_package display_value="Xurrent IMR" source="xurrent_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
         <sys_policy/>
         <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
-        <sys_update_name>sys_dictionary_incident_x_xurrent_imr_xurrent_imr_incident</sys_update_name>
+        <sys_update_name>sys_dictionary_incident_xurrent_imr_originated_from</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2026-04-14 09:35:13</sys_updated_on>
+        <sys_updated_on>2026-04-14 09:19:56</sys_updated_on>
         <table_reference>false</table_reference>
         <text_index>false</text_index>
         <unique>false</unique>

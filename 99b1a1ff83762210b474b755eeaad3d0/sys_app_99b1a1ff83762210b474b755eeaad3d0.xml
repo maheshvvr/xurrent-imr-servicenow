@@ -20,10 +20,10 @@
         <private>false</private>
         <restrict_table_access>false</restrict_table_access>
         <runtime_access_tracking>permissive</runtime_access_tracking>
-        <scope>x_xurrent_imr</scope>
+        <scope>xurrent_imr</scope>
         <scoped_administration>false</scoped_administration>
         <short_description>Xurrent IMR V1.0.0</short_description>
-        <source>x_xurrent_imr</source>
+        <source>xurrent_imr</source>
         <store_correlation_id/>
         <store_url/>
         <subscription_entitlement/>
