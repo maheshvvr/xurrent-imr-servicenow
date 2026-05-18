@@ -24,17 +24,17 @@
         <scoped_administration>false</scoped_administration>
         <short_description>Xurrent IMR V1.0.0</short_description>
         <source>x_xurre_imr</source>
-        <store_correlation_id>REPOAPP0002567271</store_correlation_id>
-        <store_url/>
+        <store_correlation_id>REPOAPP0002567272</store_correlation_id>
+        <store_url>https://tpp.servicenow.com/sn_appstore_s</store_url>
         <subscription_entitlement/>
         <sys_class_name>sys_app</sys_class_name>
         <sys_code/>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2025-07-24 12:26:46</sys_created_on>
         <sys_id>99b1a1ff83762210b474b755eeaad3d0</sys_id>
-        <sys_mod_count>11</sys_mod_count>
+        <sys_mod_count>12</sys_mod_count>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2026-05-18 06:50:57</sys_updated_on>
+        <sys_updated_on>2026-05-18 06:51:31</sys_updated_on>
         <template/>
         <trackable>true</trackable>
         <uninstall_blocked>false</uninstall_blocked>
