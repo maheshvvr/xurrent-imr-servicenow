@@ -51,20 +51,20 @@
         <request_example/>
         <requires_acl_authorization>true</requires_acl_authorization>
         <requires_authentication>true</requires_authentication>
-        <requires_snc_internal_role>true</requires_snc_internal_role>
+        <requires_snc_internal_role>false</requires_snc_internal_role>
         <short_description/>
         <sys_class_name>sys_ws_operation</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2025-07-24 12:46:09</sys_created_on>
         <sys_id>4c06253783b62210b474b755eeaad338</sys_id>
-        <sys_mod_count>7</sys_mod_count>
+        <sys_mod_count>8</sys_mod_count>
         <sys_name>Validate Connections</sys_name>
         <sys_package display_value="Xurrent IMR" source="x_xurre_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
         <sys_update_name>sys_ws_operation_4c06253783b62210b474b755eeaad338</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2026-04-14 08:33:21</sys_updated_on>
+        <sys_updated_on>2026-05-19 07:07:57</sys_updated_on>
         <web_service_definition display_value="Xurrent IMR Connections">4e0565f383b62210b474b755eeaad3df</web_service_definition>
         <web_service_version/>
     </sys_ws_operation>
