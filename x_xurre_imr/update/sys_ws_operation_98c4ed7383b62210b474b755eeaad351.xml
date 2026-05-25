@@ -48,7 +48,7 @@
 
 })(request, response);
 ]]></operation_script>
-        <operation_uri>/api/x_xurre_imr/x_xurre_imr_alerts/update_x_xurre_imr_incident_in_snow_incident</operation_uri>
+        <operation_uri>/api/x_xurre_imr/xurrent_imr_alerts/update_x_xurre_imr_incident_in_snow_incident</operation_uri>
         <produces>application/json,application/xml,text/xml</produces>
         <produces_customized>false</produces_customized>
         <relative_path>/update_x_xurre_imr_incident_in_snow_incident</relative_path>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_definition">
     <sys_ws_definition action="INSERT_OR_UPDATE">
         <active>true</active>
-        <base_uri>/api/x_xurre_imr/x_xurre_imr_alerts</base_uri>
+        <base_uri>/api/x_xurre_imr/xurrent_imr_alerts</base_uri>
         <consumes>application/json,application/xml,text/xml</consumes>
         <consumes_customized>false</consumes_customized>
         <default_version>No active default version</default_version>
@@ -12,7 +12,7 @@
         <namespace>x_xurre_imr</namespace>
         <produces>application/json,application/xml,text/xml</produces>
         <produces_customized>false</produces_customized>
-        <service_id>x_xurre_imr_alerts</service_id>
+        <service_id>xurrent_imr_alerts</service_id>
         <short_description/>
         <sys_class_name>sys_ws_definition</sys_class_name>
         <sys_created_by>admin</sys_created_by>

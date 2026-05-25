@@ -111,7 +111,7 @@
     }
 
 })(request, response);]]></operation_script>
-        <operation_uri>/api/x_xurre_imr/x_xurre_imr_integrations/fetch_incident_mandatory_fields</operation_uri>
+        <operation_uri>/api/x_xurre_imr/xurrent_imr_integrations/fetch_incident_mandatory_fields</operation_uri>
         <produces>application/json,application/xml,text/xml</produces>
         <produces_customized>false</produces_customized>
         <relative_path>/fetch_incident_mandatory_fields</relative_path>

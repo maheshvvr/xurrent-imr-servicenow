@@ -108,7 +108,7 @@
         return { status: "error", message: e.toString() };
     }
 })(request, response);]]></operation_script>
-        <operation_uri>/api/x_xurre_imr/x_xurre_imr_connections/fetch_entity_records</operation_uri>
+        <operation_uri>/api/x_xurre_imr/xurrent_imr_connections/fetch_entity_records</operation_uri>
         <produces>application/json,application/xml,text/xml</produces>
         <produces_customized>false</produces_customized>
         <relative_path>/fetch_entity_records</relative_path>

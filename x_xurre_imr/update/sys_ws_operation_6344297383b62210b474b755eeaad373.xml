@@ -92,7 +92,7 @@
         sys_id: noteSysId
     };
 })(request, response);]]></operation_script>
-        <operation_uri>/api/x_xurre_imr/x_xurre_imr_alerts/create_work_note</operation_uri>
+        <operation_uri>/api/x_xurre_imr/xurrent_imr_alerts/create_work_note</operation_uri>
         <produces>application/json,application/xml,text/xml</produces>
         <produces_customized>false</produces_customized>
         <relative_path>/create_work_note</relative_path>
