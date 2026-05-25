@@ -4,68 +4,50 @@
         <consumes>application/json,application/xml,text/xml</consumes>
         <consumes_customized>false</consumes_customized>
         <default_operation_uri/>
-        <enforce_acl>cf9d01d3e73003009d6247e603f6a990</enforce_acl>
+        <enforce_acl>a10f94e1f383b62210b474b755eeaad3</enforce_acl>
         <http_method>POST</http_method>
         <name>Update Work Note</name>
         <operation_script><![CDATA[(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
-    var requestBody = request.body.data;
 
-    var noteSysId = requestBody.note_sys_id;
-    var incidentSysId = requestBody.incident_sys_id;
-    var newWorkNote = requestBody.work_note;
+	var WORK_NOTE_TRANSFORM_MAP_SYS_ID = '0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f';
 
-    if (!noteSysId || !incidentSysId || !newWorkNote) {
-        response.setStatus(400);
-        response.setBody({ result: 'Missing required fields: note_sys_id, incident_sys_id, or work_note' });
-        return;
-    }
+	var requestBody = request.body.data;
+	var noteSysId = requestBody.note_sys_id;
+	var incidentSysId = requestBody.incident_sys_id;
+	var newWorkNote = requestBody.work_note;
 
-    // First: Validate incident exists
-    var incidentGR = new GlideRecord('incident');
-    if (!incidentGR.get(incidentSysId)) {
-        response.setStatus(404);
-        response.setBody({ result: 'Incident not found with given sys_id' });
-        return;
-    }
+	if (!noteSysId || !incidentSysId || !newWorkNote) {
+		response.setStatus(400);
+		response.setBody({ result: 'Missing required fields: note_sys_id, incident_sys_id, or work_note' });
+		return;
+	}
 
-    // Then: Validate journal entry
-    var journalGR = new GlideRecord('sys_journal_field');
-    if (!journalGR.get(noteSysId)) {
-        response.setStatus(404);
-        response.setBody({ result: 'Work note not found with given note_sys_id' });
-        return;
-    }
+	var importGR = new GlideRecord('x_xurre_imr_u_import_work_note');
+	importGR.initialize();
+	importGR.setValue('u_operation', 'update_work_note');
+	importGR.setValue('u_incident_sys_id', incidentSysId);
+	importGR.setValue('u_note_sys_id', noteSysId);
+	importGR.setValue('u_work_note', newWorkNote);
+	var importSysId = importGR.insert();
 
-    // Ensure the journal entry is actually for this incident and is a work note
-    if (
-        journalGR.getValue('element') !== 'work_notes' ||
-        journalGR.getValue('element_id') !== incidentSysId
-    ) {
-        response.setStatus(400);
-        response.setBody({ result: 'Journal entry is not a work note for the given incident' });
-        return;
-    }
+	new GlideImportSetTransformerWorker(importSysId, WORK_NOTE_TRANSFORM_MAP_SYS_ID).start(false);
 
-    // Update the work note value
-    journalGR.setValue('value', newWorkNote);
-    journalGR.update();
+	importGR.get(importSysId);
+	var resultStatus = importGR.getValue('u_result_status');
+	var resultMessage = importGR.getValue('u_result_message');
 
-    // Touch the incident to force UI activity stream refresh
-    var originalDescription = incidentGR.getValue('description');
-    incidentGR.setValue('description', originalDescription + ".");
-    incidentGR.update();
+	if (resultStatus !== 'success') {
+		response.setStatus(400);
+		response.setBody({ result: resultMessage });
+		return;
+	}
 
-    incidentGR.setValue('description', originalDescription);
-    incidentGR.update();
-
-    response.setStatus(200);
-    response.setBody({
-        message: 'Work note updated successfully',
-        sys_id: noteSysId
-    });
+	response.setStatus(200);
+	response.setBody({
+		message: 'Work note updated successfully',
+		sys_id: noteSysId
+	});
 })(request, response);
-
-
 ]]></operation_script>
         <operation_uri>/api/x_xurre_imr/xurrent_imr_alerts/update_work_note</operation_uri>
         <produces>application/json,application/xml,text/xml</produces>

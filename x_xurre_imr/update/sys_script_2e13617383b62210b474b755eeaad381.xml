@@ -12,7 +12,7 @@
         <change_fields>false</change_fields>
         <client_callable>false</client_callable>
         <collection>incident</collection>
-        <condition/>
+        <condition>gs.getProperty('x_xurre_imr.integration_enabled') == 'true'</condition>
         <description/>
         <execute_function>false</execute_function>
         <filter_condition/>
@@ -27,22 +27,8 @@
         <rest_service_text/>
         <rest_variables/>
         <role_conditions/>
-        <script><![CDATA[function customHash(payload, secret) {
-    let hash = 0;
-    const maxLen = Math.max(payload.length, secret.length);
-
-    for (let i = 0; i < maxLen; i++) {
-        const p = i < payload.length ? payload.charCodeAt(i) : 0;
-        const s = i < secret.length ? secret.charCodeAt(i) : 0;
-        hash = ((hash << 5) - hash) + (p ^ s); // Simple hash combiner
-        hash |= 0; // Convert to 32-bit integer
-    }
-    // Convert to unsigned and to hex string for consistency
-    return (hash >>> 0).toString(16);
-}
-
-(function executeRule(current, previous) {
-    try {
+        <script><![CDATA[(function executeRule(current, previous) {
+	try {
 		// Skip outbound integration to Xurrent IMR
 		if (current.operation() == 'insert' && current.x_xurre_imr_originated_from == 'x_xurre_imr') {
 			gs.info("Not triggering the create busuness rule because incident is created by Xurrent IMR");
@@ -50,22 +36,22 @@
 		}
 
 		// Initialize the payload object
-        var payload = {};
+		var payload = {};
 
-        // Use getElements() to retrieve all fields
-        var elements = current.getElements();
-        for (var i = 0; i < elements.length; i++) {
-            var fieldName = elements[i].getName();
+		// Use getElements() to retrieve all fields
+		var elements = current.getElements();
+		for (var i = 0; i < elements.length; i++) {
+			var fieldName = elements[i].getName();
 			payload[fieldName] = {
 				"label": current.getDisplayValue(fieldName),
 				"value": current.getValue(fieldName),
 			};
-        }
+		}
 
-        // Add the action field to the payload
-        payload.action = current.operation();
+		// Add the action field to the payload
+		payload.action = current.operation();
 
-		// Add incident state sys_id if it's a reference field
+		// Add incident state sys_id
 		var choiceGR = new GlideRecord('sys_choice');
 		choiceGR.addQuery('name', 'incident');
 		choiceGR.addQuery('element', 'state');
@@ -73,12 +59,11 @@
 		choiceGR.query();
 		if (choiceGR.next()) {
 			payload.snow_incident_state_sys_id = choiceGR.sys_id.toString();
-		}
-		else{
+		} else {
 			payload.snow_incident_state_sys_id = null;
 		}
 
-		// Add incident urgency sys_id if it's a reference field
+		// Add incident urgency sys_id
 		var urgencyGR = new GlideRecord('sys_choice');
 		urgencyGR.addQuery('name', 'task');
 		urgencyGR.addQuery('element', 'urgency');
@@ -86,12 +71,11 @@
 		urgencyGR.query();
 		if (urgencyGR.next()) {
 			payload.snow_incident_urgency_sys_id = urgencyGR.sys_id.toString();
-		}
-		else{
+		} else {
 			payload.snow_incident_urgency_sys_id = null;
 		}
 
-		// Add incident priority sys_id if it's a reference field
+		// Add incident priority sys_id
 		var priorityGR = new GlideRecord('sys_choice');
 		priorityGR.addQuery('name', 'task');
 		priorityGR.addQuery('element', 'priority');
@@ -104,33 +88,24 @@
 			payload.snow_incident_priority_sys_id = null;
 		}
 
-        // Convert the payload object to a JSON string
-        var payloadStr = JSON.stringify(payload);
+		// Convert the payload object to a JSON string
+		var payloadStr = JSON.stringify(payload);
 
-		var scopeGR = new GlideRecord('sys_scope');
-		scopeGR.addQuery('scope', gs.getCurrentScopeName()); // e.g., 'x_12345_x_xurre_imr'
-		scopeGR.query();
-		if (!scopeGR.next()) {
-			gs.info("Not triggering the busuness rule because application scope not found");
-			return;
-		} else {
-			appSysId = scopeGR.getUniqueValue();
-		}
-		
-		var signature = customHash(payloadStr, appSysId);
-		
-        var r = new sn_ws.RESTMessageV2('ServiceNow Event', 'ServiceNow Incident Alert');
+		var webhookSecret = gs.getProperty('x_xurre_imr.webhook_secret', '');
+		var signature = 'sha256=' + new GlideDigest().getSHA256HMACDigest(webhookSecret, payloadStr);
+
+		var r = new sn_ws.RESTMessageV2('ServiceNow Event', 'ServiceNow Incident Alert');
 		r.setStringParameterNoEscape('service_now_instance_identifier', gs.getProperty('instance_name'));
-        r.setRequestHeader("Content-Type", "application/json");
+		r.setRequestHeader("Content-Type", "application/json");
 		r.setRequestHeader("X-Xurrent-IMR-Signature", signature);
-        r.setRequestBody(payloadStr);
-        r.executeAsync(); // Asynchronous call
+		r.setRequestBody(payloadStr);
+		r.executeAsync();
 
-        gs.info("ServiceNow Alert Business Rule Async REST call sent");
+		gs.info("ServiceNow Alert Business Rule Async REST call sent");
 
-    } catch (err) {
-        gs.error("ServiceNow Alert Business Rule Async REST call failed: " + err.message);
-    }
+	} catch (err) {
+		gs.error("ServiceNow Alert Business Rule Async REST call failed: " + err.message);
+	}
 })(current, previous);]]></script>
         <sys_class_name>sys_script</sys_class_name>
         <sys_created_by>admin</sys_created_by>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_transform_script">
+    <sys_transform_script action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <name>Xurrent IMR Work Note Transform Script</name>
+        <order>100</order>
+        <script><![CDATA[(function runTransformScript(source, map, log, target /*GlideRecord*/) {
+	var operation = source.getValue('u_operation');
+
+	if (operation === 'create_work_note') {
+		handleCreateWorkNote();
+	} else if (operation === 'update_work_note') {
+		handleUpdateWorkNote();
+	} else {
+		setError('Unknown operation: ' + operation);
+	}
+
+	ignore = true; // All writes are handled manually; skip default field mapping
+
+	function handleCreateWorkNote() {
+		var incidentSysId = source.getValue('u_incident_sys_id');
+		var workNote = source.getValue('u_work_note');
+
+		var incidentGR = new GlideRecord('incident');
+		if (!incidentGR.get(incidentSysId)) {
+			setError('Incident not found with sys_id: ' + incidentSysId);
+			return;
+		}
+
+		incidentGR.work_notes = workNote;
+		incidentGR.update();
+
+		var journalGR = new GlideRecord('sys_journal_field');
+		journalGR.addQuery('element_id', incidentSysId);
+		journalGR.addQuery('element', 'work_notes');
+		journalGR.addQuery('value', workNote);
+		journalGR.orderByDesc('sys_created_on');
+		journalGR.setLimit(1);
+		journalGR.query();
+
+		var noteSysId = '';
+		if (journalGR.next()) {
+			noteSysId = journalGR.getUniqueValue();
+		}
+
+		source.setValue('u_result_sys_id', noteSysId);
+		source.setValue('u_result_status', 'success');
+		source.setValue('u_result_message', 'Work note added successfully');
+		source.update();
+	}
+
+	function handleUpdateWorkNote() {
+		var noteSysId = source.getValue('u_note_sys_id');
+		var incidentSysId = source.getValue('u_incident_sys_id');
+		var newWorkNote = source.getValue('u_work_note');
+
+		var incidentGR = new GlideRecord('incident');
+		if (!incidentGR.get(incidentSysId)) {
+			setError('Incident not found with sys_id: ' + incidentSysId);
+			return;
+		}
+
+		var journalGR = new GlideRecord('sys_journal_field');
+		if (!journalGR.get(noteSysId)) {
+			setError('Work note not found with sys_id: ' + noteSysId);
+			return;
+		}
+
+		if (journalGR.getValue('element') !== 'work_notes' || journalGR.getValue('element_id') !== incidentSysId) {
+			setError('Journal entry is not a work note for the given incident');
+			return;
+		}
+
+		journalGR.setValue('value', newWorkNote);
+		journalGR.update();
+
+		var originalDescription = incidentGR.getValue('description');
+		incidentGR.setValue('description', originalDescription + '.');
+		incidentGR.update();
+		incidentGR.setValue('description', originalDescription);
+		incidentGR.update();
+
+		source.setValue('u_result_status', 'success');
+		source.setValue('u_result_message', 'Work note updated successfully');
+		source.update();
+	}
+
+	function setError(msg) {
+		source.setValue('u_result_status', 'error');
+		source.setValue('u_result_message', msg);
+		source.update();
+		error = true;
+		errorMessage = msg;
+	}
+
+})(source, map, log, target);]]></script>
+        <sys_class_name>sys_transform_script</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-05-25 00:00:00</sys_created_on>
+        <sys_id>2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Xurrent IMR Work Note Transform Script</sys_name>
+        <sys_package display_value="Xurrent IMR" source="x_xurre_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
+        <sys_update_name>sys_transform_script_x_xurre_imr_import_work_note</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-05-25 00:00:00</sys_updated_on>
+        <transform_map display_value="Xurrent IMR Import Work Note Map">0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f</transform_map>
+        <when>onBefore</when>
+    </sys_transform_script>
+</record_update>

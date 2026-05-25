@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_transform_script">
+    <sys_transform_script action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <name>Xurrent IMR Incident Transform Script</name>
+        <order>100</order>
+        <script><![CDATA[(function runTransformScript(source, map, log, target /*GlideRecord*/) {
+	var operation = source.getValue('u_operation');
+
+	if (operation === 'create_incident') {
+		handleCreateIncident();
+	} else if (operation === 'update_incident_status') {
+		handleUpdateIncidentStatus();
+	} else if (operation === 'update_x_xurre_imr_incident') {
+		handleUpdateXurrentIncident();
+	} else {
+		source.setValue('u_result_status', 'error');
+		source.setValue('u_result_message', 'Unknown operation: ' + operation);
+		source.update();
+		error = true;
+		errorMessage = 'Unknown operation: ' + operation;
+	}
+
+	ignore = true; // All writes are handled manually; skip default field mapping
+
+	function handleCreateIncident() {
+		if (!source.getValue('u_short_description') || !source.getValue('u_x_xurre_imr_incident')
+				|| !source.getValue('u_urgency_sys_id') || !source.getValue('u_state_sys_id')) {
+			setError('Missing required fields: u_short_description, u_x_xurre_imr_incident, u_urgency_sys_id, u_state_sys_id');
+			return;
+		}
+
+		var urgencyGR = new GlideRecord('sys_choice');
+		urgencyGR.addQuery('name', 'task');
+		urgencyGR.addQuery('element', 'urgency');
+		urgencyGR.addQuery('sys_id', source.getValue('u_urgency_sys_id'));
+		urgencyGR.query();
+		if (!urgencyGR.next()) {
+			setError('Urgency not found with sys_id: ' + source.getValue('u_urgency_sys_id'));
+			return;
+		}
+
+		var stateGR = new GlideRecord('sys_choice');
+		stateGR.addQuery('name', 'incident');
+		stateGR.addQuery('element', 'state');
+		stateGR.addQuery('sys_id', source.getValue('u_state_sys_id'));
+		stateGR.query();
+		if (!stateGR.next()) {
+			setError('State not found with sys_id: ' + source.getValue('u_state_sys_id'));
+			return;
+		}
+
+		var snowPriority = null;
+		if (source.getValue('u_snow_priority_sys_id')) {
+			var priorityGR = new GlideRecord('sys_choice');
+			priorityGR.addQuery('name', 'incident');
+			priorityGR.addQuery('element', 'priority');
+			priorityGR.addQuery('sys_id', source.getValue('u_snow_priority_sys_id'));
+			priorityGR.query();
+			if (priorityGR.next()) {
+				snowPriority = priorityGR.getValue('value');
+			}
+		}
+
+		var entityRecordSysId = null;
+		var entityTableName = null;
+		var entityTypeSysId = source.getValue('u_entity_type_sys_id');
+		var mappingMode = parseInt(source.getValue('u_entity_type_mapping_mode'));
+		var CUSTOM_MODE = 2, NAME_MATCH_MODE = 1;
+
+		if (entityTypeSysId) {
+			var sysDbGR = new GlideRecord('sys_db_object');
+			sysDbGR.addQuery('sys_id', entityTypeSysId);
+			sysDbGR.query();
+			if (!sysDbGR.next()) {
+				setError('Entity type not found in sys_db_object: ' + entityTypeSysId);
+				return;
+			}
+			entityTableName = sysDbGR.getValue('name');
+
+			if (mappingMode === CUSTOM_MODE) {
+				var recordGR = new GlideRecord(entityTableName);
+				if (recordGR.get(source.getValue('u_entity_record_sys_id'))) {
+					entityRecordSysId = recordGR.getUniqueValue();
+				} else {
+					setError('Entity record not found with sys_id: ' + source.getValue('u_entity_record_sys_id'));
+					return;
+				}
+			} else if (mappingMode === NAME_MATCH_MODE) {
+				var nameMatchGR = new GlideRecord(entityTableName);
+				nameMatchGR.addQuery('name', source.getValue('u_service_name'));
+				nameMatchGR.query();
+				if (nameMatchGR.next()) {
+					entityRecordSysId = nameMatchGR.getUniqueValue();
+				} else {
+					setError('Entity record not found for service_name: ' + source.getValue('u_service_name'));
+					return;
+				}
+			}
+		}
+
+		var incident = new GlideRecord('incident');
+		incident.initialize();
+		incident.short_description = source.getValue('u_short_description');
+		incident.description = source.getValue('u_description');
+		incident.x_xurre_imr_originated_from = 'x_xurre_imr';
+		incident.x_xurre_imr_x_xurre_imr_incident = source.getValue('u_x_xurre_imr_incident');
+		incident.urgency = urgencyGR.getValue('value');
+		incident.state = stateGR.getValue('value');
+		if (snowPriority) { incident.priority = snowPriority; }
+
+		if (entityTableName && entityRecordSysId) {
+			var dictGR = new GlideRecord('sys_dictionary');
+			dictGR.addQuery('name', 'IN', 'incident,task');
+			dictGR.addQuery('reference', entityTableName);
+			dictGR.query();
+			while (dictGR.next()) {
+				incident.setValue(dictGR.getValue('element'), entityRecordSysId);
+			}
+		}
+
+		var mandatoryFieldsJson = source.getValue('u_mandatory_fields');
+		if (mandatoryFieldsJson) {
+			var mandatoryFields = JSON.parse(mandatoryFieldsJson);
+			for (var field in mandatoryFields) {
+				incident.setValue(field, mandatoryFields[field]);
+			}
+		}
+
+		var sysId = incident.insert();
+		source.setValue('u_result_sys_id', sysId);
+		source.setValue('u_result_number', incident.getValue('number'));
+		source.setValue('u_result_status', 'success');
+		source.setValue('u_result_message', 'Incident created successfully');
+		source.update();
+	}
+
+	function handleUpdateIncidentStatus() {
+		var incidentGR = new GlideRecord('incident');
+		if (!incidentGR.get(source.getValue('u_sys_id'))) {
+			setError('Incident not found with sys_id: ' + source.getValue('u_sys_id'));
+			return;
+		}
+
+		var choiceGR = new GlideRecord('sys_choice');
+		choiceGR.addQuery('name', 'incident');
+		choiceGR.addQuery('element', 'state');
+		choiceGR.addQuery('sys_id', source.getValue('u_state_sys_id'));
+		choiceGR.query();
+		if (!choiceGR.next()) {
+			setError('State not found with sys_id: ' + source.getValue('u_state_sys_id'));
+			return;
+		}
+
+		var urgencyGR = new GlideRecord('sys_choice');
+		urgencyGR.addQuery('name', 'task');
+		urgencyGR.addQuery('element', 'urgency');
+		urgencyGR.addQuery('sys_id', source.getValue('u_urgency_sys_id'));
+		urgencyGR.query();
+		if (!urgencyGR.next()) {
+			setError('Urgency not found with sys_id: ' + source.getValue('u_urgency_sys_id'));
+			return;
+		}
+
+		if (source.getValue('u_snow_priority_sys_id')) {
+			var priorityGR = new GlideRecord('sys_choice');
+			priorityGR.addQuery('sys_id', source.getValue('u_snow_priority_sys_id'));
+			priorityGR.query();
+			if (priorityGR.next()) {
+				incidentGR.priority = priorityGR.getValue('value');
+			}
+		}
+
+		var mandatoryFieldsJson = source.getValue('u_mandatory_fields');
+		if (mandatoryFieldsJson) {
+			var mandatoryFields = JSON.parse(mandatoryFieldsJson);
+			for (var field in mandatoryFields) {
+				incidentGR.setValue(field, mandatoryFields[field]);
+			}
+		}
+
+		incidentGR.setValue('state', choiceGR.getValue('value'));
+		incidentGR.setValue('urgency', urgencyGR.getValue('value'));
+		incidentGR.update();
+
+		source.setValue('u_result_sys_id', incidentGR.getUniqueValue());
+		source.setValue('u_result_number', incidentGR.getValue('number'));
+		source.setValue('u_result_status', 'success');
+		source.setValue('u_result_message', 'Incident updated successfully');
+		source.update();
+	}
+
+	function handleUpdateXurrentIncident() {
+		var incidentGR = new GlideRecord('incident');
+		incidentGR.addQuery('sys_id', source.getValue('u_sys_id'));
+		incidentGR.query();
+		if (!incidentGR.next()) {
+			setError('Incident not found with sys_id: ' + source.getValue('u_sys_id'));
+			return;
+		}
+
+		incidentGR.x_xurre_imr_x_xurre_imr_incident = source.getValue('u_x_xurre_imr_incident');
+		incidentGR.update();
+
+		source.setValue('u_result_status', 'success');
+		source.setValue('u_result_message', 'Mapping successful');
+		source.update();
+	}
+
+	function setError(msg) {
+		source.setValue('u_result_status', 'error');
+		source.setValue('u_result_message', msg);
+		source.update();
+		error = true;
+		errorMessage = msg;
+	}
+
+})(source, map, log, target);]]></script>
+        <sys_class_name>sys_transform_script</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-05-25 00:00:00</sys_created_on>
+        <sys_id>1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Xurrent IMR Incident Transform Script</sys_name>
+        <sys_package display_value="Xurrent IMR" source="x_xurre_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
+        <sys_update_name>sys_transform_script_x_xurre_imr_import_incident</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-05-25 00:00:00</sys_updated_on>
+        <transform_map display_value="Xurrent IMR Import Incident Map">9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e</transform_map>
+        <when>onBefore</when>
+    </sys_transform_script>
+</record_update>

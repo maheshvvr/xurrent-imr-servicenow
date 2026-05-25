@@ -7,8 +7,8 @@
         <auth_code_lifespan>60</auth_code_lifespan>
         <auth_url/>
         <certificate_url/>
-        <client_id>4d32cf167834442684a042bcb440ac69</client_id>
-        <client_secret>﷞﷟﷒3be5362c2ffc031086d2998e8ea4e3e3﷬﷔1﷬﷭YPZDwabM3HR-2aJAcAv8wA==hC-XRdlAdvpl8EiYX7iljTQB1Qaaq-kNky8ycg==﷮﷯</client_secret>
+        <client_id>XURRENT_IMR_CLIENT_ID</client_id>
+        <client_secret/>
         <client_type>integration_as_a_service</client_type>
         <client_uuid>54e1e5ff83762210b474b755eeaad366</client_uuid>
         <code_challenge_method>S256</code_challenge_method>

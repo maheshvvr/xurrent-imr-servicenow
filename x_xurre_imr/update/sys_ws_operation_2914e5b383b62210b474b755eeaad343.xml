@@ -4,215 +4,68 @@
         <consumes>application/json,application/xml,text/xml</consumes>
         <consumes_customized>false</consumes_customized>
         <default_operation_uri/>
-        <enforce_acl>cf9d01d3e73003009d6247e603f6a990</enforce_acl>
+        <enforce_acl>a12914e5b383b62210b474b755eeaad3</enforce_acl>
         <http_method>POST</http_method>
         <name>Create Incident</name>
-        <operation_script><![CDATA[function getIncidentFieldForTable(tableName) {
-    var currentTable = tableName;
+        <operation_script><![CDATA[(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
 
-    while (currentTable) {
-        var dictGR = new GlideRecord('sys_dictionary');
-        dictGR.addQuery('name', 'IN', 'incident,task');
-        dictGR.addQuery('reference', currentTable);
-        dictGR.query();
+	var INCIDENT_TRANSFORM_MAP_SYS_ID = '9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e';
 
-        var fields = [];
-        while (dictGR.next()) {
-            fields.push({
-                field_name: dictGR.element.toString(),
-                field_label: dictGR.column_label.toString()
-            });
-        }
+	try {
+		var body = request.body.data;
 
-        if (fields.length > 0) {
-            return fields;
-        }
-
-        // Walk up to parent table
-        var tableGR = new GlideRecord('sys_db_object');
-        tableGR.addQuery('name', currentTable);
-        tableGR.query();
-        if (tableGR.next() && tableGR.super_class) {
-            var parentGR = new GlideRecord('sys_db_object');
-            if (parentGR.get(tableGR.super_class)) {
-                currentTable = parentGR.name.toString();
-            } else {
-                currentTable = null;
-            }
-        } else {
-            currentTable = null;
-        }
-    }
-
-    return [];
-}
-
-
-(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
-
-    try {
-        var body = request.body.data;
-
-        // Basic validation
-        if (!body || !body.short_description || !body.x_xurre_imr_incident
-                || !body.urgency_sys_id || !body.state_sys_id || !body.entity_type_sys_id || !body.mandatory_fields) {
-            response.setStatus(400);
-            return {
-                status: "error",
-                message: "Missing required fields: short_description, x_xurre_imr_incident, urgency_sys_id, state_sys_id, entity_type_sys_id, mandatory_fields"
-            };
-        }
-
-        // ── Resolve urgency value from sys_id ─────────────────────────────────
-        var urgencyGR = new GlideRecord('sys_choice');
-        urgencyGR.addQuery('name', 'task');
-        urgencyGR.addQuery('element', 'urgency');
-        urgencyGR.addQuery('sys_id', body.urgency_sys_id);
-        urgencyGR.query();
-        if (!urgencyGR.next()) {
-            response.setStatus(404);
-            return {
-                status: "error",
-                message: "Incident urgency not found with sys_id: " + body.urgency_sys_id
-            };
-        }
-        var urgencyValue = urgencyGR.value;
-
-        // ── Resolve state value from sys_id ───────────────────────────────────
-        var stateGR = new GlideRecord('sys_choice');
-        stateGR.addQuery('name', 'incident');
-        stateGR.addQuery('element', 'state');
-        stateGR.addQuery('sys_id', body.state_sys_id);
-        stateGR.query();
-        if (!stateGR.next()) {
-            response.setStatus(404);
-            return {
-                status: "error",
-                message: "Incident state not found with sys_id: " + body.state_sys_id
-            };
-        }
-        var stateValue = stateGR.value;
-
-        // ── Resolve priority value from sys_id (optional) ─────────────────────
-        var snowPriority = null;
-        if (body.snow_priority_sys_id) {
-            var priorityGR = new GlideRecord('sys_choice');
-            priorityGR.addQuery('name', 'incident');
-            priorityGR.addQuery('element', 'priority');
-            priorityGR.addQuery('sys_id', body.snow_priority_sys_id);
-            priorityGR.query();
-            if (priorityGR.next()) {
-                snowPriority = priorityGR.value;
-            }
-        }
-
-        // ── Step 1: Fetch entity type from sys_db_object ──────────────────────
-        var sysDbGR = new GlideRecord('sys_db_object');
-        sysDbGR.addQuery('sys_id', body.entity_type_sys_id);
-        sysDbGR.query();
-        if (!sysDbGR.next()) {
-            response.setStatus(404);
-            return {
-                status: "error",
-                message: "Entity type not found in sys_db_object with sys_id: " + body.entity_type_sys_id
-            };
-        }
-        var entityTableName = sysDbGR.getValue('name');       // actual table name e.g. 'sys_user_group'
-
-        // ── Step 2: Resolve entity record sys_id ──────────────────────────────
-        var entityRecordSysId = null;
-        var CUSTOM_MODE     = 2;
-        var NAME_MATCH_MODE = 1;
-
-		// ── Validate mode-specific required fields ─────────────────────────────
-        if (body.entity_type_mapping_mode == NAME_MATCH_MODE && !body.service_name) {
-            response.setStatus(400);
-            return {
-                status: "error",
-                message: "service_name is required when entity_type_mapping_mode is name_match"
-            };
-        }
-        if (body.entity_type_mapping_mode == CUSTOM_MODE && !body.entity_record_sys_id) {
-            response.setStatus(400);
-            return {
-                status: "error",
-                message: "entity_record_sys_id is required when entity_type_mapping_mode is custom"
-            };
-        }
-
-        if (body.entity_type_mapping_mode == CUSTOM_MODE) {
-            var recordGR = new GlideRecord(entityTableName);
-			if (recordGR.get(body.entity_record_sys_id)) {
-				entityRecordSysId = recordGR.getUniqueValue();
-			} else {
-				response.setStatus(404);
-				return {
-					status: "error",
-					message: "Entity record not found with sys_id: " + body.entity_record_sys_id + " in table: " + entityTableName
-				};
-			}
-        } else if (body.entity_type_mapping_mode == NAME_MATCH_MODE) {
-			var nameMatchGR = new GlideRecord(entityTableName);
-			nameMatchGR.addQuery("name", body.service_name);
-			nameMatchGR.query();
-			if (nameMatchGR.next()) {
-				entityRecordSysId = nameMatchGR.getUniqueValue();
-			} else {
-				response.setStatus(404);
-				return {
-					status: "error",
-					message: "Entity record not found for service_name: " + body.service_name + " in table: " + entityTableName
-				};
-			}
-        }
-
-        // ── Create incident ───────────────────────────────────────────────────
-        var incident = new GlideRecord('incident');
-        incident.initialize();
-        incident.short_description      = body.short_description;
-        incident.description            = body.description;
-        incident.x_xurre_imr_originated_from = "x_xurre_imr";
-        incident.x_xurre_imr_x_xurre_imr_incident = body.x_xurre_imr_incident;
-        incident.urgency                = urgencyValue;
-        incident.state                  = stateValue;
-
-        if (snowPriority) { incident.priority = snowPriority; }
-		
-        if (entityTableName && entityRecordSysId) {
-			var fields = getIncidentFieldForTable(entityTableName);
-			for (var f = 0; f < fields.length; f++) {
-				gs.info("fields[f].field_name: " + fields[f].field_name);
-				gs.info("entityRecordSysId: " + entityRecordSysId);
-				incident.setValue(fields[f].field_name, entityRecordSysId);
-			}
+		if (!body || !body.short_description || !body.x_xurre_imr_incident
+				|| !body.urgency_sys_id || !body.state_sys_id || !body.entity_type_sys_id || !body.mandatory_fields) {
+			response.setStatus(400);
+			return {
+				status: "error",
+				message: "Missing required fields: short_description, x_xurre_imr_incident, urgency_sys_id, state_sys_id, entity_type_sys_id, mandatory_fields"
+			};
 		}
 
-        incident.caller_id = gs.getUser().getID();
+		var importGR = new GlideRecord('x_xurre_imr_u_import_incident');
+		importGR.initialize();
+		importGR.setValue('u_operation', 'create_incident');
+		importGR.setValue('u_short_description', body.short_description);
+		importGR.setValue('u_description', body.description || '');
+		importGR.setValue('u_urgency_sys_id', body.urgency_sys_id);
+		importGR.setValue('u_state_sys_id', body.state_sys_id);
+		importGR.setValue('u_snow_priority_sys_id', body.snow_priority_sys_id || '');
+		importGR.setValue('u_x_xurre_imr_incident', body.x_xurre_imr_incident);
+		importGR.setValue('u_entity_type_sys_id', body.entity_type_sys_id);
+		importGR.setValue('u_entity_type_mapping_mode', body.entity_type_mapping_mode || 0);
+		importGR.setValue('u_entity_record_sys_id', body.entity_record_sys_id || '');
+		importGR.setValue('u_service_name', body.service_name || '');
+		importGR.setValue('u_mandatory_fields', JSON.stringify(body.mandatory_fields));
+		var importSysId = importGR.insert();
 
-        // Set mandatory fields
-        for (var field in body.mandatory_fields) {
-            incident.setValue(field, body.mandatory_fields[field]);
-        }
+		new GlideImportSetTransformerWorker(importSysId, INCIDENT_TRANSFORM_MAP_SYS_ID).start(false);
 
-        var sysId = incident.insert();
+		importGR.get(importSysId);
+		var resultStatus = importGR.getValue('u_result_status');
+		var resultMessage = importGR.getValue('u_result_message');
+		var resultSysId = importGR.getValue('u_result_sys_id');
+		var resultNumber = importGR.getValue('u_result_number');
 
-        gs.info("Incident created successfully");
-        response.setStatus(201);
-        return {
-            status:  "success",
-            message: "Incident created",
-            sys_id:  sysId,
-            number:  incident.number.toString()
-        };
+		if (resultStatus !== 'success') {
+			response.setStatus(400);
+			return { status: "error", message: resultMessage };
+		}
 
-    } catch (err) {
-        gs.error("Incident creation failed: " + err.message);
-        response.setStatus(400);
-        return {
-            status:  "error",
-            message: err.message
-        };
-    }
+		gs.info("Incident created successfully");
+		response.setStatus(201);
+		return {
+			status: "success",
+			message: "Incident created",
+			sys_id: resultSysId,
+			number: resultNumber
+		};
+
+	} catch (err) {
+		gs.error("Incident creation failed: " + err.message);
+		response.setStatus(400);
+		return { status: "error", message: err.message };
+	}
 
 })(request, response);]]></operation_script>
         <operation_uri>/api/x_xurre_imr/xurrent_imr_alerts/create_incident</operation_uri>

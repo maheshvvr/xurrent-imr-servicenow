@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_db_object">
+    <sys_db_object action="INSERT_OR_UPDATE">
+        <access>public</access>
+        <create_access_controls>true</create_access_controls>
+        <is_extendable>false</is_extendable>
+        <label>Import Incident</label>
+        <name>x_xurre_imr_u_import_incident</name>
+        <super_class display_value="Import Set Row">d17892d3c611228100f7f3a64f81c43a</super_class>
+        <sys_class_name>sys_db_object</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-05-25 00:00:00</sys_created_on>
+        <sys_id>7f8e9d0c1b2a3f4e5d6c7b8a9f0e1d2c</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_xurre_imr_u_import_incident</sys_name>
+        <sys_package display_value="Xurrent IMR" source="x_xurre_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
+        <sys_update_name>sys_db_object_x_xurre_imr_u_import_incident</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-05-25 00:00:00</sys_updated_on>
+    </sys_db_object>
+</record_update>
