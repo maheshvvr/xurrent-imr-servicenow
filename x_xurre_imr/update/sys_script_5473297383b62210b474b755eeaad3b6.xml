@@ -55,7 +55,7 @@
 		var payloadStr = JSON.stringify(payload);
 
 		var webhookSecret = gs.getProperty('x_xurre_imr.webhook_secret', '');
-		var signature = 'sha256=' + new GlideDigest().getSHA256HMACDigest(webhookSecret, payloadStr);
+		var signature = 'sha256=' + new GlideCertificateEncryption().generateMac(payloadStr, 'HmacSHA256', webhookSecret);
 
 		var r = new sn_ws.RESTMessageV2('ServiceNow Event', 'ServiceNow Work Note Alert');
 		r.setStringParameterNoEscape('service_now_instance_identifier', gs.getProperty('instance_name'));
