@@ -27,7 +27,21 @@
         <rest_service_text/>
         <rest_variables/>
         <role_conditions/>
-        <script><![CDATA[(function executeRule(current, previous) {
+        <script><![CDATA[function customHash(payload, secret) {
+    let hash = 0;
+    const maxLen = Math.max(payload.length, secret.length);
+
+    for (let i = 0; i < maxLen; i++) {
+        const p = i < payload.length ? payload.charCodeAt(i) : 0;
+        const s = i < secret.length ? secret.charCodeAt(i) : 0;
+        hash = ((hash << 5) - hash) + (p ^ s); // Simple hash combiner
+        hash |= 0; // Convert to 32-bit integer
+    }
+    // Convert to unsigned and to hex string for consistency
+    return (hash >>> 0).toString(16);
+}
+
+(function executeRule(current, previous) {
 	try {
 		// Skip outbound integration to Xurrent IMR
 		if (current.operation() == 'insert' && current.x_xurre_imr_originated_from == 'x_xurre_imr') {
@@ -91,8 +105,17 @@
 		// Convert the payload object to a JSON string
 		var payloadStr = JSON.stringify(payload);
 
-		var webhookSecret = gs.getProperty('x_xurre_imr.webhook_secret', '');
-		var signature = 'sha256=' + new GlideCertificateEncryption().generateMac(payloadStr, 'HmacSHA256', webhookSecret);
+		var scopeGR = new GlideRecord('sys_scope');
+		scopeGR.addQuery('scope', gs.getCurrentScopeName());
+		scopeGR.query();
+		if (!scopeGR.next()) {
+			gs.info("Not triggering the busuness rule because application scope not found");
+			return;
+		} else {
+			appSysId = scopeGR.getUniqueValue();
+		}
+
+		var signature = customHash(payloadStr, appSysId);
 
 		var r = new sn_ws.RESTMessageV2('ServiceNow Event', 'ServiceNow Incident Alert');
 		r.setStringParameterNoEscape('service_now_instance_identifier', gs.getProperty('instance_name'));
