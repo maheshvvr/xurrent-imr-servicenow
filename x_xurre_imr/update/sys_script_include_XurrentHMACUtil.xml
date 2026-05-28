@@ -29,7 +29,7 @@ XurrentHMACUtil.prototype = {
         <sys_id>f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5</sys_id>
         <sys_mod_count>0</sys_mod_count>
         <sys_name>XurrentHMACUtil</sys_name>
-        <sys_package display_value="Xurrent IMR" source="x_xurre_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_package display_value="Global" source="global"/>
         <sys_policy/>
         <sys_scope display_value="Global">global</sys_scope>
         <sys_update_name>sys_script_include_XurrentHMACUtil</sys_update_name>
