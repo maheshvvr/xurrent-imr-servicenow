@@ -93,7 +93,7 @@
 
 
 		var webhookSecret = gs.getProperty('x_xurre_imr.webhook_secret', '');
-		var signature = new global.XurrentHMACUtil().generateHMAC(webhookSecret, payloadStr);
+		var signature = new XurrentHMACUtil().generateHMAC(webhookSecret, payloadStr);
 
 		var r = new sn_ws.RESTMessageV2('ServiceNow Event', 'ServiceNow Incident Alert');
 		r.setStringParameterNoEscape('service_now_instance_identifier', gs.getProperty('instance_name'));
