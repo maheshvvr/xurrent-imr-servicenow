@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_security_acl_role">
+    <sys_security_acl_role action="INSERT_OR_UPDATE">
+        <sys_class_name>sys_security_acl_role</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-06-09 17:32:30</sys_created_on>
+        <sys_id>bb646a7e2f1d471086d2998e8ea4e372</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_xurre_imr_u_import_work_note.x_xurre_imr.import_work_note_user</sys_name>
+        <sys_package display_value="Xurrent IMR" source="x_xurre_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
+        <sys_security_acl display_value="x_xurre_imr_u_import_work_note">73646a7e2f1d471086d2998e8ea4e36d</sys_security_acl>
+        <sys_update_name>sys_security_acl_role_bb646a7e2f1d471086d2998e8ea4e372</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-06-09 17:32:30</sys_updated_on>
+        <sys_user_role display_value="x_xurre_imr.import_work_note_user" name="x_xurre_imr.import_work_note_user">9b64e67e2f1d471086d2998e8ea4e348</sys_user_role>
+    </sys_security_acl_role>
+</record_update>

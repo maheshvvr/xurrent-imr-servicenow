@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element db_object_id="2eda163e2fd9471086d2998e8ea4e31a" extends="sys_import_set_row" label="Import Incident" max_length="40" name="x_xurre_imr_u_import_incident" type="collection">
+        <element attributes="edge_encryption_enabled=true" label="Entity type mapping mode" max_length="40" name="entity_type_mapping_mode" type="integer"/>
+        <element label="Snow priority sys ID" max_length="32" name="snow_priority_sys_id" type="string"/>
+        <element label="Urgency sys ID" max_length="32" name="urgency_sys_id" type="string"/>
+        <element label="Result sys ID" max_length="32" name="result_sys_id" type="string"/>
+        <element label="incident_sys_id" max_length="32" name="incident_sys_id" type="string"/>
+        <element label="X xurre imr incident" max_length="1024" name="x_xurre_imr_incident" type="string"/>
+        <element label="Result status" max_length="40" name="result_status" type="string"/>
+        <element label="State sys ID" max_length="32" name="state_sys_id" type="string"/>
+        <element label="Mandatory fields" max_length="4000" name="mandatory_fields" type="string"/>
+        <element label="Entity type sys ID" max_length="32" name="entity_type_sys_id" type="string"/>
+        <element label="Operation" max_length="40" name="operation" type="string"/>
+        <element label="Short description" max_length="255" name="short_description" type="string"/>
+        <element label="Description" max_length="4000" name="description" type="string"/>
+        <element label="Service name" max_length="255" name="service_name" type="string"/>
+        <element label="Result number" max_length="40" name="result_number" type="string"/>
+        <element label="Entity record sys ID" max_length="32" name="entity_record_sys_id" type="string"/>
+        <element display="true" label="Result message" max_length="4000" name="result_message" type="string"/>
+    </element>
+</database>
