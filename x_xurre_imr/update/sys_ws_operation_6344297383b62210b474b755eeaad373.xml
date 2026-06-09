@@ -9,8 +9,6 @@
         <name>Create Work Note</name>
         <operation_script><![CDATA[(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
 
-	var WORK_NOTE_TRANSFORM_MAP_SYS_ID = '0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f';
-
 	var requestBody = request.body.data;
 	var incidentSysId = requestBody.incident_sys_id;
 	var workNote = requestBody.work_note;
