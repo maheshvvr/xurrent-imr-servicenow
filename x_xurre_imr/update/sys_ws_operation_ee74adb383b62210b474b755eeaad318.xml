@@ -24,21 +24,21 @@
 
 		var importGR = new GlideRecord('x_xurre_imr_u_import_incident');
 		importGR.initialize();
-		importGR.setValue('u_operation', 'update_incident_status');
-		importGR.setValue('u_sys_id', body.sys_id);
-		importGR.setValue('u_state_sys_id', body.state);
-		importGR.setValue('u_urgency_sys_id', body.urgency);
-		importGR.setValue('u_snow_priority_sys_id', body.priority || '');
-		importGR.setValue('u_mandatory_fields', JSON.stringify(body.mandatory_fields));
+		importGR.setValue('operation', 'update_incident_status');
+		importGR.setValue('incident_sys_id', body.sys_id);
+		importGR.setValue('state_sys_id', body.state);
+		importGR.setValue('urgency_sys_id', body.urgency);
+		importGR.setValue('snow_priority_sys_id', body.priority || '');
+		importGR.setValue('mandatory_fields', JSON.stringify(body.mandatory_fields));
 		var importSysId = importGR.insert();
 
 		new GlideImportSetTransformerWorker(importSysId, INCIDENT_TRANSFORM_MAP_SYS_ID).start(false);
 
 		importGR.get(importSysId);
-		var resultStatus = importGR.getValue('u_result_status');
-		var resultMessage = importGR.getValue('u_result_message');
-		var resultSysId = importGR.getValue('u_result_sys_id');
-		var resultNumber = importGR.getValue('u_result_number');
+		var resultStatus = importGR.getValue('result_status');
+		var resultMessage = importGR.getValue('result_message');
+		var resultSysId = importGR.getValue('result_sys_id');
+		var resultNumber = importGR.getValue('result_number');
 
 		if (resultStatus !== 'success') {
 			response.setStatus(400);

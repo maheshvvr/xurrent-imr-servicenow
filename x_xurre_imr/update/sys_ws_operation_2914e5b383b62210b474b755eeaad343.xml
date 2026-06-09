@@ -25,27 +25,27 @@
 
 		var importGR = new GlideRecord('x_xurre_imr_u_import_incident');
 		importGR.initialize();
-		importGR.setValue('u_operation', 'create_incident');
-		importGR.setValue('u_short_description', body.short_description);
-		importGR.setValue('u_description', body.description || '');
-		importGR.setValue('u_urgency_sys_id', body.urgency_sys_id);
-		importGR.setValue('u_state_sys_id', body.state_sys_id);
-		importGR.setValue('u_snow_priority_sys_id', body.snow_priority_sys_id || '');
-		importGR.setValue('u_x_xurre_imr_incident', body.x_xurre_imr_incident);
-		importGR.setValue('u_entity_type_sys_id', body.entity_type_sys_id);
-		importGR.setValue('u_entity_type_mapping_mode', body.entity_type_mapping_mode || 0);
-		importGR.setValue('u_entity_record_sys_id', body.entity_record_sys_id || '');
-		importGR.setValue('u_service_name', body.service_name || '');
-		importGR.setValue('u_mandatory_fields', JSON.stringify(body.mandatory_fields));
+		importGR.setValue('operation', 'create_incident');
+		importGR.setValue('short_description', body.short_description);
+		importGR.setValue('description', body.description || '');
+		importGR.setValue('urgency_sys_id', body.urgency_sys_id);
+		importGR.setValue('state_sys_id', body.state_sys_id);
+		importGR.setValue('snow_priority_sys_id', body.snow_priority_sys_id || '');
+		importGR.setValue('x_xurre_imr_incident', body.x_xurre_imr_incident);
+		importGR.setValue('entity_type_sys_id', body.entity_type_sys_id);
+		importGR.setValue('entity_type_mapping_mode', body.entity_type_mapping_mode || 0);
+		importGR.setValue('entity_record_sys_id', body.entity_record_sys_id || '');
+		importGR.setValue('service_name', body.service_name || '');
+		importGR.setValue('mandatory_fields', JSON.stringify(body.mandatory_fields));
 		var importSysId = importGR.insert();
 
 		new GlideImportSetTransformerWorker(importSysId, INCIDENT_TRANSFORM_MAP_SYS_ID).start(false);
 
 		importGR.get(importSysId);
-		var resultStatus = importGR.getValue('u_result_status');
-		var resultMessage = importGR.getValue('u_result_message');
-		var resultSysId = importGR.getValue('u_result_sys_id');
-		var resultNumber = importGR.getValue('u_result_number');
+		var resultStatus = importGR.getValue('result_status');
+		var resultMessage = importGR.getValue('result_message');
+		var resultSysId = importGR.getValue('result_sys_id');
+		var resultNumber = importGR.getValue('result_number');
 
 		if (resultStatus !== 'success') {
 			response.setStatus(400);

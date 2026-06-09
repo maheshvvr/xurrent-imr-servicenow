@@ -4,7 +4,7 @@
         <name>Xurrent IMR Work Note Transform Script</name>
         <order>100</order>
         <script><![CDATA[(function runTransformScript(source, map, log, target /*GlideRecord*/) {
-	var operation = source.getValue('u_operation');
+	var operation = source.getValue('operation');
 
 	if (operation === 'create_work_note') {
 		handleCreateWorkNote();
@@ -17,8 +17,8 @@
 	ignore = true; // All writes are handled manually; skip default field mapping
 
 	function handleCreateWorkNote() {
-		var incidentSysId = source.getValue('u_incident_sys_id');
-		var workNote = source.getValue('u_work_note');
+		var incidentSysId = source.getValue('incident_sys_id');
+		var workNote = source.getValue('work_note');
 
 		var incidentGR = new GlideRecord('incident');
 		if (!incidentGR.get(incidentSysId)) {
@@ -42,16 +42,16 @@
 			noteSysId = journalGR.getUniqueValue();
 		}
 
-		source.setValue('u_result_sys_id', noteSysId);
-		source.setValue('u_result_status', 'success');
-		source.setValue('u_result_message', 'Work note added successfully');
+		source.setValue('result_sys_id', noteSysId);
+		source.setValue('result_status', 'success');
+		source.setValue('result_message', 'Work note added successfully');
 		source.update();
 	}
 
 	function handleUpdateWorkNote() {
-		var noteSysId = source.getValue('u_note_sys_id');
-		var incidentSysId = source.getValue('u_incident_sys_id');
-		var newWorkNote = source.getValue('u_work_note');
+		var noteSysId = source.getValue('note_sys_id');
+		var incidentSysId = source.getValue('incident_sys_id');
+		var newWorkNote = source.getValue('work_note');
 
 		var incidentGR = new GlideRecord('incident');
 		if (!incidentGR.get(incidentSysId)) {
@@ -79,14 +79,14 @@
 		incidentGR.setValue('description', originalDescription);
 		incidentGR.update();
 
-		source.setValue('u_result_status', 'success');
-		source.setValue('u_result_message', 'Work note updated successfully');
+		source.setValue('result_status', 'success');
+		source.setValue('result_message', 'Work note updated successfully');
 		source.update();
 	}
 
 	function setError(msg) {
-		source.setValue('u_result_status', 'error');
-		source.setValue('u_result_message', msg);
+		source.setValue('result_status', 'error');
+		source.setValue('result_message', msg);
 		source.update();
 		error = true;
 		errorMessage = msg;

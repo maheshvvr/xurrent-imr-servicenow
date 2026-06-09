@@ -24,16 +24,16 @@
 	try {
 		var importGR = new GlideRecord('x_xurre_imr_u_import_incident');
 		importGR.initialize();
-		importGR.setValue('u_operation', 'update_x_xurre_imr_incident');
-		importGR.setValue('u_sys_id', sysID);
-		importGR.setValue('u_x_xurre_imr_incident', xurrentIMRIncident);
+		importGR.setValue('operation', 'update_x_xurre_imr_incident');
+		importGR.setValue('incident_sys_id', sysID);
+		importGR.setValue('x_xurre_imr_incident', xurrentIMRIncident);
 		var importSysId = importGR.insert();
 
 		new GlideImportSetTransformerWorker(importSysId, INCIDENT_TRANSFORM_MAP_SYS_ID).start(false);
 
 		importGR.get(importSysId);
-		var resultStatus = importGR.getValue('u_result_status');
-		var resultMessage = importGR.getValue('u_result_message');
+		var resultStatus = importGR.getValue('result_status');
+		var resultMessage = importGR.getValue('result_message');
 
 		if (resultStatus !== 'success') {
 			response.setStatus(400);
