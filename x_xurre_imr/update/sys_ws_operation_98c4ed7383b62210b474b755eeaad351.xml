@@ -29,8 +29,6 @@
 		importGR.setValue('x_xurre_imr_incident', xurrentIMRIncident);
 		var importSysId = importGR.insert();
 
-		new GlideImportSetTransformerWorker(importSysId, INCIDENT_TRANSFORM_MAP_SYS_ID).start(false);
-
 		importGR.get(importSysId);
 		var resultStatus = importGR.getValue('result_status');
 		var resultMessage = importGR.getValue('result_message');

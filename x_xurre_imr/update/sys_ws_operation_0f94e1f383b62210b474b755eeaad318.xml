@@ -30,8 +30,6 @@
 	importGR.setValue('work_note', newWorkNote);
 	var importSysId = importGR.insert();
 
-	new GlideImportSetTransformerWorker(importSysId, WORK_NOTE_TRANSFORM_MAP_SYS_ID).start(false);
-
 	importGR.get(importSysId);
 	var resultStatus = importGR.getValue('result_status');
 	var resultMessage = importGR.getValue('result_message');
