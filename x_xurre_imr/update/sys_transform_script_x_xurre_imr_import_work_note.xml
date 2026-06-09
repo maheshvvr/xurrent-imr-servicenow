@@ -49,7 +49,6 @@
 	}
 
 	function handleUpdateWorkNote() {
-		var noteSysId = source.getValue('note_sys_id');
 		var incidentSysId = source.getValue('incident_sys_id');
 		var newWorkNote = source.getValue('work_note');
 
@@ -59,28 +58,27 @@
 			return;
 		}
 
+		// ServiceNow journal entries are immutable and scoped apps cannot write
+		// sys_journal_field directly, so post the updated content as a new work note.
+		incidentGR.work_notes = newWorkNote;
+		incidentGR.update();
+
 		var journalGR = new GlideRecord('sys_journal_field');
-		if (!journalGR.get(noteSysId)) {
-			setError('Work note not found with sys_id: ' + noteSysId);
-			return;
+		journalGR.addQuery('element_id', incidentSysId);
+		journalGR.addQuery('element', 'work_notes');
+		journalGR.addQuery('value', newWorkNote);
+		journalGR.orderByDesc('sys_created_on');
+		journalGR.setLimit(1);
+		journalGR.query();
+
+		var noteSysId = '';
+		if (journalGR.next()) {
+			noteSysId = journalGR.getUniqueValue();
 		}
 
-		if (journalGR.getValue('element') !== 'work_notes' || journalGR.getValue('element_id') !== incidentSysId) {
-			setError('Journal entry is not a work note for the given incident');
-			return;
-		}
-
-		journalGR.setValue('value', newWorkNote);
-		journalGR.update();
-
-		var originalDescription = incidentGR.getValue('description');
-		incidentGR.setValue('description', originalDescription + '.');
-		incidentGR.update();
-		incidentGR.setValue('description', originalDescription);
-		incidentGR.update();
-
+		source.setValue('result_sys_id', noteSysId);
 		source.setValue('result_status', 'success');
-		source.setValue('result_message', 'Work note updated successfully');
+		source.setValue('result_message', 'Work note updated (posted as new note)');
 		source.update();
 	}
 
