@@ -9,7 +9,7 @@
         <hint/>
         <homepage_renderer/>
         <homepage_renderer_id/>
-        <link_type>URL</link_type>
+        <link_type>DIRECT</link_type>
         <name>Contact Support</name>
         <next_url/>
         <order>200</order>
@@ -30,7 +30,7 @@
         <sys_updated_by>admin</sys_updated_by>
         <sys_updated_on>2026-05-25 00:00:00</sys_updated_on>
         <title>Contact Support</title>
-        <url>https://support.xurrent.com</url>
+        <url>x_xurre_imr_contact_support.do</url>
         <view/>
         <window_name/>
     </sys_app_module>

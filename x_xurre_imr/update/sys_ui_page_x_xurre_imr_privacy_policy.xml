@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_page">
+    <sys_ui_page action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <category>general</category>
+        <client_script/>
+        <description>Xurrent IMR application privacy policy — data handling, transfer, storage and security disclosures.</description>
+        <direct>false</direct>
+        <endpoint>x_xurre_imr_privacy_policy</endpoint>
+        <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+  <div style="max-width:860px;margin:24px auto;padding:0 20px;font-family:'SourceSansPro',Arial,sans-serif;line-height:1.55;color:#2e2e2e;">
+    <h1>Xurrent IMR — Application Privacy Policy</h1>
+    <p>This policy describes how the Xurrent IMR integration application (the "App") collects, uses, transfers, stores, and secures data when installed on your ServiceNow instance.</p>
+
+    <h2>Data collected</h2>
+    <p>When enabled, the App processes ServiceNow Incident and Work Note (journal) data, including: short description, description, state, urgency, priority, assignment/entity references, work note text, and the related Xurrent IMR incident link. It also reads choice and table metadata required to map values.</p>
+
+    <h2>How the data is used</h2>
+    <p>Incident and work note changes are sent to the Xurrent IMR service (powered by Zenduty) to keep the corresponding Xurrent IMR incident in sync. Inbound requests from Xurrent IMR create and update incidents and work notes through ServiceNow Import Set staging tables and Transform Maps.</p>
+
+    <h2>Data transfer, processing &amp; storage outside ServiceNow</h2>
+    <p>Yes — outbound event payloads are transmitted over HTTPS to the Xurrent IMR / Zenduty service, which is hosted outside of your ServiceNow instance. That service processes and stores the incident and work note data you choose to synchronize. No data is sent unless an administrator sets <strong>x_xurre_imr.integration_enabled</strong> to <strong>true</strong>.</p>
+
+    <h2>How the data is secured</h2>
+    <p>Outbound payloads are signed with HMAC-SHA256 using a shared secret (<strong>x_xurre_imr.webhook_secret</strong>) and delivered in the <strong>X-Xurrent-IMR-Signature</strong> header so the receiver can verify integrity and authenticity. Inbound calls are authenticated via OAuth 2.0 and authorized by application-scoped ACLs restricted to a dedicated integration role.</p>
+
+    <h2>Data sharing</h2>
+    <p>Data is shared only with the Xurrent IMR / Zenduty service you connect to. It is not sold or shared with any other third party by the App.</p>
+
+    <h2>More information</h2>
+    <p>For the full Xurrent / Zenduty privacy policy, see
+      <a href="https://zenduty.com/privacy/" target="_blank" rel="noopener noreferrer nofollow">https://zenduty.com/privacy/</a>.
+    </p>
+  </div>
+</j:jelly>]]></html>
+        <name>x_xurre_imr_privacy_policy</name>
+        <processing_script/>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-06-10 00:00:00</sys_created_on>
+        <sys_id>b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_xurre_imr_privacy_policy</sys_name>
+        <sys_package display_value="Xurrent IMR" source="x_xurre_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
+        <sys_update_name>sys_ui_page_x_xurre_imr_privacy_policy</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-06-10 00:00:00</sys_updated_on>
+    </sys_ui_page>
+</record_update>

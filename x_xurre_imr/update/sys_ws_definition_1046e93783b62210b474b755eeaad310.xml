@@ -6,7 +6,7 @@
         <consumes_customized>false</consumes_customized>
         <default_version>No active default version</default_version>
         <doc_link/>
-        <enforce_acl>cf9d01d3e73003009d6247e603f6a990</enforce_acl>
+        <enforce_acl>ad46e93783b62210b474b755eeaad310</enforce_acl>
         <is_versioned>false</is_versioned>
         <name>Xurrent IMR Integrations</name>
         <namespace>x_xurre_imr</namespace>

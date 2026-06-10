@@ -9,7 +9,7 @@
         <hint/>
         <homepage_renderer/>
         <homepage_renderer_id/>
-        <link_type>URL</link_type>
+        <link_type>DIRECT</link_type>
         <name>App Privacy Policy</name>
         <next_url/>
         <order>100</order>
@@ -30,7 +30,7 @@
         <sys_updated_by>admin</sys_updated_by>
         <sys_updated_on>2026-05-25 00:00:00</sys_updated_on>
         <title>App Privacy Policy</title>
-        <url>https://zenduty.com/privacy/</url>
+        <url>x_xurre_imr_privacy_policy.do</url>
         <view/>
         <window_name/>
     </sys_app_module>
