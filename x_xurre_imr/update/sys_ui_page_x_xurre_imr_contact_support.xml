@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_page">
+    <sys_ui_page action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <category>general</category>
+        <client_script/>
+        <description>Xurrent IMR application support coverage and contact details.</description>
+        <direct>false</direct>
+        <endpoint>x_xurre_imr_contact_support</endpoint>
+        <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+  <div style="max-width:860px;margin:24px auto;padding:0 20px;font-family:'SourceSansPro',Arial,sans-serif;line-height:1.55;color:#2e2e2e;">
+    <h1>Xurrent IMR — Contact Support</h1>
+    <p>Need help with the Xurrent IMR integration for ServiceNow? Use the channels below.</p>
+
+    <h2>Support coverage</h2>
+    <ul>
+      <li><strong>Hours:</strong> 24x7 for production-impacting issues; business hours for general requests.</li>
+      <li><strong>Scope:</strong> installation, configuration, OAuth setup, incident/work note synchronization, and connectivity to the Xurrent IMR service.</li>
+    </ul>
+
+    <h2>How to reach us</h2>
+    <ul>
+      <li><strong>Support portal:</strong>
+        <a href="https://xurrent-support.xurrent.com" target="_blank" rel="noopener noreferrer nofollow">https://support.xurrent.com</a>
+      </li>
+      <li><strong>Email:</strong>
+        <a href="mailto:support@xurrent.com" rel="noopener noreferrer nofollow">support@xurrent.com</a>
+      </li>
+    </ul>
+
+    <h2>Before contacting support</h2>
+    <p>Please have ready: your ServiceNow instance name, the value of <strong>x_xurre_imr.service_now_instance_identifier</strong>, whether <strong>x_xurre_imr.integration_enabled</strong> is true, and any relevant entries from <em>System Log &gt; Outbound HTTP Requests</em>.</p>
+  </div>
+</j:jelly>]]></html>
+        <name>x_xurre_imr_contact_support</name>
+        <processing_script/>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-06-10 00:00:00</sys_created_on>
+        <sys_id>c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_xurre_imr_contact_support</sys_name>
+        <sys_package display_value="Xurrent IMR" source="x_xurre_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
+        <sys_update_name>sys_ui_page_x_xurre_imr_contact_support</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-06-10 00:00:00</sys_updated_on>
+    </sys_ui_page>
+</record_update>

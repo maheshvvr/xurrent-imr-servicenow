@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_transform_map">
+    <sys_transform_map action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <creation_source>admin</creation_source>
+        <enforce_mandatory_fields>false</enforce_mandatory_fields>
+        <field_order>100</field_order>
+        <filter_script/>
+        <name>Xurrent IMR Import Incident Map</name>
+        <order>100</order>
+        <related_list_update>false</related_list_update>
+        <run_business_rules>false</run_business_rules>
+        <run_script>false</run_script>
+        <script/>
+        <source_name>x_xurre_imr_u_import_incident</source_name>
+        <source_table>x_xurre_imr_u_import_incident</source_table>
+        <sys_class_name>sys_transform_map</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-05-25 00:00:00</sys_created_on>
+        <sys_id>9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Xurrent IMR Import Incident Map</sys_name>
+        <sys_package display_value="Xurrent IMR" source="x_xurre_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
+        <sys_update_name>sys_transform_map_x_xurre_imr_import_incident</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-05-25 00:00:00</sys_updated_on>
+        <target_table>incident</target_table>
+    </sys_transform_map>
+</record_update>
