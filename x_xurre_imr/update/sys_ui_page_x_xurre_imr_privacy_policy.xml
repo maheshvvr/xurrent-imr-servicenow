@@ -19,17 +19,17 @@
     <p>Incident and work note changes are sent to the Xurrent IMR service (powered by Zenduty) to keep the corresponding Xurrent IMR incident in sync. Inbound requests from Xurrent IMR create and update incidents and work notes through ServiceNow Import Set staging tables and Transform Maps.</p>
 
     <h2>Data transfer, processing &amp; storage outside ServiceNow</h2>
-    <p>Yes — outbound event payloads are transmitted over HTTPS to the Xurrent IMR / Zenduty service, which is hosted outside of your ServiceNow instance. That service processes and stores the incident and work note data you choose to synchronize. No data is sent unless an administrator sets <strong>x_xurre_imr.integration_enabled</strong> to <strong>true</strong>.</p>
+    <p>Yes — outbound event payloads are transmitted over HTTPS to the Xurrent IMR / Zenduty service, which is hosted outside of your ServiceNow instance. That service processes and stores the incident and work note data you choose to synchronize. No data is sent unless an administrator sets&#160;<strong>x_xurre_imr.integration_enabled</strong>&#160;to&#160;<strong>true</strong>.</p>
 
     <h2>How the data is secured</h2>
-    <p>Outbound payloads are signed with HMAC-SHA256 using a shared secret (<strong>x_xurre_imr.webhook_secret</strong>) and delivered in the <strong>X-Xurrent-IMR-Signature</strong> header so the receiver can verify integrity and authenticity. Inbound calls are authenticated via OAuth 2.0 and authorized by application-scoped ACLs restricted to a dedicated integration role.</p>
+    <p>Outbound payloads are signed with HMAC-SHA256 using a shared secret (<strong>x_xurre_imr.webhook_secret</strong>) and delivered in the&#160;<strong>X-Xurrent-IMR-Signature</strong>&#160;header so the receiver can verify integrity and authenticity. Inbound calls are authenticated via OAuth 2.0 and authorized by application-scoped ACLs restricted to a dedicated integration role.</p>
 
     <h2>Data sharing</h2>
     <p>Data is shared only with the Xurrent IMR / Zenduty service you connect to. It is not sold or shared with any other third party by the App.</p>
 
     <h2>More information</h2>
-    <p>For the full Xurrent / Zenduty privacy policy, see
-      <a href="https://zenduty.com/privacy/" target="_blank" rel="noopener noreferrer nofollow">https://zenduty.com/privacy/</a>.
+    <p>For the full Xurrent / Zenduty privacy policy, see 
+      <a href="https://www.xurrent.com/privacy" target="_blank" rel="noopener noreferrer nofollow">https://zenduty.com/privacy/</a>.
     </p>
   </div>
 </j:jelly>]]></html>
