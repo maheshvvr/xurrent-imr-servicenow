@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sys_transform_map">
     <sys_transform_map action="INSERT_OR_UPDATE">
         <active>true</active>
-        <creation_source>admin</creation_source>
+        <copy_empty_fields>false</copy_empty_fields>
+        <create_new_record_on_empty_coalesce_fields>false</create_new_record_on_empty_coalesce_fields>
         <enforce_mandatory_fields>false</enforce_mandatory_fields>
-        <field_order>100</field_order>
-        <filter_script/>
         <name>Xurrent IMR Import Incident Map</name>
         <order>100</order>
-        <related_list_update>false</related_list_update>
         <run_business_rules>false</run_business_rules>
         <run_script>false</run_script>
         <script/>
-        <source_name>x_xurre_imr_u_import_incident</source_name>
         <source_table>x_xurre_imr_u_import_incident</source_table>
         <sys_class_name>sys_transform_map</sys_class_name>
         <sys_created_by>admin</sys_created_by>
