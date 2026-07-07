@@ -20,7 +20,9 @@
 		errorMessage = 'Unknown operation: ' + operation;
 	}
 
-	ignore = true; // All writes are handled manually; skip default field mapping
+	// The default target insert is suppressed by the companion onBefore script
+	// (which sets ignore = true). All record writes are performed manually here,
+	// in the onAfter phase, per transform-map best practice for target inserts.
 
 	function handleCreateIncident() {
 		if (!source.getValue('short_description') || !source.getValue('x_xurre_imr_incident')
@@ -220,13 +222,13 @@
         <sys_created_on>2026-06-09 17:49:34</sys_created_on>
         <sys_id>090862b62f5d471086d2998e8ea4e3d7</sys_id>
         <sys_mod_count>0</sys_mod_count>
-        <sys_name>onBefore</sys_name>
+        <sys_name>onAfter</sys_name>
         <sys_package display_value="Xurrent IMR" source="x_xurre_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
         <sys_policy/>
         <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
         <sys_update_name>sys_transform_script_090862b62f5d471086d2998e8ea4e3d7</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
         <sys_updated_on>2026-06-09 17:49:34</sys_updated_on>
-        <when>onBefore</when>
+        <when>onAfter</when>
     </sys_transform_script>
 </record_update>

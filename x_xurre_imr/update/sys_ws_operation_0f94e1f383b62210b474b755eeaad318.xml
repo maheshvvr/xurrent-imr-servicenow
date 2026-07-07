@@ -28,7 +28,11 @@
 	importGR.setValue('work_note', newWorkNote);
 	var importSysId = importGR.insert();
 
-	importGR.get(importSysId);
+	if (!importGR.get(importSysId)) {
+		response.setStatus(400);
+		response.setBody({ result: 'Import record not found after insert.' });
+		return;
+	}
 	var resultStatus = importGR.getValue('result_status');
 	var resultMessage = importGR.getValue('result_message');
 

@@ -13,7 +13,7 @@
         <client_callable>false</client_callable>
         <collection>incident</collection>
         <condition>gs.getProperty('x_xurre_imr.integration_enabled') == 'true'</condition>
-        <description/>
+        <description>Mirrors ServiceNow incident create/update/delete events to the Xurrent IMR service; ServiceNow incidents are the synced source, so firing on all incidents is by design. Impact on OOB incident behavior is limited by app-specific controls: gated by the x_xurre_imr.integration_enabled property (ships false, so inert until an admin opts in); skips Xurrent-IMR-originated incidents on insert (x_xurre_imr_originated_from == 'x_xurre_imr') to avoid echo loops; runs in the 'after' phase via executeAsync so it never blocks/aborts the transaction; and is outbound/read-only (reads incident fields and emits a signed webhook, changes no incident fields).</description>
         <execute_function>false</execute_function>
         <filter_condition/>
         <is_rest>false</is_rest>

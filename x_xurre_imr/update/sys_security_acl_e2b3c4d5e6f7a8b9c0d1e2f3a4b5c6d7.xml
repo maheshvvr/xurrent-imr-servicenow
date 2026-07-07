@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_security_acl">
+    <sys_security_acl action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <admin_overrides>true</admin_overrides>
+        <advanced>false</advanced>
+        <applies_to/>
+        <condition/>
+        <controlled_by_refs/>
+        <decision_type>allow</decision_type>
+        <description>Default access control on x_xurre_imr_contact_support UI page</description>
+        <local_or_existing>Existing</local_or_existing>
+        <name>x_xurre_imr_contact_support</name>
+        <operation display_value="execute">execute</operation>
+        <script/>
+        <security_attribute/>
+        <sys_class_name>sys_security_acl</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-06-10 00:00:00</sys_created_on>
+        <sys_id>e2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_xurre_imr_contact_support</sys_name>
+        <sys_package display_value="Xurrent IMR" source="x_xurre_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
+        <sys_update_name>sys_security_acl_e2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-06-10 00:00:00</sys_updated_on>
+        <type display_value="UI Page">ui_page</type>
+    </sys_security_acl>
+</record_update>

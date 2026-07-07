@@ -37,7 +37,10 @@
 		importGR.setValue('mandatory_fields', JSON.stringify(body.mandatory_fields));
 		var importSysId = importGR.insert();
 
-		importGR.get(importSysId);
+		if (!importGR.get(importSysId)) {
+			response.setStatus(400);
+			return { status: "error", message: "Import record not found after insert." };
+		}
 		var resultStatus = importGR.getValue('result_status');
 		var resultMessage = importGR.getValue('result_message');
 		var resultSysId = importGR.getValue('result_sys_id');

@@ -27,7 +27,11 @@
 		importGR.setValue('x_xurre_imr_incident', xurrentIMRIncident);
 		var importSysId = importGR.insert();
 
-		importGR.get(importSysId);
+		if (!importGR.get(importSysId)) {
+			response.setStatus(400);
+			response.setBody({ success: false, error: "Import record not found after insert." });
+			return;
+		}
 		var resultStatus = importGR.getValue('result_status');
 		var resultMessage = importGR.getValue('result_message');
 
