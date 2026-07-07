@@ -4,7 +4,7 @@
         <can_delegate>true</can_delegate>
         <description/>
         <elevated_privilege>false</elevated_privilege>
-        <federated_id/>
+        <federated_id>3SvTroMW/8md9wKRsKc3pJbdS1xUX3fm1WU7e7aOZnQ=</federated_id>
         <grantable>true</grantable>
         <includes_roles/>
         <name>x_xurre_imr.import_work_note_user</name>

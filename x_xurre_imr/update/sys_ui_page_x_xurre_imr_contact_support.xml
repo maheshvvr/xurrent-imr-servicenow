@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_page">
     <sys_ui_page action="INSERT_OR_UPDATE">
-        <active>true</active>
         <category>general</category>
         <client_script/>
         <description>Xurrent IMR application support coverage and contact details.</description>
         <direct>false</direct>
-        <endpoint>x_xurre_imr_contact_support</endpoint>
+        <endpoint>x_xurre_imr_x_xurre_imr_contact_support.do</endpoint>
         <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
 <j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
   <div style="max-width:860px;margin:24px auto;padding:0 20px;font-family:'SourceSansPro',Arial,sans-serif;line-height:1.55;color:#2e2e2e;">

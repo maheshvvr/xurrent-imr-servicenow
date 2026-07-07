@@ -4,7 +4,7 @@
         <can_delegate>true</can_delegate>
         <description/>
         <elevated_privilege>false</elevated_privilege>
-        <federated_id/>
+        <federated_id>ByyotMYyMCimS1A3Z7xMkZBNpt0Z4zHUPXbvcs8WNXg=</federated_id>
         <grantable>true</grantable>
         <includes_roles/>
         <name>x_xurre_imr.import_incident_user</name>
