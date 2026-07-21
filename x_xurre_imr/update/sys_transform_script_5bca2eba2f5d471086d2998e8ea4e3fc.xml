@@ -26,6 +26,22 @@
 			return;
 		}
 
+		// Idempotency: if this exact work note already exists on the incident,
+		// return it instead of adding a duplicate (guards retries/replays).
+		var existingGR = new GlideRecord('sys_journal_field');
+		existingGR.addQuery('element_id', incidentSysId);
+		existingGR.addQuery('element', 'work_notes');
+		existingGR.addQuery('value', workNote);
+		existingGR.setLimit(1);
+		existingGR.query();
+		if (existingGR.next()) {
+			source.setValue('result_sys_id', existingGR.getUniqueValue());
+			source.setValue('result_status', 'success');
+			source.setValue('result_message', 'Work note already exists on this incident');
+			source.update();
+			return;
+		}
+
 		incidentGR.work_notes = workNote;
 		incidentGR.update();
 
@@ -55,6 +71,22 @@
 		var incidentGR = new GlideRecord('incident');
 		if (!incidentGR.get(incidentSysId)) {
 			setError('Incident not found with sys_id: ' + incidentSysId);
+			return;
+		}
+
+		// Idempotency: if this exact content already exists on the incident,
+		// return it instead of re-posting (guards retries/replays).
+		var existingGR = new GlideRecord('sys_journal_field');
+		existingGR.addQuery('element_id', incidentSysId);
+		existingGR.addQuery('element', 'work_notes');
+		existingGR.addQuery('value', newWorkNote);
+		existingGR.setLimit(1);
+		existingGR.query();
+		if (existingGR.next()) {
+			source.setValue('result_sys_id', existingGR.getUniqueValue());
+			source.setValue('result_status', 'success');
+			source.setValue('result_message', 'Work note already exists on this incident');
+			source.update();
 			return;
 		}
 
