@@ -4,7 +4,7 @@
         <can_delegate>true</can_delegate>
         <description>Grants read access to the Xurrent IMR informational UI pages (privacy policy and contact support). Assign to users who should be able to view these pages; administrators can view them regardless.</description>
         <elevated_privilege>false</elevated_privilege>
-        <federated_id/>
+        <federated_id>CKKeejNMmhH8Sdiu9tIyjzIgUaGBpPH31fafE0YvTUY=</federated_id>
         <grantable>true</grantable>
         <includes_roles/>
         <name>x_xurre_imr.user</name>
