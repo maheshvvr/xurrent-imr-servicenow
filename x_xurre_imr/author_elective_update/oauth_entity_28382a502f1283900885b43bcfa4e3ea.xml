@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="oauth_entity">
+    <oauth_entity action="DELETE">
+        <access>public</access>
+        <access_token_lifespan>1800</access_token_lifespan>
+        <active>true</active>
+        <allow_snc_user_exchange>false</allow_snc_user_exchange>
+        <auth_aig_client>false</auth_aig_client>
+        <auth_cimd_client>false</auth_cimd_client>
+        <auth_code_lifespan>60</auth_code_lifespan>
+        <auth_url/>
+        <bff_cookie_exchange_allowed>false</bff_cookie_exchange_allowed>
+        <bind_token_to_session>false</bind_token_to_session>
+        <certificate_url/>
+        <client_id>f23a3ae5d8274dd59f5b4e121caabb17</client_id>
+        <client_secret>﷞﷟﷒3be5362c2ffc031086d2998e8ea4e3e3﷬﷔1﷬﷭QOxOMwr2rFHPPzK0veeihQ==Eitfpl6QWIrxrVVBe-GlZbXN4F3OK9egp3V94zHJJxc6K00oCJbxEnH0PxfF21p4﷮﷯</client_secret>
+        <client_type>integration_as_a_user</client_type>
+        <client_uuid>e4382a502f1283900885b43bcfa4e3ea</client_uuid>
+        <code_challenge_method>S256</code_challenge_method>
+        <comments/>
+        <default_grant_type>password</default_grant_type>
+        <extend_refresh_token_expiry>false</extend_refresh_token_expiry>
+        <id_token_lifespan>86400</id_token_lifespan>
+        <inbound_grant_type>client_credential</inbound_grant_type>
+        <jwt_provider/>
+        <login_url/>
+        <logo_url/>
+        <message_signature_lifespan>60</message_signature_lifespan>
+        <mobile_client>false</mobile_client>
+        <name>Xurrent IMR Oauth</name>
+        <oauth_api_script/>
+        <only_rest_processor>false</only_rest_processor>
+        <protocol_name/>
+        <public_client>false</public_client>
+        <redirect_url/>
+        <refresh_token_lifespan>8640000</refresh_token_lifespan>
+        <refresh_token_url/>
+        <restricted_binding>false</restricted_binding>
+        <revoke_token_url/>
+        <salt/>
+        <scope_restriction_status>unrestricted</scope_restriction_status>
+        <send_client_credentials_as>request_body_parameter</send_client_credentials_as>
+        <skip_authorize>false</skip_authorize>
+        <sub_claim>sys_id</sub_claim>
+        <sys_class_name>oauth_entity</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-07-21 16:27:31</sys_created_on>
+        <sys_id>28382a502f1283900885b43bcfa4e3ea</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Xurrent IMR Oauth</sys_name>
+        <sys_package display_value="Xurrent IMR" source="x_xurre_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
+        <sys_update_name>oauth_entity_28382a502f1283900885b43bcfa4e3ea</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-07-21 16:27:31</sys_updated_on>
+        <token_format>opaque</token_format>
+        <token_url/>
+        <type>client</type>
+        <use_mutual_auth>false</use_mutual_auth>
+        <use_pkce>false</use_pkce>
+        <user display_value="Xurrent IMR Integration">531f0ebb2f3147100885b43bcfa4e3df</user>
+    </oauth_entity>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</application>
+        <file_path/>
+        <instance_id>24ff9a20ff388794c80bf8e4fc4fd9c9</instance_id>
+        <instance_name>ven09183</instance_name>
+        <name>oauth_entity_28382a502f1283900885b43bcfa4e3ea</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="oauth_entity"><oauth_entity action="INSERT_OR_UPDATE"><access>public</access><access_token_lifespan>1800</access_token_lifespan><active>true</active><allow_snc_user_exchange>false</allow_snc_user_exchange><auth_aig_client>false</auth_aig_client><auth_cimd_client>false</auth_cimd_client><auth_code_lifespan>60</auth_code_lifespan><auth_url/><bff_cookie_exchange_allowed>false</bff_cookie_exchange_allowed><bind_token_to_session>false</bind_token_to_session><certificate_url/><client_id>f23a3ae5d8274dd59f5b4e121caabb17</client_id><client_secret>﷞﷟﷒3be5362c2ffc031086d2998e8ea4e3e3﷬﷔1﷬﷭QOxOMwr2rFHPPzK0veeihQ==Eitfpl6QWIrxrVVBe-GlZbXN4F3OK9egp3V94zHJJxc6K00oCJbxEnH0PxfF21p4﷮﷯</client_secret><client_type>integration_as_a_user</client_type><client_uuid>e4382a502f1283900885b43bcfa4e3ea</client_uuid><code_challenge_method>S256</code_challenge_method><comments/><default_grant_type>password</default_grant_type><extend_refresh_token_expiry>false</extend_refresh_token_expiry><id_token_lifespan>86400</id_token_lifespan><inbound_grant_type>client_credential</inbound_grant_type><jwt_provider/><login_url/><logo_url/><message_signature_lifespan>60</message_signature_lifespan><mobile_client>false</mobile_client><name>Xurrent IMR Oauth</name><oauth_api_script/><only_rest_processor>false</only_rest_processor><protocol_name/><public_client>false</public_client><redirect_url/><refresh_token_lifespan>8640000</refresh_token_lifespan><refresh_token_url/><restricted_binding>false</restricted_binding><revoke_token_url/><salt/><scope_restriction_status>unrestricted</scope_restriction_status><send_client_credentials_as>request_body_parameter</send_client_credentials_as><skip_authorize>false</skip_authorize><sub_claim>sys_id</sub_claim><sys_class_name>oauth_entity</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2026-07-21 16:27:31</sys_created_on><sys_id>28382a502f1283900885b43bcfa4e3ea</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Xurrent IMR Oauth</sys_name><sys_package display_value="Xurrent IMR" source="x_xurre_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package><sys_policy/><sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope><sys_update_name>oauth_entity_28382a502f1283900885b43bcfa4e3ea</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2026-07-21 16:27:31</sys_updated_on><token_format>opaque</token_format><token_url/><type>client</type><use_mutual_auth>false</use_mutual_auth><use_pkce>false</use_pkce><user display_value="Xurrent IMR Integration">531f0ebb2f3147100885b43bcfa4e3df</user></oauth_entity></record_update>]]></payload>
+        <payload_hash>-1173996855</payload_hash>
+        <record_name>Xurrent IMR Oauth</record_name>
+        <reverted_from/>
+        <source>a2b4e2be2f1d471086d2998e8ea4e3b7</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-07-21 16:27:31</sys_created_on>
+        <sys_id>91582e502f1283900885b43bcfa4e3c4</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>19f8580fe050000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-07-21 16:27:31</sys_updated_on>
+        <type>Application Registries</type>
+        <update_guid>51582e503812839024d8ff5f948a0ec3</update_guid>
+        <update_guid_history>51582e503812839024d8ff5f948a0ec3:-1173996855</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="Xurrent IMR Oauth">b63d26d82f1283900885b43bcfa4e325</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-07-21 16:48:54</sys_created_on>
+        <sys_db_object display_value="" name="oauth_entity">oauth_entity</sys_db_object>
+        <sys_id>9af83a0aeb4a4aebb35dc30ae8516a09</sys_id>
+        <sys_metadata>28382a502f1283900885b43bcfa4e3ea</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Xurrent IMR Oauth</sys_name>
+        <sys_package display_value="Xurrent IMR" source="x_xurre_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
+        <sys_scope_delete display_value="">1c5bba5cc68d463898413a03e03750c1</sys_scope_delete>
+        <sys_update_name>oauth_entity_28382a502f1283900885b43bcfa4e3ea</sys_update_name>
+        <sys_update_version display_value="oauth_entity_28382a502f1283900885b43bcfa4e3ea">91582e502f1283900885b43bcfa4e3c4</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-07-21 16:48:54</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

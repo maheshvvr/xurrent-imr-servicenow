@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element db_object_id="db03eeba2f1d471086d2998e8ea4e388" extends="sys_import_set_row" label="Import Work Note" max_length="40" name="x_xurre_imr_u_import_work_note" type="collection">
+        <element label="Work Note" max_length="4000" name="work_note" type="string"/>
+        <element label="Note sys ID" max_length="32" name="note_sys_id" type="string"/>
+        <element label="Result sys ID" max_length="32" name="result_sys_id" type="string"/>
+        <element label="Result message" max_length="4000" name="result_message" type="string"/>
+        <element label="Result status" max_length="40" name="result_status" type="string"/>
+        <element label="Incident sys ID" max_length="32" name="incident_sys_id" type="string"/>
+        <element label="Operation" max_length="40" name="operation" type="string"/>
+    </element>
+</database>

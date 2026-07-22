@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="result_message" label="Result message" language="en" table="x_xurre_imr_u_import_work_note">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>result_message</element>
+            <help/>
+            <hint/>
+            <label>Result message</label>
+            <language>en</language>
+            <name>x_xurre_imr_u_import_work_note</name>
+            <plural>Result messages</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2026-06-09 17:32:30</sys_created_on>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Result message</sys_name>
+            <sys_package display_value="Xurrent IMR" source="x_xurre_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
+            <sys_update_name>sys_documentation_x_xurre_imr_u_import_work_note_result_message_en</sys_update_name>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2026-06-09 17:32:30</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

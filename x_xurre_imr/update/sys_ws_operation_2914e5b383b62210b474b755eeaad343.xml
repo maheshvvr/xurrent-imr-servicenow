@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_operation">
+    <sys_ws_operation action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <consumes>application/json,application/xml,text/xml</consumes>
+        <consumes_customized>false</consumes_customized>
+        <default_operation_uri/>
+        <enforce_acl>a12914e5b383b62210b474b755eeaad3</enforce_acl>
+        <http_method>POST</http_method>
+        <name>Create Incident</name>
+        <operation_script><![CDATA[(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
+
+	try {
+		var body = request.body.data;
+
+		if (!body || !body.short_description || !body.x_xurre_imr_incident
+				|| !body.urgency_sys_id || !body.state_sys_id || !body.entity_type_sys_id || !body.mandatory_fields) {
+			response.setStatus(400);
+			return {
+				status: "error",
+				message: "Missing required fields: short_description, x_xurre_imr_incident, urgency_sys_id, state_sys_id, entity_type_sys_id, mandatory_fields"
+			};
+		}
+
+		var importGR = new GlideRecord('x_xurre_imr_u_import_incident');
+		importGR.initialize();
+		importGR.setValue('operation', 'create_incident');
+		importGR.setValue('short_description', body.short_description);
+		importGR.setValue('description', body.description || '');
+		importGR.setValue('urgency_sys_id', body.urgency_sys_id);
+		importGR.setValue('state_sys_id', body.state_sys_id);
+		importGR.setValue('snow_priority_sys_id', body.snow_priority_sys_id || '');
+		importGR.setValue('x_xurre_imr_incident', body.x_xurre_imr_incident);
+		importGR.setValue('entity_type_sys_id', body.entity_type_sys_id);
+		importGR.setValue('entity_type_mapping_mode', body.entity_type_mapping_mode || 0);
+		importGR.setValue('entity_record_sys_id', body.entity_record_sys_id || '');
+		importGR.setValue('service_name', body.service_name || '');
+		importGR.setValue('mandatory_fields', JSON.stringify(body.mandatory_fields));
+		var importSysId = importGR.insert();
+
+		if (!importGR.get(importSysId)) {
+			response.setStatus(400);
+			return { status: "error", message: "Import record not found after insert." };
+		}
+		var resultStatus = importGR.getValue('result_status');
+		var resultMessage = importGR.getValue('result_message');
+		var resultSysId = importGR.getValue('result_sys_id');
+		var resultNumber = importGR.getValue('result_number');
+
+		if (resultStatus !== 'success') {
+			response.setStatus(400);
+			return { status: "error", message: resultMessage };
+		}
+
+		gs.info("Incident created successfully");
+		response.setStatus(201);
+		return {
+			status: "success",
+			message: "Incident created",
+			sys_id: resultSysId,
+			number: resultNumber
+		};
+
+	} catch (err) {
+		gs.error("Incident creation failed: " + err.message);
+		response.setStatus(400);
+		return { status: "error", message: err.message };
+	}
+
+})(request, response);]]></operation_script>
+        <operation_uri>/api/x_xurre_imr/xurrent_imr_alerts/create_incident</operation_uri>
+        <produces>application/json,application/xml,text/xml</produces>
+        <produces_customized>false</produces_customized>
+        <relative_path>/create_incident</relative_path>
+        <request_example/>
+        <requires_acl_authorization>true</requires_acl_authorization>
+        <requires_authentication>true</requires_authentication>
+        <requires_snc_internal_role>false</requires_snc_internal_role>
+        <short_description/>
+        <sys_class_name>sys_ws_operation</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-07-24 12:37:53</sys_created_on>
+        <sys_id>2914e5b383b62210b474b755eeaad343</sys_id>
+        <sys_mod_count>11</sys_mod_count>
+        <sys_name>Create Incident</sys_name>
+        <sys_package display_value="Xurrent IMR" source="x_xurre_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
+        <sys_update_name>sys_ws_operation_2914e5b383b62210b474b755eeaad343</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-05-19 07:07:56</sys_updated_on>
+        <web_service_definition display_value="Xurrent IMR Alerts">ecf325b383b62210b474b755eeaad362</web_service_definition>
+        <web_service_version/>
+    </sys_ws_operation>
+</record_update>

@@ -1,0 +1,74 @@
+# Xurrent IMR for ServiceNow — Installation & Configuration Guide
+
+> Template note: This document follows the ServiceNow-approved Installation & Configuration Guide template. Replace partner-specific placeholders (URLs, support contacts, screenshots) before submission.
+
+## 1. Overview
+
+The Xurrent IMR application integrates ServiceNow Incident Management with the Xurrent IMR service (powered by Zenduty). It synchronizes incidents and work notes bidirectionally:
+
+- **Outbound:** Business Rules on `incident` and `sys_journal_field` send signed events to Xurrent IMR (HMAC-SHA256, `X-Xurrent-IMR-Signature` header).
+- **Inbound:** Scripted REST APIs receive create/update requests and write to OOB tables **through Import Set staging tables and Transform Maps** (no direct OOB inserts).
+
+- **Scope:** `x_xurre_imr`
+- **Package sys_id:** `99b1a1ff83762210b474b755eeaad3d0`
+
+## 2. Prerequisites
+
+- ServiceNow release: (state minimum supported family).
+- Roles to install/configure: `admin`.
+- A Xurrent / Zenduty account with ServiceNow integration enabled.
+
+## 3. Install the application
+
+Install the Xurrent IMR application from the ServiceNow Store. All artifacts (Scripted REST APIs, Business Rules, Import Set tables, Transform Maps, ACLs, roles, system properties, application menu and modules) are provisioned automatically.
+
+## 4. Configure OAuth (inbound authentication)
+
+The OAuth Application Registry record is **not shipped with the app** — create it manually so no credentials are packaged:
+
+1. Navigate to **System OAuth → Application Registry → New → Create an OAuth API endpoint for external clients**.
+2. Set **Name** (e.g. `Xurrent IMR OAuth`); leave **Client ID**/**Client Secret** blank so ServiceNow auto-generates them on save.
+3. Set the **Application** scope to **Xurrent IMR**, and set the **User** field to the dedicated integration user created in section 5.
+4. Save, then copy the generated **Client ID** and click **Generate Client Secret** to copy the secret (shown once).
+5. Enter both the Client ID and Client Secret in the Xurrent IMR portal under the ServiceNow integration settings.
+
+## 5. Create a dedicated integration user (least privilege)
+
+Do **not** run the integration as System Administrator. Create a dedicated local integration user:
+
+1. Navigate to **User Administration → Users → New**. Create e.g. `xurrent.imr.integration`.
+2. Assign **only** these roles:
+   - `rest_service`
+   - `x_xurre_imr.import_incident_user`
+   - `x_xurre_imr.import_work_note_user`
+3. Navigate to **System OAuth → Application Registry → Xurrent IMR OAuth** and set the **User** field to this dedicated user.
+
+This grants the inbound integration exactly the access needed to call the three Scripted REST services and write to the application's Import Set staging tables — nothing more.
+
+## 6. Configure system properties
+
+Navigate to **System Properties** (`sys_properties.list`) and set:
+
+| Property | Purpose | Example |
+|---|---|---|
+| `x_xurre_imr.service_now_instance_identifier` | Instance identifier issued by Xurrent/Zenduty | `your-instance-id` |
+| `x_xurre_imr.webhook_secret` | Shared HMAC-SHA256 secret for outbound signature; must match the value configured in the Xurrent portal | (32+ char secret) |
+| `x_xurre_imr.integration_enabled` | Master on/off gate for outbound Business Rules | `true` (after setup) |
+
+> Generate a webhook secret with, e.g., `openssl rand -hex 32`, and paste the same value into both ServiceNow and the Xurrent portal.
+
+## 7. Enable the integration
+
+Set `x_xurre_imr.integration_enabled = true`. Until this is `true`, the outbound Business Rules are a no-op and no data leaves the instance.
+
+## 8. Incident form section
+
+The application adds two fields to the `incident` table — **Originated From** (`x_xurre_imr_originated_from`) and **Xurrent IMR Incident** (`x_xurre_imr_x_xurre_imr_incident`). They are presented in a dedicated **Xurrent IMR** form section, not on the default incident body, so they do not clutter the form for incidents unrelated to Xurrent.
+
+## 9. Verification
+
+See the Test Plan document. At minimum: create an incident with the integration enabled and confirm an outbound call in **System Log → Outbound HTTP Requests** with the `X-Xurrent-IMR-Signature` header; and confirm an inbound create/update from Xurrent IMR lands via the Import Set staging table and Transform Map.
+
+## 10. Uninstall / disable
+
+Set `x_xurre_imr.integration_enabled = false` to halt outbound sync without uninstalling.

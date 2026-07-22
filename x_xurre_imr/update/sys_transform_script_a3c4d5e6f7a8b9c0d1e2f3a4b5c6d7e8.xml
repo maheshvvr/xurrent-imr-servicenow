@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_transform_script">
+    <sys_transform_script action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <map display_value="Xurrent IMR Import Incident Map">9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e</map>
+        <order>100</order>
+        <script><![CDATA[(function runTransformScript(source, map, log, target /*GlideRecord*/) {
+	// Suppress the default field mapping / target insert for every row. All record
+	// writes (create/update) are handled manually in the companion onAfter script,
+	// which still runs for ignored rows. Keeping the target insert out of the
+	// onBefore phase follows transform-map best practice for reference/target tables.
+	ignore = true;
+
+})(source, map, log, target);]]></script>
+        <sys_class_name>sys_transform_script</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-06-09 17:49:34</sys_created_on>
+        <sys_id>a3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>onBefore</sys_name>
+        <sys_package display_value="Xurrent IMR" source="x_xurre_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
+        <sys_update_name>sys_transform_script_a3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-06-09 17:49:34</sys_updated_on>
+        <when>onBefore</when>
+    </sys_transform_script>
+</record_update>

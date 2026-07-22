@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_dictionary action="DELETE" element="u_short_description" table="x_xurre_imr_u_import_incident">
+        <active>true</active>
+        <array>false</array>
+        <attributes/>
+        <audit>false</audit>
+        <column_label>Short Description</column_label>
+        <element>u_short_description</element>
+        <internal_type display_value="String">string</internal_type>
+        <mandatory>false</mandatory>
+        <max_length>255</max_length>
+        <name>x_xurre_imr_u_import_incident</name>
+        <sys_class_name>sys_dictionary</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-05-25 00:00:00</sys_created_on>
+        <sys_id>c3003c3003c3003c3003c3003c3003c30</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Short Description</sys_name>
+        <sys_package display_value="Xurrent IMR" source="x_xurre_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
+        <sys_update_name>sys_dictionary_x_xurre_imr_u_import_incident_u_short_description</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-05-25 00:00:00</sys_updated_on>
+    </sys_dictionary>
+<sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</application>
+        <file_path/>
+        <instance_id>24ff9a20ff388794c80bf8e4fc4fd9c9</instance_id>
+        <instance_name>ven09183</instance_name>
+        <name>sys_dictionary_x_xurre_imr_u_import_incident_u_short_description</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_dictionary action="INSERT_OR_UPDATE" element="u_short_description" table="x_xurre_imr_u_import_incident">
+        <active>true</active>
+        <array>false</array>
+        <attributes/>
+        <audit>false</audit>
+        <column_label>Short Description</column_label>
+        <element>u_short_description</element>
+        <internal_type display_value="String">string</internal_type>
+        <mandatory>false</mandatory>
+        <max_length>255</max_length>
+        <name>x_xurre_imr_u_import_incident</name>
+        <sys_class_name>sys_dictionary</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-05-25 00:00:00</sys_created_on>
+        <sys_id>c3003c3003c3003c3003c3003c3003c30</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Short Description</sys_name>
+        <sys_package display_value="Xurrent IMR" source="x_xurre_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
+        <sys_update_name>sys_dictionary_x_xurre_imr_u_import_incident_u_short_description</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-05-25 00:00:00</sys_updated_on>
+    </sys_dictionary>
+</record_update>]]></payload>
+        <payload_hash>1284224890</payload_hash>
+        <record_name>x_xurre_imr_u_import_incident.u_short_description</record_name>
+        <reverted_from/>
+        <source>a0cd048e2f0507100885b43bcfa4e301</source>
+        <source_table>sys_upgrade_history</source_table>
+        <state>current</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-05-25 12:23:08</sys_created_on>
+        <sys_id>8acd448e2f0507100885b43bcfa4e378</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>19e5f16c5dc0000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-05-25 12:23:08</sys_updated_on>
+        <type>Dictionary</type>
+        <update_guid>4acd448e3d05071074513d3b2f809778</update_guid>
+        <update_guid_history>4acd448e3d05071074513d3b2f809778:1284224890</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-06-09 16:47:44</sys_created_on>
+        <sys_db_object display_value="" name="sys_dictionary">sys_dictionary</sys_db_object>
+        <sys_id>045196560db546f88084b50e60779289</sys_id>
+        <sys_metadata>c3003c3003c3003c3003c3003c3003c3</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Short Description</sys_name>
+        <sys_package display_value="Xurrent IMR" source="x_xurre_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_parent display_value="">7f8e9d0c1b2a3f4e5d6c7b8a9f0e1d2c</sys_parent>
+        <sys_policy/>
+        <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
+        <sys_scope_delete display_value="">1c5bba5cc68d463898413a03e03750c1</sys_scope_delete>
+        <sys_update_name>sys_dictionary_x_xurre_imr_u_import_incident_u_short_description</sys_update_name>
+        <sys_update_version display_value="sys_dictionary_x_xurre_imr_u_import_incident_u_short_description">8acd448e2f0507100885b43bcfa4e378</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-06-09 16:47:44</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

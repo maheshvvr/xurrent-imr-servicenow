@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>true</action_delete>
+        <action_insert>true</action_insert>
+        <action_query>false</action_query>
+        <action_update>true</action_update>
+        <active>true</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>sys_journal_field</collection>
+        <condition>gs.getProperty('x_xurre_imr.integration_enabled') == 'true' &amp;&amp; current.getValue('element') == 'work_notes'</condition>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition/>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>ServiceNow Work Note Alert Business Rule</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[function hmacSHA256(key, message) {
+	var K = [
+		0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
+		0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
+		0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
+		0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
+		0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
+		0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
+		0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
+		0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2
+	];
+	function rotr(x,n){return(x>>>n)|(x<<(32-n));}
+	function add(a,b){return(a+b)|0;}
+	function sha256(bytes){
+		var H=[0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
+		var orig=bytes.length;
+		bytes.push(0x80);
+		while(bytes.length%64!==56)bytes.push(0);
+		var bl=orig*8;
+		bytes.push(0);bytes.push(0);bytes.push(0);bytes.push(0);
+		bytes.push((bl>>>24)&0xff);bytes.push((bl>>>16)&0xff);bytes.push((bl>>>8)&0xff);bytes.push(bl&0xff);
+		for(var i=0;i<bytes.length;i+=64){
+			var W=[];
+			for(var t=0;t<16;t++)W[t]=(bytes[i+t*4]<<24)|(bytes[i+t*4+1]<<16)|(bytes[i+t*4+2]<<8)|bytes[i+t*4+3];
+			for(var t=16;t<64;t++){
+				var s0=rotr(W[t-15],7)^rotr(W[t-15],18)^(W[t-15]>>>3);
+				var s1=rotr(W[t-2],17)^rotr(W[t-2],19)^(W[t-2]>>>10);
+				W[t]=add(add(W[t-16],s0),add(W[t-7],s1));
+			}
+			var a=H[0],b=H[1],c=H[2],d=H[3],e=H[4],f=H[5],g=H[6],h=H[7];
+			for(var t=0;t<64;t++){
+				var T1=add(add(add(h,rotr(e,6)^rotr(e,11)^rotr(e,25)),add((e&f)^(~e&g),K[t])),W[t]);
+				var T2=add(rotr(a,2)^rotr(a,13)^rotr(a,22),(a&b)^(a&c)^(b&c));
+				h=g;g=f;f=e;e=add(d,T1);d=c;c=b;b=a;a=add(T1,T2);
+			}
+			H[0]=add(H[0],a);H[1]=add(H[1],b);H[2]=add(H[2],c);H[3]=add(H[3],d);
+			H[4]=add(H[4],e);H[5]=add(H[5],f);H[6]=add(H[6],g);H[7]=add(H[7],h);
+		}
+		return H;
+	}
+	function strToBytes(s){
+		var b=[];
+		for(var i=0;i<s.length;i++){
+			var c=s.charCodeAt(i);
+			if(c<0x80){b.push(c);}
+			else if(c<0x800){b.push(0xc0|(c>>6));b.push(0x80|(c&0x3f));}
+			else{b.push(0xe0|(c>>12));b.push(0x80|((c>>6)&0x3f));b.push(0x80|(c&0x3f));}
+		}
+		return b;
+	}
+	function wordsToBytes(w){
+		var b=[];
+		for(var i=0;i<w.length;i++){b.push((w[i]>>>24)&0xff);b.push((w[i]>>>16)&0xff);b.push((w[i]>>>8)&0xff);b.push(w[i]&0xff);}
+		return b;
+	}
+	function wordsToHex(w){
+		var h='';
+		for(var i=0;i<w.length;i++)h+=('00000000'+(w[i]>>>0).toString(16)).slice(-8);
+		return h;
+	}
+	var kb=strToBytes(key);
+	if(kb.length>64)kb=wordsToBytes(sha256(kb));
+	while(kb.length<64)kb.push(0);
+	var ik=[],ok=[];
+	for(var i=0;i<64;i++){ik.push(kb[i]^0x36);ok.push(kb[i]^0x5c);}
+	var inner=wordsToBytes(sha256(ik.concat(strToBytes(message))));
+	return wordsToHex(sha256(ok.concat(inner)));
+}
+
+(function executeRule(current, previous) {
+	try {
+		// Skip outbound integration to Xurrent IMR
+		if (current.operation() == 'insert' && current.getValue('value') && current.getValue('value').indexOf('[IMR]') == 0) {
+			gs.info("Not triggering the work note business rule because work note starts with [IMR]");
+			return;
+		}
+
+		// Only relay work notes for incidents managed by the Xurrent IMR integration,
+		// so this business rule on the OOB sys_journal_field table does not affect
+		// journal activity on unrelated records or tables.
+		var incidentSysId = current.getValue('element_id');
+		var incidentGR = new GlideRecord('incident');
+		if (!incidentGR.get(incidentSysId) || !incidentGR.getValue('x_xurre_imr_x_xurre_imr_incident')) {
+			return;
+		}
+
+		// Initialize the payload object
+		var payload = {};
+
+		// Use getElements() to retrieve all fields
+		var elements = current.getElements();
+		for (var i = 0; i < elements.length; i++) {
+			var fieldName = elements[i].getName();
+			payload[fieldName] = current.getValue(fieldName);
+		}
+
+		// Add the action field to the payload
+		payload.action = current.operation();
+
+		// Add related incident sys_id
+		payload.incident_sys_id = current.getValue('element_id');
+
+		// Convert the payload object to a JSON string
+		var payloadStr = JSON.stringify(payload);
+
+
+
+		var webhookSecret = gs.getProperty('x_xurre_imr.webhook_secret', '');
+		var signature = 'sha256=' + hmacSHA256(webhookSecret, payloadStr);
+
+		var r = new sn_ws.RESTMessageV2('ServiceNow Event', 'ServiceNow Work Note Alert');
+		r.setStringParameterNoEscape('service_now_instance_identifier', gs.getProperty('instance_name'));
+		r.setRequestHeader("Content-Type", "application/json");
+		r.setRequestHeader("X-Xurrent-IMR-Signature", signature);
+		r.setRequestBody(payloadStr);
+		r.executeAsync();
+
+		gs.info("ServiceNow Work Note Alert Business Rule Async REST call sent");
+
+	} catch (err) {
+		gs.error("ServiceNow Work Note Alert Business Rule Async REST call failed: " + err.message);
+	}
+})(current, previous);]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-07-24 12:35:24</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>5473297383b62210b474b755eeaad3b6</sys_id>
+        <sys_mod_count>9</sys_mod_count>
+        <sys_name>ServiceNow Work Note Alert Business Rule</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Xurrent IMR" source="x_xurre_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
+        <sys_update_name>sys_script_5473297383b62210b474b755eeaad3b6</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-04-14 08:37:08</sys_updated_on>
+        <template/>
+        <when>after</when>
+    </sys_script>
+    <sys_translated_text action="delete_multiple" query="documentkey=5473297383b62210b474b755eeaad3b6"/>
+</record_update>
