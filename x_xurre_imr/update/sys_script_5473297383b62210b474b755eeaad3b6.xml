@@ -109,7 +109,15 @@
 		// journal activity on unrelated records or tables.
 		var incidentSysId = current.getValue('element_id');
 		var incidentGR = new GlideRecord('incident');
-		if (!incidentGR.get(incidentSysId) || !incidentGR.getValue('x_xurre_imr_x_xurre_imr_incident')) {
+		if (!incidentGR.get(incidentSysId)) {
+			return;
+		}
+		var metaGR = new GlideRecord('x_xurre_imr_incident_meta');
+		metaGR.addQuery('incident', incidentSysId);
+		metaGR.addQuery('imr_incident', '!=', '');
+		metaGR.setLimit(1);
+		metaGR.query();
+		if (!metaGR.hasNext()) {
 			return;
 		}
 

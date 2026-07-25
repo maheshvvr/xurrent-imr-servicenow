@@ -33,17 +33,20 @@
 
 		// Idempotency: if an incident already exists for this Xurrent IMR incident,
 		// return it instead of inserting a duplicate (guards retries/replays).
-		var dupGR = new GlideRecord('incident');
-		dupGR.addQuery('x_xurre_imr_x_xurre_imr_incident', source.getValue('x_xurre_imr_incident'));
-		dupGR.setLimit(1);
-		dupGR.query();
-		if (dupGR.next()) {
-			source.setValue('result_sys_id', dupGR.getUniqueValue());
-			source.setValue('result_number', dupGR.getValue('number'));
-			source.setValue('result_status', 'success');
-			source.setValue('result_message', 'Incident already exists for this Xurrent IMR incident');
-			source.update();
-			return;
+		var dupMeta = new GlideRecord('x_xurre_imr_incident_meta');
+		dupMeta.addQuery('imr_incident', source.getValue('x_xurre_imr_incident'));
+		dupMeta.setLimit(1);
+		dupMeta.query();
+		if (dupMeta.next()) {
+			var dupInc = new GlideRecord('incident');
+			if (dupInc.get(dupMeta.getValue('incident'))) {
+				source.setValue('result_sys_id', dupInc.getUniqueValue());
+				source.setValue('result_number', dupInc.getValue('number'));
+				source.setValue('result_status', 'success');
+				source.setValue('result_message', 'Incident already exists for this Xurrent IMR incident');
+				source.update();
+				return;
+			}
 		}
 
 		var urgencyGR = new GlideRecord('sys_choice');
@@ -119,8 +122,6 @@
 		incident.initialize();
 		incident.short_description = source.getValue('short_description');
 		incident.description = source.getValue('description');
-		incident.x_xurre_imr_originated_from = 'x_xurre_imr';
-		incident.x_xurre_imr_x_xurre_imr_incident = source.getValue('x_xurre_imr_incident');
 		incident.urgency = urgencyGR.getValue('value');
 		incident.state = stateGR.getValue('value');
 		if (snowPriority) { incident.priority = snowPriority; }
@@ -144,6 +145,15 @@
 		}
 
 		var sysId = incident.insert();
+
+		// Store Xurrent IMR metadata in the app's own table (no custom columns on incident).
+		var meta = new GlideRecord('x_xurre_imr_incident_meta');
+		meta.initialize();
+		meta.setValue('incident', sysId);
+		meta.setValue('originated_from', 'x_xurre_imr');
+		meta.setValue('imr_incident', source.getValue('x_xurre_imr_incident'));
+		meta.insert();
+
 		source.setValue('result_sys_id', sysId);
 		source.setValue('result_number', incident.getValue('number'));
 		source.setValue('result_status', 'success');
@@ -215,8 +225,17 @@
 			return;
 		}
 
-		incidentGR.x_xurre_imr_x_xurre_imr_incident = source.getValue('x_xurre_imr_incident');
-		incidentGR.update();
+		// Upsert the Xurrent IMR metadata row for this incident.
+		var meta = new GlideRecord('x_xurre_imr_incident_meta');
+		meta.addQuery('incident', incidentGR.getUniqueValue());
+		meta.setLimit(1);
+		meta.query();
+		if (!meta.next()) {
+			meta.initialize();
+			meta.setValue('incident', incidentGR.getUniqueValue());
+		}
+		meta.setValue('imr_incident', source.getValue('x_xurre_imr_incident'));
+		meta.update();
 
 		source.setValue('result_status', 'success');
 		source.setValue('result_message', 'Mapping successful');

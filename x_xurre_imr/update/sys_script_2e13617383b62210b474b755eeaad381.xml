@@ -13,7 +13,7 @@
         <client_callable>false</client_callable>
         <collection>incident</collection>
         <condition>gs.getProperty('x_xurre_imr.integration_enabled') == 'true'</condition>
-        <description>Mirrors ServiceNow incident create/update/delete events to the Xurrent IMR service; ServiceNow incidents are the synced source, so firing on all incidents is by design. Impact on OOB incident behavior is limited by app-specific controls: gated by the x_xurre_imr.integration_enabled property (ships false, so inert until an admin opts in); skips Xurrent-IMR-originated incidents on insert (x_xurre_imr_originated_from == 'x_xurre_imr') to avoid echo loops; runs in the 'after' phase via executeAsync so it never blocks/aborts the transaction; and is outbound/read-only (reads incident fields and emits a signed webhook, changes no incident fields).</description>
+        <description>Mirrors ServiceNow incident create/update/delete events to the Xurrent IMR service; ServiceNow incidents are the synced source, so firing on all incidents is by design. Impact on OOB incident behavior is limited by app-specific controls: gated by the x_xurre_imr.integration_enabled property (ships false, so inert until an admin opts in); skips Xurrent-IMR-originated incidents on insert (originated_from on the x_xurre_imr_incident_meta row) to avoid echo loops; runs in the 'after' phase via executeAsync so it never blocks/aborts the transaction; and is outbound/read-only (reads incident fields and emits a signed webhook, changes no incident fields).</description>
         <execute_function>false</execute_function>
         <filter_condition/>
         <is_rest>false</is_rest>
@@ -98,10 +98,17 @@
 
 (function executeRule(current, previous) {
 	try {
-		// Skip outbound integration to Xurrent IMR
-		if (current.operation() == 'insert' && current.x_xurre_imr_originated_from == 'x_xurre_imr') {
-			gs.info("Not triggering the create busuness rule because incident is created by Xurrent IMR");
-			return;
+		// Skip outbound integration for incidents that originated from Xurrent IMR (echo guard).
+		if (current.operation() == 'insert') {
+			var metaGR = new GlideRecord('x_xurre_imr_incident_meta');
+			metaGR.addQuery('incident', current.getUniqueValue());
+			metaGR.addQuery('originated_from', 'x_xurre_imr');
+			metaGR.setLimit(1);
+			metaGR.query();
+			if (metaGR.hasNext()) {
+				gs.info("Not triggering the create busuness rule because incident is created by Xurrent IMR");
+				return;
+			}
 		}
 
 		// Initialize the payload object
