@@ -51,10 +51,10 @@
 
 })(request, response);
 ]]></operation_script>
-        <operation_uri>/api/x_xurre_imr/xurrent_imr_alerts/update_x_xurre_imr_incident_in_snow_incident</operation_uri>
+        <operation_uri>/api/x_xurre_imr/xurrent_imr_alerts/update_xurrent_imr_incident_in_snow_incident</operation_uri>
         <produces>application/json,application/xml,text/xml</produces>
         <produces_customized>false</produces_customized>
-        <relative_path>/update_x_xurre_imr_incident_in_snow_incident</relative_path>
+        <relative_path>/update_xurrent_imr_incident_in_snow_incident</relative_path>
         <request_example/>
         <requires_acl_authorization>true</requires_acl_authorization>
         <requires_authentication>true</requires_authentication>
