@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element db_object_id="445eed692f9a4b900885b43bcfa4e37c" label="Incident Meta" max_length="40" name="x_xurre_imr_incident_meta" type="collection">
+        <element label="Incident" max_length="32" name="incident" reference="incident" type="reference"/>
+        <element label="Originated From" max_length="40" name="originated_from" type="string"/>
+        <element label="IMR Incident" max_length="1024" name="imr_incident" type="url"/>
+        <index name="index">
+            <element name="incident"/>
+        </index>
+    </element>
+</database>
