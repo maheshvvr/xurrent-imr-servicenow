@@ -233,6 +233,7 @@
 		if (!meta.next()) {
 			meta.initialize();
 			meta.setValue('incident', incidentGR.getUniqueValue());
+			meta.setValue('originated_from', 'service_now');
 		}
 		meta.setValue('imr_incident', source.getValue('x_xurre_imr_incident'));
 		meta.update();
