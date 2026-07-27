@@ -26,9 +26,30 @@
         var limit = 100;
         var excludeSysIds = [];
 
+        // Restrict entity types to tables that incident (and its parent task) reference,
+        // since those are the only tables entity mapping can target.
+        var allowedNames = [];
+        var refGR = new GlideRecord('sys_dictionary');
+        refGR.addQuery('name', 'IN', 'incident,task');
+        refGR.addQuery('internal_type', 'reference');
+        refGR.addQuery('reference', '!=', '');
+        refGR.query();
+        while (refGR.next()) {
+            var refTable = refGR.getValue('reference');
+            if (allowedNames.indexOf(refTable) === -1) {
+                allowedNames.push(refTable);
+            }
+        }
+        if (allowedNames.length === 0) {
+            response.setStatus(200);
+            return result;
+        }
+        var allowed = allowedNames.join(',');
+
         if (labels.length > 0) {
             // Query 1: All exact matches for any of the labels
             var exactGR = new GlideRecord('sys_db_object');
+            exactGR.addQuery('name', 'IN', allowed);
             exactGR.addQuery('label', 'IN', labels.join(','));
             exactGR.orderBy('label');
             exactGR.query();
@@ -46,6 +67,7 @@
             var remaining = limit - result.entity_types.length;
             if (remaining > 0) {
                 var containsGR = new GlideRecord('sys_db_object');
+                containsGR.addQuery('name', 'IN', allowed);
                 var orCondition = containsGR.addQuery('label', 'CONTAINS', labels[0]);
                 for (var j = 1; j < labels.length; j++) {
                     orCondition.addOrCondition('label', 'CONTAINS', labels[j]);
@@ -68,6 +90,7 @@
 
         } else {
             var tableDefGR = new GlideRecord('sys_db_object');
+            tableDefGR.addQuery('name', 'IN', allowed);
             tableDefGR.orderBy('label');
             tableDefGR.setLimit(limit);
             tableDefGR.query();
