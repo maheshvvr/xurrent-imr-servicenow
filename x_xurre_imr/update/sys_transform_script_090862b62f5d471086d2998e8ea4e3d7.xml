@@ -120,6 +120,11 @@
 
 		var incident = new GlideRecord('incident');
 		incident.initialize();
+		// Pre-generate the incident sys_id so the meta row can be created BEFORE the
+		// incident insert. The incident's after-insert Business Rule runs synchronously
+		// inside insert() and reads this meta row for its echo-guard.
+		var newSysId = gs.generateGUID();
+		incident.setNewGuidValue(newSysId);
 		incident.short_description = source.getValue('short_description');
 		incident.description = source.getValue('description');
 		incident.urgency = urgencyGR.getValue('value');
@@ -144,15 +149,17 @@
 			}
 		}
 
-		var sysId = incident.insert();
-
-		// Store Xurrent IMR metadata in the app's own table (no custom columns on incident).
+		// Create the meta row FIRST so the incident's after-insert Business Rule
+		// (runs synchronously inside insert()) sees the Xurrent IMR origin and skips
+		// echoing the incident back to Xurrent.
 		var meta = new GlideRecord('x_xurre_imr_incident_meta');
 		meta.initialize();
-		meta.setValue('incident', sysId);
+		meta.setValue('incident', newSysId);
 		meta.setValue('originated_from', 'x_xurre_imr');
 		meta.setValue('imr_incident', source.getValue('x_xurre_imr_incident'));
 		meta.insert();
+
+		var sysId = incident.insert();
 
 		source.setValue('result_sys_id', sysId);
 		source.setValue('result_number', incident.getValue('number'));
