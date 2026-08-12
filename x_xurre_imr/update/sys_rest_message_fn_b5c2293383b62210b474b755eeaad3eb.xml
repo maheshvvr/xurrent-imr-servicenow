@@ -11,20 +11,20 @@
         <oauth2_profile/>
         <protocol_name/>
         <qualified_name>ServiceNow Event [ ServiceNow Work Note Alert ]</qualified_name>
-        <rest_endpoint>https://www.zenduty.com/api/appsync/service-now-v2/${service_now_instance_identifier}/note-event/</rest_endpoint>
+        <rest_endpoint>https://imr.xurrent.com/api/appsync/service-now-v2/${service_now_instance_identifier}/note-event/</rest_endpoint>
         <rest_message display_value="ServiceNow Event">fc52613383b62210b474b755eeaad327</rest_message>
         <sys_class_name>sys_rest_message_fn</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2025-07-24 12:32:00</sys_created_on>
         <sys_id>b5c2293383b62210b474b755eeaad3eb</sys_id>
-        <sys_mod_count>8</sys_mod_count>
+        <sys_mod_count>9</sys_mod_count>
         <sys_name>ServiceNow Work Note Alert</sys_name>
         <sys_package display_value="Xurrent IMR" source="x_xurre_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
         <sys_policy/>
         <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
         <sys_update_name>sys_rest_message_fn_b5c2293383b62210b474b755eeaad3eb</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2026-07-03 07:33:57</sys_updated_on>
+        <sys_updated_on>2026-07-28 10:46:45</sys_updated_on>
         <use_auth_mid_server/>
         <use_basic_auth>false</use_basic_auth>
         <use_mid_server/>
