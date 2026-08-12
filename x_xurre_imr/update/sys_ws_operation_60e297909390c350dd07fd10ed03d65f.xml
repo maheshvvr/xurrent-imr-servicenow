@@ -40,7 +40,18 @@
         response.setStatus(404);
         return { error: "Entity not found" };
     }
-    
+
+    // Enforce admin-controlled allowlist (x_xurre_imr.allowed_entity_tables).
+    var allowedList = gs.getProperty('x_xurre_imr.allowed_entity_tables', '').split(',');
+    var isAllowed = false;
+    for (var ai = 0; ai < allowedList.length; ai++) {
+        if (allowedList[ai].trim() === entityTypeName) { isAllowed = true; break; }
+    }
+    if (!isAllowed) {
+        response.setStatus(403);
+        return { error: "Table not permitted: " + entityTypeName };
+    }
+
     // Step 2: Build the hierarchy chain (child -> parent -> grandparent -> ...)
     var tableChain = [];
     var currentTable = entityTypeName;

@@ -13,6 +13,6 @@
         <sys_update_name>sys_security_acl_role_de7c0c882fc50b500885b43bcfa4e308</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
         <sys_updated_on>2026-05-19 07:09:35</sys_updated_on>
-        <sys_user_role display_value="rest_service" name="rest_service">3dfd67229f22110041a496fcc67fcf6c</sys_user_role>
+        <sys_user_role display_value="x_xurre_imr.integration" name="x_xurre_imr.integration">c1d2e3f4a5b6b7c8d9e0f1a2b3c4d5e6</sys_user_role>
     </sys_security_acl_role>
 </record_update>

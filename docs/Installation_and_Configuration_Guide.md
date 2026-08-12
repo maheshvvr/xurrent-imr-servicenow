@@ -37,13 +37,14 @@ The OAuth Application Registry record is **not shipped with the app** — create
 Do **not** run the integration as System Administrator. Create a dedicated local integration user:
 
 1. Navigate to **User Administration → Users → New**. Create e.g. `xurrent.imr.integration`.
-2. Assign **only** these roles:
-   - `rest_service`
+2. Assign **only** these application roles:
+   - `x_xurre_imr.integration` — access to the Scripted REST API endpoints (replaces the deprecated `rest_service` role; scopes access to this integration user only)
    - `x_xurre_imr.import_incident_user`
    - `x_xurre_imr.import_work_note_user`
+   - `x_xurre_imr.incident_meta_user`
 3. Navigate to **System OAuth → Application Registry → Xurrent IMR OAuth** and set the **User** field to this dedicated user.
 
-This grants the inbound integration exactly the access needed to call the three Scripted REST services and write to the application's Import Set staging tables — nothing more.
+This grants the inbound integration exactly the access needed to call the Scripted REST services and write to the application's Import Set staging and metadata tables — nothing more. The deprecated `rest_service` role is no longer used.
 
 ## 6. Configure system properties
 
@@ -54,16 +55,19 @@ Navigate to **System Properties** (`sys_properties.list`) and set:
 | `x_xurre_imr.service_now_instance_identifier` | Instance identifier issued by Xurrent/Zenduty | `your-instance-id` |
 | `x_xurre_imr.webhook_secret` | Shared HMAC-SHA256 secret for outbound signature; must match the value configured in the Xurrent portal | (32+ char secret) |
 | `x_xurre_imr.integration_enabled` | Master on/off gate for outbound Business Rules | `true` (after setup) |
+| `x_xurre_imr.allowed_entity_tables` | Comma-separated list of tables the integration may expose through the Fetch Entity endpoints. The admin controls this list. | `sys_user_group,cmdb_ci,cmn_department` |
 
 > Generate a webhook secret with, e.g., `openssl rand -hex 32`, and paste the same value into both ServiceNow and the Xurrent portal.
+
+> **Entity table access:** Fetch Entity Types returns only tables in `x_xurre_imr.allowed_entity_tables`; Fetch Entity Records and Fetch Entity Type Reference Fields reject (HTTP 403) any table not on the list. Edit the property to add/remove the tables your integration needs.
 
 ## 7. Enable the integration
 
 Set `x_xurre_imr.integration_enabled = true`. Until this is `true`, the outbound Business Rules are a no-op and no data leaves the instance.
 
-## 8. Incident form section
+## 8. Incident metadata (related list)
 
-The application adds two fields to the `incident` table — **Originated From** (`x_xurre_imr_originated_from`) and **Xurrent IMR Incident** (`x_xurre_imr_x_xurre_imr_incident`). They are presented in a dedicated **Xurrent IMR** form section, not on the default incident body, so they do not clutter the form for incidents unrelated to Xurrent.
+The application stores its per-incident metadata in its own table `x_xurre_imr_incident_meta` (fields: `incident`, `originated_from`, `imr_incident`) — no custom columns are added to the OOB `incident` table. To view it on the incident form, add the related list: open an incident → **Configure → Related Lists** → move **Incident Meta** (the `Incident Meta->Incident` entry) into Selected → Save.
 
 ## 9. Verification
 

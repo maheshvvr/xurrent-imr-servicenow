@@ -26,18 +26,15 @@
         var limit = 100;
         var excludeSysIds = [];
 
-        // Restrict entity types to tables that incident (and its parent task) reference,
-        // since those are the only tables entity mapping can target.
+        // Restrict entity types to the tables the ServiceNow admin has allowed via the
+        // x_xurre_imr.allowed_entity_tables property (comma-separated table names).
         var allowedNames = [];
-        var refGR = new GlideRecord('sys_dictionary');
-        refGR.addQuery('name', 'IN', 'incident,task');
-        refGR.addQuery('internal_type', 'reference');
-        refGR.addQuery('reference', '!=', '');
-        refGR.query();
-        while (refGR.next()) {
-            var refTable = refGR.getValue('reference');
-            if (allowedNames.indexOf(refTable) === -1) {
-                allowedNames.push(refTable);
+        var allowedProp = gs.getProperty('x_xurre_imr.allowed_entity_tables', '');
+        var allowedParts = allowedProp.split(',');
+        for (var a = 0; a < allowedParts.length; a++) {
+            var an = allowedParts[a].trim();
+            if (an && allowedNames.indexOf(an) === -1) {
+                allowedNames.push(an);
             }
         }
         if (allowedNames.length === 0) {

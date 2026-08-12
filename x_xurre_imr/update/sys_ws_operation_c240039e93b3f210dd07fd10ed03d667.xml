@@ -31,6 +31,17 @@
         }
         var actualTableName = tableDefGR.name.toString();
 
+        // Enforce admin-controlled allowlist (x_xurre_imr.allowed_entity_tables).
+        var allowedList = gs.getProperty('x_xurre_imr.allowed_entity_tables', '').split(',');
+        var isAllowed = false;
+        for (var ai = 0; ai < allowedList.length; ai++) {
+            if (allowedList[ai].trim() === actualTableName) { isAllowed = true; break; }
+        }
+        if (!isAllowed) {
+            response.setStatus(403);
+            return { status: "error", message: "Table not permitted: " + actualTableName };
+        }
+
         // Get the display field for this table
         var tempGR = new GlideRecord(actualTableName);
         tempGR.initialize();

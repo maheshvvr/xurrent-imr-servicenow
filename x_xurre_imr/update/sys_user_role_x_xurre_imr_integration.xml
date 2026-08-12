@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_user_role">
+    <sys_user_role action="INSERT_OR_UPDATE">
+        <assignable_by/>
+        <can_delegate>true</can_delegate>
+        <description>Grants access to the Xurrent IMR inbound Scripted REST API endpoints. Assign only to the dedicated integration user used by the Xurrent IMR service. Replaces the deprecated rest_service role.</description>
+        <elevated_privilege>false</elevated_privilege>
+        <grantable>true</grantable>
+        <includes_roles/>
+        <name>x_xurre_imr.integration</name>
+        <scoped_admin>false</scoped_admin>
+        <suffix>integration</suffix>
+        <sys_class_name>sys_user_role</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-07-27 00:00:00</sys_created_on>
+        <sys_id>c1d2e3f4a5b6b7c8d9e0f1a2b3c4d5e6</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_xurre_imr.integration</sys_name>
+        <sys_package display_value="Xurrent IMR" source="x_xurre_imr">99b1a1ff83762210b474b755eeaad3d0</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Xurrent IMR">99b1a1ff83762210b474b755eeaad3d0</sys_scope>
+        <sys_update_name>sys_user_role_x_xurre_imr_integration</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-07-27 00:00:00</sys_updated_on>
+    </sys_user_role>
+</record_update>
