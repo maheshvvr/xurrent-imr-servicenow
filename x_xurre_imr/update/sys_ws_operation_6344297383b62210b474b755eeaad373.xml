@@ -18,7 +18,7 @@
 		return { status: "error", message: "Missing required fields: incident_sys_id or work_note" };
 	}
 
-	var importGR = new GlideRecord('x_xurre_imr_u_import_work_note');
+	var importGR = new GlideRecordSecure('x_xurre_imr_u_import_work_note');
 	importGR.initialize();
 	importGR.setValue('operation', 'create_work_note');
 	importGR.setValue('incident_sys_id', incidentSysId);

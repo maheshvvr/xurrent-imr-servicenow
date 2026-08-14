@@ -24,7 +24,7 @@
         }
 
         // Get the Table Name from the sys_id provided
-        var tableDefGR = new GlideRecord('sys_db_object');
+        var tableDefGR = new GlideRecordSecure('sys_db_object');
         if (!tableDefGR.get(tableSysId)) {
             response.setStatus(404);
             return { status: "error", message: "Table definition not found for the provided sys_id." };
@@ -43,7 +43,7 @@
         }
 
         // Get the display field for this table
-        var tempGR = new GlideRecord(actualTableName);
+        var tempGR = new GlideRecordSecure(actualTableName);
         tempGR.initialize();
         var displayFieldName = tempGR.getDisplayName();
 
@@ -61,7 +61,7 @@
 
         if (labels.length > 0) {
             // Query 1: All exact matches for any of the labels
-            var exactGR = new GlideRecord(actualTableName);
+            var exactGR = new GlideRecordSecure(actualTableName);
             exactGR.addQuery(displayFieldName, 'IN', labels.join(','));
             exactGR.orderBy(displayFieldName);
             exactGR.query();
@@ -77,7 +77,7 @@
             // Query 2: Fill remaining slots with CONTAINS matches
             var remaining = limit - result.entity_records.length;
             if (remaining > 0) {
-                var containsGR = new GlideRecord(actualTableName);
+                var containsGR = new GlideRecordSecure(actualTableName);
                 var orCondition = containsGR.addQuery(displayFieldName, 'CONTAINS', labels[0]);
                 for (var j = 1; j < labels.length; j++) {
                     orCondition.addOrCondition(displayFieldName, 'CONTAINS', labels[j]);
@@ -98,7 +98,7 @@
             }
 
         } else {
-            var defaultGR = new GlideRecord(actualTableName);
+            var defaultGR = new GlideRecordSecure(actualTableName);
             defaultGR.orderBy(displayFieldName);
             defaultGR.setLimit(limit);
             defaultGR.query();

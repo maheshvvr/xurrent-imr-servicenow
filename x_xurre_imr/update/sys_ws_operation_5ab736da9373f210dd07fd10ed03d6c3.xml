@@ -45,7 +45,7 @@
 
         if (labels.length > 0) {
             // Query 1: All exact matches for any of the labels
-            var exactGR = new GlideRecord('sys_db_object');
+            var exactGR = new GlideRecordSecure('sys_db_object');
             exactGR.addQuery('name', 'IN', allowed);
             exactGR.addQuery('label', 'IN', labels.join(','));
             exactGR.orderBy('label');
@@ -63,7 +63,7 @@
             // Query 2: Fill remaining slots with CONTAINS matches
             var remaining = limit - result.entity_types.length;
             if (remaining > 0) {
-                var containsGR = new GlideRecord('sys_db_object');
+                var containsGR = new GlideRecordSecure('sys_db_object');
                 containsGR.addQuery('name', 'IN', allowed);
                 var orCondition = containsGR.addQuery('label', 'CONTAINS', labels[0]);
                 for (var j = 1; j < labels.length; j++) {
@@ -86,7 +86,7 @@
             }
 
         } else {
-            var tableDefGR = new GlideRecord('sys_db_object');
+            var tableDefGR = new GlideRecordSecure('sys_db_object');
             tableDefGR.addQuery('name', 'IN', allowed);
             tableDefGR.orderBy('label');
             tableDefGR.setLimit(limit);

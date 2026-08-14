@@ -20,6 +20,6 @@
         <sys_updated_by>admin</sys_updated_by>
         <sys_updated_on>2026-07-27 00:00:00</sys_updated_on>
         <type>string</type>
-        <value>sys_user_group,cmdb_ci,cmn_department,core_company,sys_user,service_offering</value>
+        <value>cmdb_ci,service_offering,cmdb_ci_service,sys_user_group</value>
     </sys_properties>
 </record_update>

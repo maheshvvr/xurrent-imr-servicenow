@@ -100,7 +100,7 @@
 	try {
 		// Skip outbound integration for incidents that originated from Xurrent IMR (echo guard).
 		if (current.operation() == 'insert') {
-			var metaGR = new GlideRecord('x_xurre_imr_incident_meta');
+			var metaGR = new GlideRecordSecure('x_xurre_imr_incident_meta');
 			metaGR.addQuery('incident', current.getUniqueValue());
 			metaGR.addQuery('originated_from', 'x_xurre_imr');
 			metaGR.setLimit(1);
@@ -128,7 +128,7 @@
 		payload.action = current.operation();
 
 		// Add incident state sys_id
-		var choiceGR = new GlideRecord('sys_choice');
+		var choiceGR = new GlideRecordSecure('sys_choice');
 		choiceGR.addQuery('name', 'incident');
 		choiceGR.addQuery('element', 'state');
 		choiceGR.addQuery('value', current.getValue('state'));
@@ -140,7 +140,7 @@
 		}
 
 		// Add incident urgency sys_id
-		var urgencyGR = new GlideRecord('sys_choice');
+		var urgencyGR = new GlideRecordSecure('sys_choice');
 		urgencyGR.addQuery('name', 'task');
 		urgencyGR.addQuery('element', 'urgency');
 		urgencyGR.addQuery('value', current.getValue('urgency'));
@@ -152,7 +152,7 @@
 		}
 
 		// Add incident priority sys_id
-		var priorityGR = new GlideRecord('sys_choice');
+		var priorityGR = new GlideRecordSecure('sys_choice');
 		priorityGR.addQuery('name', 'task');
 		priorityGR.addQuery('element', 'priority');
 		priorityGR.addQuery('value', current.getValue('priority'));

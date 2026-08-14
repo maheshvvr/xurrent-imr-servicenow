@@ -20,7 +20,7 @@
 			};
 		}
 
-		var importGR = new GlideRecord('x_xurre_imr_u_import_incident');
+		var importGR = new GlideRecordSecure('x_xurre_imr_u_import_incident');
 		importGR.initialize();
 		importGR.setValue('operation', 'update_incident_status');
 		importGR.setValue('incident_sys_id', body.sys_id);

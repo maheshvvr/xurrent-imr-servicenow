@@ -27,7 +27,7 @@
 		return { error: "Authorization failed: invalid app_scope" };
 	}
 
-	var scopeGR = new GlideRecord('sys_scope');
+	var scopeGR = new GlideRecordSecure('sys_scope');
 	scopeGR.addQuery('scope', appScope); // e.g., 'x_12345_x_xurre_imr'
 	scopeGR.query();
 	if (!scopeGR.next()) {

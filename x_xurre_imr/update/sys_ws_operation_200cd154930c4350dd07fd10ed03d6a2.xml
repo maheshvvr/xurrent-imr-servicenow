@@ -27,7 +27,7 @@
 
         if (labels.length > 0) {
             // Query 1: All exact matches for any of the labels
-            var exactGR = new GlideRecord('sys_choice');
+            var exactGR = new GlideRecordSecure('sys_choice');
             exactGR.addQuery('name', 'task');
             exactGR.addQuery('element', 'urgency');
             exactGR.addQuery('label', 'IN', labels.join(','));
@@ -46,7 +46,7 @@
             // Query 2: Fill remaining slots with CONTAINS matches
             var remaining = limit - result.incident_urgencies.length;
             if (remaining > 0) {
-                var containsGR = new GlideRecord('sys_choice');
+                var containsGR = new GlideRecordSecure('sys_choice');
                 containsGR.addQuery('name', 'task');
                 containsGR.addQuery('element', 'urgency');
                 var orCondition = containsGR.addQuery('label', 'CONTAINS', labels[0]);
@@ -70,7 +70,7 @@
             }
 
         } else {
-            var urgencyGR = new GlideRecord('sys_choice');
+            var urgencyGR = new GlideRecordSecure('sys_choice');
             urgencyGR.addQuery('name', 'task');
             urgencyGR.addQuery('element', 'urgency');
             urgencyGR.orderBy('label');

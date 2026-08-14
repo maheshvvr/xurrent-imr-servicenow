@@ -46,6 +46,8 @@ Do **not** run the integration as System Administrator. Create a dedicated local
 
 This grants the inbound integration exactly the access needed to call the Scripted REST services and write to the application's Import Set staging and metadata tables — nothing more. The deprecated `rest_service` role is no longer used.
 
+**GlideRecordSecure:** all app scripts use `GlideRecordSecure`, so every read/write is ACL-checked for the integration user. The required ACLs ship with the app and grant only the `x_xurre_imr.integration` role: read on `sys_db_object`, `sys_dictionary`, `sys_choice`, `sys_scope` and the allowed entity tables; create/read/write on `incident`; read on `sys_journal_field`; plus the existing staging/metadata grants. No admin, `itil`, or `rest_service` role is needed on the integration user. If you add a new table to `x_xurre_imr.allowed_entity_tables`, also grant `x_xurre_imr.integration` read on that table (else GlideRecordSecure returns no rows for it).
+
 ## 6. Configure system properties
 
 Navigate to **System Properties** (`sys_properties.list`) and set:
@@ -55,7 +57,7 @@ Navigate to **System Properties** (`sys_properties.list`) and set:
 | `x_xurre_imr.service_now_instance_identifier` | Instance identifier issued by Xurrent/Zenduty | `your-instance-id` |
 | `x_xurre_imr.webhook_secret` | Shared HMAC-SHA256 secret for outbound signature; must match the value configured in the Xurrent portal | (32+ char secret) |
 | `x_xurre_imr.integration_enabled` | Master on/off gate for outbound Business Rules | `true` (after setup) |
-| `x_xurre_imr.allowed_entity_tables` | Comma-separated list of tables the integration may expose through the Fetch Entity endpoints. The admin controls this list. | `sys_user_group,cmdb_ci,cmn_department` |
+| `x_xurre_imr.allowed_entity_tables` | Comma-separated list of tables the integration may expose through the Fetch Entity endpoints. The admin controls this list. | `cmdb_ci,service_offering,cmdb_ci_service,sys_user_group` |
 
 > Generate a webhook secret with, e.g., `openssl rand -hex 32`, and paste the same value into both ServiceNow and the Xurrent portal.
 

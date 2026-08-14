@@ -31,7 +31,7 @@
 	}
 
     // Step 1: Get the table name from sys_db_object
-    var dbObject = new GlideRecord('sys_db_object');
+    var dbObject = new GlideRecordSecure('sys_db_object');
     dbObject.addQuery('sys_id', entityTypeSysId);
 	dbObject.addQuery('name', entityTypeName);
 	dbObject.addQuery('label', entityTypeLabel);
@@ -62,11 +62,11 @@
         maxDepth--;
 
         // Look up the parent (super_class) of the current table
-        var parentObj = new GlideRecord('sys_db_object');
+        var parentObj = new GlideRecordSecure('sys_db_object');
         parentObj.addQuery('name', currentTable);
         parentObj.query();
         if (parentObj.next() && parentObj.getValue('super_class')) {
-            var parentRef = new GlideRecord('sys_db_object');
+            var parentRef = new GlideRecordSecure('sys_db_object');
             parentRef.addQuery('sys_id', parentObj.getValue('super_class'));
             parentRef.query();
             if (parentRef.next()) {
@@ -80,7 +80,7 @@
     }
 
     // Step 3: Find incident fields that reference ANY table in the hierarchy
-    var dict = new GlideRecord('sys_dictionary');
+    var dict = new GlideRecordSecure('sys_dictionary');
     dict.addQuery('name', 'IN', 'incident,task');
     dict.addQuery('reference', 'IN', tableChain.join(','));
     dict.query();

@@ -33,7 +33,7 @@
 
         var tables = ['task', 'incident'];
         for (var i = 0; i < tables.length; i++) {
-            var dictGR = new GlideRecord('sys_dictionary');
+            var dictGR = new GlideRecordSecure('sys_dictionary');
             dictGR.addQuery('name', tables[i]);
             dictGR.addQuery('internal_type', '!=', 'collection');
             dictGR.orderBy('column_label');

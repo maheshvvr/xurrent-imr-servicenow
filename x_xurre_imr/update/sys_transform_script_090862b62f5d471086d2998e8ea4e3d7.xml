@@ -33,12 +33,12 @@
 
 		// Idempotency: if an incident already exists for this Xurrent IMR incident,
 		// return it instead of inserting a duplicate (guards retries/replays).
-		var dupMeta = new GlideRecord('x_xurre_imr_incident_meta');
+		var dupMeta = new GlideRecordSecure('x_xurre_imr_incident_meta');
 		dupMeta.addQuery('imr_incident', source.getValue('x_xurre_imr_incident'));
 		dupMeta.setLimit(1);
 		dupMeta.query();
 		if (dupMeta.next()) {
-			var dupInc = new GlideRecord('incident');
+			var dupInc = new GlideRecordSecure('incident');
 			if (dupInc.get(dupMeta.getValue('incident'))) {
 				source.setValue('result_sys_id', dupInc.getUniqueValue());
 				source.setValue('result_number', dupInc.getValue('number'));
@@ -49,7 +49,7 @@
 			}
 		}
 
-		var urgencyGR = new GlideRecord('sys_choice');
+		var urgencyGR = new GlideRecordSecure('sys_choice');
 		urgencyGR.addQuery('name', 'task');
 		urgencyGR.addQuery('element', 'urgency');
 		urgencyGR.addQuery('sys_id', source.getValue('urgency_sys_id'));
@@ -59,7 +59,7 @@
 			return;
 		}
 
-		var stateGR = new GlideRecord('sys_choice');
+		var stateGR = new GlideRecordSecure('sys_choice');
 		stateGR.addQuery('name', 'incident');
 		stateGR.addQuery('element', 'state');
 		stateGR.addQuery('sys_id', source.getValue('state_sys_id'));
@@ -71,7 +71,7 @@
 
 		var snowPriority = null;
 		if (source.getValue('snow_priority_sys_id')) {
-			var priorityGR = new GlideRecord('sys_choice');
+			var priorityGR = new GlideRecordSecure('sys_choice');
 			priorityGR.addQuery('name', 'incident');
 			priorityGR.addQuery('element', 'priority');
 			priorityGR.addQuery('sys_id', source.getValue('snow_priority_sys_id'));
@@ -88,7 +88,7 @@
 		var CUSTOM_MODE = 2, NAME_MATCH_MODE = 1;
 
 		if (entityTypeSysId) {
-			var sysDbGR = new GlideRecord('sys_db_object');
+			var sysDbGR = new GlideRecordSecure('sys_db_object');
 			sysDbGR.addQuery('sys_id', entityTypeSysId);
 			sysDbGR.query();
 			if (!sysDbGR.next()) {
@@ -98,7 +98,7 @@
 			entityTableName = sysDbGR.getValue('name');
 
 			if (mappingMode === CUSTOM_MODE) {
-				var recordGR = new GlideRecord(entityTableName);
+				var recordGR = new GlideRecordSecure(entityTableName);
 				if (recordGR.get(source.getValue('entity_record_sys_id'))) {
 					entityRecordSysId = recordGR.getUniqueValue();
 				} else {
@@ -106,7 +106,7 @@
 					return;
 				}
 			} else if (mappingMode === NAME_MATCH_MODE) {
-				var nameMatchGR = new GlideRecord(entityTableName);
+				var nameMatchGR = new GlideRecordSecure(entityTableName);
 				nameMatchGR.addQuery('name', source.getValue('service_name'));
 				nameMatchGR.query();
 				if (nameMatchGR.next()) {
@@ -118,7 +118,7 @@
 			}
 		}
 
-		var incident = new GlideRecord('incident');
+		var incident = new GlideRecordSecure('incident');
 		incident.initialize();
 		// Pre-generate the incident sys_id so the meta row can be created BEFORE the
 		// incident insert. The incident's after-insert Business Rule runs synchronously
@@ -132,7 +132,7 @@
 		if (snowPriority) { incident.priority = snowPriority; }
 
 		if (entityTableName && entityRecordSysId) {
-			var dictGR = new GlideRecord('sys_dictionary');
+			var dictGR = new GlideRecordSecure('sys_dictionary');
 			dictGR.addQuery('name', 'IN', 'incident,task');
 			dictGR.addQuery('reference', entityTableName);
 			dictGR.query();
@@ -152,7 +152,7 @@
 		// Create the meta row FIRST so the incident's after-insert Business Rule
 		// (runs synchronously inside insert()) sees the Xurrent IMR origin and skips
 		// echoing the incident back to Xurrent.
-		var meta = new GlideRecord('x_xurre_imr_incident_meta');
+		var meta = new GlideRecordSecure('x_xurre_imr_incident_meta');
 		meta.initialize();
 		meta.setValue('incident', newSysId);
 		meta.setValue('originated_from', 'x_xurre_imr');
@@ -169,13 +169,13 @@
 	}
 
 	function handleUpdateIncidentStatus() {
-		var incidentGR = new GlideRecord('incident');
+		var incidentGR = new GlideRecordSecure('incident');
 		if (!incidentGR.get(source.getValue('incident_sys_id'))) {
 			setError('Incident not found with sys_id: ' + source.getValue('incident_sys_id'));
 			return;
 		}
 
-		var choiceGR = new GlideRecord('sys_choice');
+		var choiceGR = new GlideRecordSecure('sys_choice');
 		choiceGR.addQuery('name', 'incident');
 		choiceGR.addQuery('element', 'state');
 		choiceGR.addQuery('sys_id', source.getValue('state_sys_id'));
@@ -185,7 +185,7 @@
 			return;
 		}
 
-		var urgencyGR = new GlideRecord('sys_choice');
+		var urgencyGR = new GlideRecordSecure('sys_choice');
 		urgencyGR.addQuery('name', 'task');
 		urgencyGR.addQuery('element', 'urgency');
 		urgencyGR.addQuery('sys_id', source.getValue('urgency_sys_id'));
@@ -196,7 +196,7 @@
 		}
 
 		if (source.getValue('snow_priority_sys_id')) {
-			var priorityGR = new GlideRecord('sys_choice');
+			var priorityGR = new GlideRecordSecure('sys_choice');
 			priorityGR.addQuery('sys_id', source.getValue('snow_priority_sys_id'));
 			priorityGR.query();
 			if (priorityGR.next()) {
@@ -224,7 +224,7 @@
 	}
 
 	function handleUpdateXurrentIncident() {
-		var incidentGR = new GlideRecord('incident');
+		var incidentGR = new GlideRecordSecure('incident');
 		incidentGR.addQuery('sys_id', source.getValue('incident_sys_id'));
 		incidentGR.query();
 		if (!incidentGR.next()) {
@@ -233,7 +233,7 @@
 		}
 
 		// Upsert the Xurrent IMR metadata row for this incident.
-		var meta = new GlideRecord('x_xurre_imr_incident_meta');
+		var meta = new GlideRecordSecure('x_xurre_imr_incident_meta');
 		meta.addQuery('incident', incidentGR.getUniqueValue());
 		meta.setLimit(1);
 		meta.query();

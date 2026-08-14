@@ -20,7 +20,7 @@
 	}
 
 	try {
-		var importGR = new GlideRecord('x_xurre_imr_u_import_incident');
+		var importGR = new GlideRecordSecure('x_xurre_imr_u_import_incident');
 		importGR.initialize();
 		importGR.setValue('operation', 'update_x_xurre_imr_incident');
 		importGR.setValue('incident_sys_id', sysID);
