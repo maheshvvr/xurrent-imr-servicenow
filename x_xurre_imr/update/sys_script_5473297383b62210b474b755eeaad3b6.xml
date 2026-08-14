@@ -108,11 +108,11 @@
 		// so this business rule on the OOB sys_journal_field table does not affect
 		// journal activity on unrelated records or tables.
 		var incidentSysId = current.getValue('element_id');
-		var incidentGR = new GlideRecordSecure('incident');
+		var incidentGR = new GlideRecord('incident');
 		if (!incidentGR.get(incidentSysId)) {
 			return;
 		}
-		var metaGR = new GlideRecordSecure('x_xurre_imr_incident_meta');
+		var metaGR = new GlideRecord('x_xurre_imr_incident_meta');
 		metaGR.addQuery('incident', incidentSysId);
 		metaGR.addQuery('imr_incident', '!=', '');
 		metaGR.setLimit(1);
