@@ -4,6 +4,7 @@
         <can_delegate>true</can_delegate>
         <description>Grants access to the Xurrent IMR inbound Scripted REST API endpoints. Assign only to the dedicated integration user used by the Xurrent IMR service. Replaces the deprecated rest_service role.</description>
         <elevated_privilege>false</elevated_privilege>
+        <federated_id>pT57YktWFTY0mJTk+z9/M3YYyQCu8YBrzBzey6bqqFE=</federated_id>
         <grantable>true</grantable>
         <includes_roles/>
         <name>x_xurre_imr.integration</name>
