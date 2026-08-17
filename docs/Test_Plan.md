@@ -6,7 +6,7 @@
 
 - Instance: (dev/test instance name)
 - App: Xurrent IMR (`x_xurre_imr`), package `99b1a1ff83762210b474b755eeaad3d0`
-- Preconditions: OAuth configured, dedicated integration user bound, system properties set, `x_xurre_imr.integration_enabled = true`.
+- Preconditions: OAuth configured; dedicated integration user bound with app roles (`x_xurre_imr.integration` + `import_incident_user` + `import_work_note_user` + `incident_meta_user`) **and** platform roles (`itil`, `cmdb_read`, `personalize_dictionary`) so GlideRecordSecure reads/writes succeed; system properties set (`x_xurre_imr.integration_enabled = true`, `x_xurre_imr.allowed_entity_tables` populated).
 
 ## 2. Test cases
 
@@ -22,7 +22,7 @@
 - **Expected:** 200; incident state/urgency/priority updated via the staging table + transform.
 
 ### TC-04 Update Xurrent IMR Incident
-- **Expected:** 200; `x_xurre_imr_x_xurre_imr_incident` link set on the target incident.
+- **Expected:** 200; the `x_xurre_imr_incident_meta` row for the target incident is upserted with `imr_incident` set (and `originated_from=service_now` when newly created).
 
 ### TC-05 Create Work Note
 - **Expected:** 200; work note added to the incident via the incident journal; returns the journal entry sys_id.
@@ -44,11 +44,27 @@
 - **Steps:** Set `x_xurre_imr.integration_enabled = false`; create an incident.
 - **Expected:** No outbound call fires (Business Rules are a no-op).
 
-### TC-11 Form section
-- **Expected:** The two custom incident fields appear only under the **Xurrent IMR** form section, not the default incident body.
+### TC-11 Incident metadata related list
+- **Expected:** No custom columns on the OOB `incident` table. The **Incident Meta** related list (from `x_xurre_imr_incident_meta`) shows the origin + IMR link for IMR-managed incidents; the incident body form is unchanged.
 
 ### TC-12 Privacy & Support modules
 - **Expected:** App Privacy Policy and Contact Support modules open the in-scope UI pages; external links carry `rel="noopener noreferrer nofollow"`.
+
+### TC-13 Entity types allowlist (filter)
+- **Steps:** Call Fetch Entity Types with `x_xurre_imr.allowed_entity_tables` set to a subset.
+- **Expected:** Only allowlisted tables returned; tables outside the list are absent.
+
+### TC-14 Entity records/reference fields allowlist (deny)
+- **Steps:** Call Fetch Entity Records and Fetch Entity Type Reference Fields for a table NOT in `x_xurre_imr.allowed_entity_tables`.
+- **Expected:** HTTP 403 "Table not permitted".
+
+### TC-15 Least-privilege role
+- **Steps:** Inspect the integration user and endpoint ACLs.
+- **Expected:** Endpoints authorize via `x_xurre_imr.integration` (not `rest_service`). All scripts run under GlideRecordSecure; the integration user holds the app roles + platform roles (`itil`, `cmdb_read`, `personalize_dictionary`) so reads/writes succeed. No ACLs on out-of-scope tables ship with the app. Confirm `sys_scope` read works for Validate Connections (else grant a role that reads it).
+
+### TC-16 Idempotency (retry/replay)
+- **Steps:** Repeat Create Incident with the same `x_xurre_imr_incident`; repeat Create Work Note with identical content.
+- **Expected:** No duplicate incident (existing one returned) and no duplicate work note; single `x_xurre_imr_incident_meta` row per incident.
 
 ## 3. Regression
 Re-run TC-02 through TC-06 after any change to the operations, transform scripts, or staging tables; all must return success.

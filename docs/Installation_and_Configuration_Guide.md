@@ -37,16 +37,22 @@ The OAuth Application Registry record is **not shipped with the app** — create
 Do **not** run the integration as System Administrator. Create a dedicated local integration user:
 
 1. Navigate to **User Administration → Users → New**. Create e.g. `xurrent.imr.integration`.
-2. Assign **only** these application roles:
-   - `x_xurre_imr.integration` — access to the Scripted REST API endpoints (replaces the deprecated `rest_service` role; scopes access to this integration user only)
+2. Assign these **application roles** (shipped with the app):
+   - `x_xurre_imr.integration` — access to the Scripted REST API endpoints (replaces the deprecated `rest_service` role; scopes endpoint access to this user only)
    - `x_xurre_imr.import_incident_user`
    - `x_xurre_imr.import_work_note_user`
    - `x_xurre_imr.incident_meta_user`
-3. Navigate to **System OAuth → Application Registry → Xurrent IMR OAuth** and set the **User** field to this dedicated user.
+3. Also assign the **platform (built-in) roles** required so `GlideRecordSecure` can read/write the OOB tables the integration touches:
+   - `itil` — create/read/write `incident`, read `sys_choice`, `sys_user_group`, `service_offering`, `cmdb_ci_service`, and journal (`sys_journal_field`)
+   - `cmdb_read` — read `cmdb_ci` (if not already covered by `itil`)
+   - `personalize_dictionary` (and `personalize_choices`) — read `sys_db_object` / `sys_dictionary` for the Fetch Entity endpoints
+4. Navigate to **System OAuth → Application Registry → Xurrent IMR OAuth** and set the **User** field to this dedicated user.
 
-This grants the inbound integration exactly the access needed to call the Scripted REST services and write to the application's Import Set staging and metadata tables — nothing more. The deprecated `rest_service` role is no longer used.
+**GlideRecordSecure:** every app script (REST operations, transform scripts, Business Rules) uses `GlideRecordSecure`, so all reads/writes are ACL-checked for the acting user — the app does **not** ship any ACLs on out-of-scope (OOB/system) tables. Instead the integration user must hold the platform roles above. The app ships only in-scope ACLs (staging tables, `x_xurre_imr_incident_meta`, and the REST endpoints).
 
-**GlideRecordSecure:** the Scripted REST API resource scripts use `GlideRecordSecure`, so their reads/writes are ACL-checked for the integration user. The required ACLs ship with the app and grant only the `x_xurre_imr.integration` role: read on `sys_db_object`, `sys_dictionary`, `sys_choice`, `sys_scope` and the allowed entity tables, plus the existing staging-table grants. If you add a new table to `x_xurre_imr.allowed_entity_tables`, also grant `x_xurre_imr.integration` read on that table (else GlideRecordSecure returns no rows for it). The transform scripts and Business Rules use `GlideRecord` — they are privileged server-side logic (create incidents, write journal entries) that runs as part of the integration and intentionally bypasses record ACLs; this keeps the integration user least-privileged (no `itil`/admin needed).
+> **Note (`sys_scope`):** the *Validate Connections* endpoint reads `sys_scope`, which has no non-admin built-in read role. If validation returns empty for the integration user, grant a role that can read `sys_scope` (or run validation as a user who can).
+>
+> **Note (new entity tables):** when you add a table to `x_xurre_imr.allowed_entity_tables`, make sure the integration user also has a platform role granting read on that table, or GlideRecordSecure returns no rows for it.
 
 ## 6. Configure system properties
 
