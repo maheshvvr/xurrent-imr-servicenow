@@ -27,15 +27,10 @@
 		return { error: "Authorization failed: invalid app_scope" };
 	}
 
-	var scopeGR = new GlideRecordSecure('sys_scope');
-	scopeGR.addQuery('scope', appScope); // e.g., 'x_12345_x_xurre_imr'
-	scopeGR.query();
-	if (!scopeGR.next()) {
-		response.setStatus(401);
-		return { error: "Authorization failed: invalid app_scope" };
-	} else {
-		appSysId = scopeGR.getUniqueValue();
-	}
+	// Scope already validated above via gs.getCurrentScopeName(); use the running
+	// app's id directly instead of querying sys_scope (avoids an OOB read that
+	// GlideRecordSecure would deny for a least-privilege integration user).
+	var appSysId = gs.getCurrentApplicationId();
 
 	response.setStatus(200);
     return {
