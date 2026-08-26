@@ -29,9 +29,9 @@
 		response.setStatus(400);
 		return { status: "error", message: "Import record not found after insert." };
 	}
-	var resultStatus = importGR.getValue('result_status');
-	var resultMessage = importGR.getValue('result_message');
-	var noteSysId = importGR.getValue('result_sys_id');
+	var resultStatus = importGR.result_status.toString();
+	var resultMessage = importGR.result_message.toString();
+	var noteSysId = importGR.result_sys_id.toString();
 
 	if (resultStatus !== 'success') {
 		response.setStatus(400);

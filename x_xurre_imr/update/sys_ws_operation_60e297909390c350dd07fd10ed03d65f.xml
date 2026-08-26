@@ -65,12 +65,12 @@
         var parentObj = new GlideRecordSecure('sys_db_object');
         parentObj.addQuery('name', currentTable);
         parentObj.query();
-        if (parentObj.next() && parentObj.getValue('super_class')) {
+        if (parentObj.next() && parentObj.super_class.toString()) {
             var parentRef = new GlideRecordSecure('sys_db_object');
-            parentRef.addQuery('sys_id', parentObj.getValue('super_class'));
+            parentRef.addQuery('sys_id', parentObj.super_class.toString());
             parentRef.query();
             if (parentRef.next()) {
-                currentTable = parentRef.getValue('name');
+                currentTable = parentRef.name.toString();
             } else {
                 break;
             }
@@ -87,7 +87,7 @@
 
     var fields = [];
     while (dict.next()) {
-        fields.push(dict.getValue('element'));
+        fields.push(dict.element.toString());
     }
 
 	response.setStatus(200);

@@ -39,9 +39,9 @@
 		dupMeta.query();
 		if (dupMeta.next()) {
 			var dupInc = new GlideRecordSecure('incident');
-			if (dupInc.get(dupMeta.getValue('incident'))) {
+			if (dupInc.get(dupMeta.incident.toString())) {
 				source.setValue('result_sys_id', dupInc.getUniqueValue());
-				source.setValue('result_number', dupInc.getValue('number'));
+				source.setValue('result_number', dupInc.number.toString());
 				source.setValue('result_status', 'success');
 				source.setValue('result_message', 'Incident already exists for this Xurrent IMR incident');
 				source.update();
@@ -77,7 +77,7 @@
 			priorityGR.addQuery('sys_id', source.getValue('snow_priority_sys_id'));
 			priorityGR.query();
 			if (priorityGR.next()) {
-				snowPriority = priorityGR.getValue('value');
+				snowPriority = priorityGR.value.toString();
 			}
 		}
 
@@ -95,7 +95,7 @@
 				setError('Entity type not found in sys_db_object: ' + entityTypeSysId);
 				return;
 			}
-			entityTableName = sysDbGR.getValue('name');
+			entityTableName = sysDbGR.name.toString();
 
 			if (mappingMode === CUSTOM_MODE) {
 				var recordGR = new GlideRecordSecure(entityTableName);
@@ -127,8 +127,8 @@
 		incident.setNewGuidValue(newSysId);
 		incident.short_description = source.getValue('short_description');
 		incident.description = source.getValue('description');
-		incident.urgency = urgencyGR.getValue('value');
-		incident.state = stateGR.getValue('value');
+		incident.urgency = urgencyGR.value.toString();
+		incident.state = stateGR.value.toString();
 		if (snowPriority) { incident.priority = snowPriority; }
 
 		if (entityTableName && entityRecordSysId) {
@@ -137,7 +137,7 @@
 			dictGR.addQuery('reference', entityTableName);
 			dictGR.query();
 			while (dictGR.next()) {
-				incident.setValue(dictGR.getValue('element'), entityRecordSysId);
+				incident.setValue(dictGR.element.toString(), entityRecordSysId);
 			}
 		}
 
@@ -162,7 +162,7 @@
 		var sysId = incident.insert();
 
 		source.setValue('result_sys_id', sysId);
-		source.setValue('result_number', incident.getValue('number'));
+		source.setValue('result_number', incident.number.toString());
 		source.setValue('result_status', 'success');
 		source.setValue('result_message', 'Incident created successfully');
 		source.update();
@@ -200,7 +200,7 @@
 			priorityGR.addQuery('sys_id', source.getValue('snow_priority_sys_id'));
 			priorityGR.query();
 			if (priorityGR.next()) {
-				incidentGR.priority = priorityGR.getValue('value');
+				incidentGR.priority = priorityGR.value.toString();
 			}
 		}
 
@@ -212,12 +212,12 @@
 			}
 		}
 
-		incidentGR.setValue('state', choiceGR.getValue('value'));
-		incidentGR.setValue('urgency', urgencyGR.getValue('value'));
+		incidentGR.setValue('state', choiceGR.value.toString());
+		incidentGR.setValue('urgency', urgencyGR.value.toString());
 		incidentGR.update();
 
 		source.setValue('result_sys_id', incidentGR.getUniqueValue());
-		source.setValue('result_number', incidentGR.getValue('number'));
+		source.setValue('result_number', incidentGR.number.toString());
 		source.setValue('result_status', 'success');
 		source.setValue('result_message', 'Incident updated successfully');
 		source.update();
